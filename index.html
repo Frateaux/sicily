@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guida di Viaggio Interattiva: Sicilia Orientale (Logistica Zero-Stress & Fondali Bassi)</title>
+  <title>Planner & Guida Interattiva: Sicilia Orientale (8-15 Settembre)</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -38,17 +38,23 @@
 
   <style>
     @media print {
-      body { background: white !important; color: black !important; font-size: 10pt; }
-      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; font-size: 9.5pt; margin: 0; padding: 0; }
+      .no-print, nav, header .btn-actions, footer, .modal, button:not(.btn-keep-print) { display: none !important; }
       .print-only { display: block !important; }
       .page-break { page-break-after: always; }
-      .card-print { break-inside: avoid; border: 1px solid #ccc !important; box-shadow: none !important; margin-bottom: 12px !important; }
-      nav, header .btn-group, footer, #customExpenseModal { display: none !important; }
+      .card-print { break-inside: avoid; border: 1px solid #ddd !important; box-shadow: none !important; margin-bottom: 12px !important; }
       .tab-pane { display: block !important; }
+      /* Stampa selettiva singolo giorno */
+      body.print-single-mode .day-card-item:not(.print-active-day) { display: none !important; }
+      body.print-single-mode #tab-beaches,
+      body.print-single-mode #tab-hotels,
+      body.print-single-mode #tab-food,
+      body.print-single-mode #tab-budget,
+      body.print-single-mode #tab-logistics { display: none !important; }
     }
     .print-only { display: none; }
     .glass-nav {
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
     }
@@ -60,48 +66,51 @@
   <header class="relative bg-gradient-to-r from-sicily-seadeep via-sicily-sea to-sicily-terra text-white shadow-xl overflow-hidden">
     <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
     
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-9 relative z-10">
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-sicily-gold font-semibold text-xs tracking-wider uppercase mb-3 backdrop-blur-sm border border-white/10">
-            <i class="fa-solid fa-route"></i> Logistica Ottimizzata: Zero Spostamenti a Vuoto • Spiagge a Fondale Basso
+            <i class="fa-solid fa-pen-to-square"></i> Planner Interattivo & Modificabile • Fondali Bassi
           </div>
           <h1 class="text-3xl sm:text-4xl md:text-5xl font-serif font-bold tracking-tight">
             Sicilia Orientale in Auto
           </h1>
           <p class="mt-2 text-slate-200 text-sm sm:text-base max-w-2xl font-light">
-            Da <strong>Alife (Campania)</strong> a <strong>Catania, Siracusa/Ortigia, Noto & Taormina</strong> • 8-15 Settembre (8 Giorni / 7 Notti) • Pranzi sul Posto, Spiagge Sicure & Zero Stress
+            Da <strong>Alife (Campania)</strong> a <strong>Catania, Siracusa/Ortigia, Noto & Taormina</strong> • 8-15 Settembre • Personalizza ogni tappa, registra le spese e stampa giorno per giorno.
           </p>
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row gap-3 self-start md:self-center no-print">
-          <button onclick="window.print()" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-sicily-seadeep font-semibold hover:bg-sicily-gold hover:text-white transition-all shadow-md transform hover:-translate-y-0.5 text-sm">
-            <i class="fa-solid fa-file-pdf"></i> Stampa / Salva in PDF
+        <div class="flex flex-wrap gap-2.5 self-start md:self-center btn-actions no-print">
+          <button onclick="printFullItinerary()" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white text-sicily-seadeep font-bold hover:bg-sicily-gold hover:text-white transition-all shadow-md transform hover:-translate-y-0.5 text-xs sm:text-sm">
+            <i class="fa-solid fa-print"></i> Stampa Tutto (PDF)
           </button>
-          <button onclick="resetToDefaults()" class="inline-flex items-center justify-center gap-2 px-3.5 py-3 rounded-xl bg-white/15 text-white hover:bg-white/25 transition-all text-xs border border-white/20" title="Ripristina valori originali">
-            <i class="fa-solid fa-rotate-left"></i> Reset Dati
+          <button onclick="openNewExpenseModal()" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500 text-white font-bold hover:bg-emerald-600 transition-all shadow-md text-xs sm:text-sm">
+            <i class="fa-solid fa-plus-circle"></i> Registra Spesa
+          </button>
+          <button onclick="resetToDefaults()" class="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-white/15 text-white hover:bg-white/25 transition-all text-xs border border-white/20" title="Ripristina valori originali">
+            <i class="fa-solid fa-rotate-left"></i> Reset
           </button>
         </div>
       </div>
 
       <!-- Quick Summary Metric Bar -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-8 pt-6 border-t border-white/15 text-center">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-7 pt-5 border-t border-white/15 text-center">
         <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/10">
           <span class="block text-xs uppercase tracking-wider text-slate-300 font-medium">Durata</span>
           <span class="text-base sm:text-xl font-bold text-white">8 Giorni / 7 Notti</span>
         </div>
         <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/10">
-          <span class="block text-xs uppercase tracking-wider text-slate-300 font-medium">Spiagge Fondale Basso</span>
-          <span class="text-base sm:text-xl font-bold text-sicily-gold">4 Top Sicure</span>
-        </div>
-        <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/10">
           <span class="block text-xs uppercase tracking-wider text-slate-300 font-medium">Budget Impostato</span>
-          <span class="text-base sm:text-xl font-bold text-white" id="headerBudgetDisplay">2.000 €</span>
+          <span class="text-base sm:text-xl font-bold text-sicily-gold" id="headerBudgetDisplay">2.000 €</span>
         </div>
         <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/10">
           <span class="block text-xs uppercase tracking-wider text-slate-300 font-medium">Speso Effettivo</span>
           <span class="text-base sm:text-xl font-bold text-emerald-300" id="headerSpentDisplay">0 €</span>
+        </div>
+        <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/10">
+          <span class="block text-xs uppercase tracking-wider text-slate-300 font-medium">Rimanente</span>
+          <span class="text-base sm:text-xl font-bold text-white" id="headerRemainingDisplay">2.000 €</span>
         </div>
       </div>
     </div>
@@ -112,19 +121,19 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex space-x-1 sm:space-x-2 overflow-x-auto py-2.5 scrollbar-none" id="navTabs">
         <button onclick="switchTab('itinerary')" id="tab-btn-itinerary" class="tab-button active px-3.5 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap bg-sicily-seadeep text-white shadow-sm flex items-center gap-2">
-          <i class="fa-solid fa-calendar-days"></i> Itinerario Zero-Stress
+          <i class="fa-solid fa-calendar-days"></i> Itinerario 8-15 Set
+        </button>
+        <button onclick="switchTab('budget')" id="tab-btn-budget" class="tab-button px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sicily-seadeep hover:bg-slate-100 transition-all whitespace-nowrap flex items-center gap-2">
+          <i class="fa-solid fa-chart-pie"></i> Report Spese & Dashboard
         </button>
         <button onclick="switchTab('beaches')" id="tab-btn-beaches" class="tab-button px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sicily-seadeep hover:bg-slate-100 transition-all whitespace-nowrap flex items-center gap-2">
           <i class="fa-solid fa-umbrella-beach"></i> Spiagge a Fondale Basso
         </button>
         <button onclick="switchTab('hotels')" id="tab-btn-hotels" class="tab-button px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sicily-seadeep hover:bg-slate-100 transition-all whitespace-nowrap flex items-center gap-2">
-          <i class="fa-solid fa-hotel"></i> Alloggi Selezionati
+          <i class="fa-solid fa-hotel"></i> Alloggi & Alternative
         </button>
         <button onclick="switchTab('food')" id="tab-btn-food" class="tab-button px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sicily-seadeep hover:bg-slate-100 transition-all whitespace-nowrap flex items-center gap-2">
-          <i class="fa-solid fa-utensils"></i> Dove Mangiare (No-Trap)
-        </button>
-        <button onclick="switchTab('budget')" id="tab-btn-budget" class="tab-button px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sicily-seadeep hover:bg-slate-100 transition-all whitespace-nowrap flex items-center gap-2">
-          <i class="fa-solid fa-wallet"></i> Budget Tracker (€2.000)
+          <i class="fa-solid fa-utensils"></i> Locali Consigliati (No-Trap)
         </button>
         <button onclick="switchTab('logistics')" id="tab-btn-logistics" class="tab-button px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sicily-seadeep hover:bg-slate-100 transition-all whitespace-nowrap flex items-center gap-2">
           <i class="fa-solid fa-car"></i> Traghetto, ZTL & Auto
@@ -137,25 +146,21 @@
   <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
 
     <!-- ========================================================================= -->
-    <!-- TAB 1: ITINERARIO GIORNO PER GIORNO -->
+    <!-- TAB 1: ITINERARIO MODIFICABILE + STAMPA SINGOLO GIORNO -->
     <!-- ========================================================================= -->
     <section id="tab-itinerary" class="tab-pane block space-y-6">
-      <!-- Rule Box: Logistica Intelligente -->
       <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div class="flex items-start gap-3">
           <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 text-lg shadow-sm">
-            <i class="fa-solid fa-map-pin"></i>
+            <i class="fa-solid fa-sliders"></i>
           </div>
           <div>
-            <h3 class="font-serif font-bold text-slate-900 text-base sm:text-lg">Filosofia di Viaggio "Zero Spostamenti a Vuoto"</h3>
+            <h3 class="font-serif font-bold text-slate-900 text-base sm:text-lg">Itinerario 100% Personalizzabile</h3>
             <p class="text-xs sm:text-sm text-slate-600 mt-0.5">
-              Il pranzo leggero è <strong>SEMPRE nello stesso identico posto</strong> dove ti trovi per il mare o l'escursione, senza dover prendere l'auto bagnati. Il pomeriggio e la cena si svolgono a piedi nel centro storico dove alloggi.
+              Clicca sul pulsante <span class="inline-flex items-center px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 text-xs font-semibold"><i class="fa-solid fa-pencil text-[10px] mr-1"></i> Modifica</span> presente su ogni attività (Mattina, Pranzo, Pomeriggio, Cena o Hotel) per sostituirla con la tua preferita o aggiornare il link Google Maps. Puoi anche stampare i singoli giorni separatamente!
             </p>
           </div>
         </div>
-        <span class="text-xs font-bold text-emerald-800 bg-white/80 px-3 py-1.5 rounded-lg border border-emerald-300 self-start sm:self-center whitespace-nowrap">
-          <i class="fa-solid fa-car-side"></i> Auto usata solo all'andata/ritorno
-        </span>
       </div>
 
       <!-- Container Days List -->
@@ -165,80 +170,18 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- TAB 2: SPIAGGE LIBERE E MARE A FONDALE BASSO -->
-    <!-- ========================================================================= -->
-    <section id="tab-beaches" class="tab-pane hidden space-y-6">
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center text-xl">
-            <i class="fa-solid fa-person-walking"></i>
-          </div>
-          <div>
-            <h2 class="text-2xl font-serif font-bold text-slate-900">
-              Spiagge Libere con Fondale Basso & Sabbioso (Ideali per non nuotatori)
-            </h2>
-            <p class="text-slate-600 text-sm mt-0.5">
-              Tutte le spiagge selezionate hanno <strong>sabbia morbida</strong> e un <strong>fondale che degrada molto lentamente per 30-50 metri</strong>: si tocca comodamente con i piedi, l'acqua è calma, calda e trasparente. Niente scogli scivolosi, niente dislivelli improvvisi né acque profonde.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="beachesContainer">
-        <!-- Injected via JS -->
-      </div>
-    </section>
-
-    <!-- ========================================================================= -->
-    <!-- TAB 3: ALLOGGI SELEZIONATI -->
-    <!-- ========================================================================= -->
-    <section id="tab-hotels" class="tab-pane hidden space-y-6">
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-        <h2 class="text-2xl font-serif font-bold text-slate-900 flex items-center gap-2">
-          <i class="fa-solid fa-bed text-sicily-gold"></i> Alloggi Consigliati con Ottime Recensioni
-        </h2>
-        <p class="text-slate-600 text-sm mt-1">
-          Selezionati per Catania (3 notti), Ortigia/Siracusa (3 notti) e Taormina (1 notte) divisi in fasce di prezzo (Smart, Best Value, Charme), tutti con punteggio recensioni > 9.0/10. Clicca su "Seleziona" per aggiornare automaticamente la stima nel budget tracker.
-        </p>
-      </div>
-
-      <div class="space-y-8" id="hotelsContainer">
-        <!-- Injected via JS -->
-      </div>
-    </section>
-
-    <!-- ========================================================================= -->
-    <!-- TAB 4: DOVE MANGIARE (PRANZI SUL POSTO & CENE) -->
-    <!-- ========================================================================= -->
-    <section id="tab-food" class="tab-pane hidden space-y-6">
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-        <h2 class="text-2xl font-serif font-bold text-slate-900 flex items-center gap-2">
-          <i class="fa-solid fa-utensils text-sicily-terra"></i> Guida Gastronomica Autentica (No Trappole Turistiche)
-        </h2>
-        <p class="text-slate-600 text-sm mt-1">
-          <strong>Pranzi leggeri:</strong> posizionati esattamente sul litorale o nel borgo in cui ti trovi, senza bisogno di spostamenti in auto.  
-          <strong>Cene tradizionali:</strong> trattorie sincere raggiungibili a piedi dal tuo alloggio, pesce freschissimo e ricette tipiche con ottimo rapporto qualità/prezzo.
-        </p>
-      </div>
-
-      <div class="space-y-8" id="foodContainer">
-        <!-- Injected via JS -->
-      </div>
-    </section>
-
-    <!-- ========================================================================= -->
-    <!-- TAB 5: BUDGET & SPESE (€2.000) -->
+    <!-- TAB 2: REPORT SPESE AVANZATO & DASHBOARD (CATEGORIA + DATA) -->
     <!-- ========================================================================= -->
     <section id="tab-budget" class="tab-pane hidden space-y-6">
-      <!-- Header Card -->
+      <!-- Main Budget Overview Card -->
       <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <h2 class="text-2xl font-serif font-bold text-slate-900 flex items-center gap-2">
-              <i class="fa-solid fa-calculator text-emerald-600"></i> Gestione Budget & Monitoraggio Spese
+              <i class="fa-solid fa-chart-line text-emerald-600"></i> Reportistica Spese & Monitoraggio Budget
             </h2>
             <p class="text-slate-600 text-sm mt-1">
-              Imposta il tuo budget complessivo, visualizza le stime e inserisci il prezzo effettivamente pagato per monitorare i costi in tempo reale.
+              Visualizza la ripartizione per categoria e per giorno, registra ogni scontrino/ricevuta ed esporta i dati.
             </p>
           </div>
 
@@ -251,10 +194,13 @@
                 <span class="text-lg font-bold text-slate-700">€</span>
               </div>
             </div>
+            <button onclick="openNewExpenseModal()" class="px-4 py-2 bg-emerald-600 text-white rounded-lg font-semibold text-xs hover:bg-emerald-700 transition flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-plus"></i> Nuova Spesa
+            </button>
           </div>
         </div>
 
-        <!-- Budget Progress Bar -->
+        <!-- Progress Bar -->
         <div class="mt-6 pt-6 border-t border-slate-100">
           <div class="flex justify-between items-center text-sm font-semibold mb-2">
             <span id="budgetStatusText" class="text-slate-700">Avanzamento Spesa Effettiva</span>
@@ -270,34 +216,66 @@
         </div>
       </div>
 
-      <!-- Breakdown Mini Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="budgetCategorySummary">
-        <!-- Injected via JS -->
+      <!-- REPORT GRAPHS: CATEGORIA & DATA -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- 1. Report Spese per Categoria -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+          <div>
+            <h3 class="font-serif font-bold text-lg text-slate-900 flex items-center gap-2 mb-4">
+              <i class="fa-solid fa-layer-group text-purple-600"></i> Ripartizione Spese per Categoria
+            </h3>
+            <div class="space-y-3.5" id="categoryBarsContainer">
+              <!-- Injected via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Report Spese per Data / Giorno -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+          <div>
+            <h3 class="font-serif font-bold text-lg text-slate-900 flex items-center gap-2 mb-4">
+              <i class="fa-solid fa-calendar-check text-blue-600"></i> Spese Giornaliere (Data per Data)
+            </h3>
+            <div class="space-y-2.5 max-h-[300px] overflow-y-auto pr-1" id="dailyExpensesBreakdown">
+              <!-- Injected via JS -->
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Detailed Expenses Table -->
+      <!-- Registro Spese Dettagliato (Tabella) -->
       <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
         <div class="px-6 py-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-slate-50/50">
           <div>
             <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
-              <i class="fa-solid fa-list-check text-sicily-seadeep"></i> Tabella Dettagliata Voci di Spesa
+              <i class="fa-solid fa-receipt text-sicily-seadeep"></i> Registro Dettagliato di Tutte le Spese
             </h3>
-            <span class="text-xs text-slate-500">Inserisci nella colonna 'Prezzo Pagato' quanto spendi realmente</span>
+            <span class="text-xs text-slate-500">Filtra per categoria o aggiungi nuove voci al volo</span>
           </div>
-          <button onclick="addNewCustomExpenseModal()" class="px-3.5 py-2 bg-sicily-seadeep text-white text-xs font-semibold rounded-lg hover:bg-sicily-sea transition flex items-center gap-1.5 shadow-sm no-print">
-            <i class="fa-solid fa-plus"></i> Aggiungi Spesa Personalizzata
-          </button>
+          <div class="flex items-center gap-2 self-stretch sm:self-auto">
+            <select id="expenseFilterCategory" onchange="renderExpensesTable()" class="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 focus:ring-1 focus:ring-sicily-sea">
+              <option value="ALL">Tutte le Categorie</option>
+              <option value="Alloggi">🏨 Alloggi</option>
+              <option value="Cibo">🍝 Ristoranti & Cibo</option>
+              <option value="Trasporti">🚗 Trasporti & Carburante</option>
+              <option value="Attrazioni">🏛️ Attrazioni & Musei</option>
+              <option value="Altro">🛍️ Altro / Extra</option>
+            </select>
+            <button onclick="openNewExpenseModal()" class="px-3 py-1.5 bg-sicily-seadeep text-white text-xs font-semibold rounded-lg hover:bg-sicily-sea transition flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-plus"></i> Aggiungi
+            </button>
+          </div>
         </div>
 
         <div class="overflow-x-auto">
           <table class="w-full text-left text-sm text-slate-700">
             <thead class="bg-slate-100 text-xs uppercase text-slate-600 border-b border-slate-200">
               <tr>
+                <th class="px-4 py-3 font-semibold">Data</th>
                 <th class="px-4 py-3 font-semibold">Categoria</th>
-                <th class="px-4 py-3 font-semibold">Descrizione Voce</th>
-                <th class="px-4 py-3 font-semibold text-right">Stima Prevista</th>
-                <th class="px-4 py-3 font-semibold text-right">Prezzo Pagato (€)</th>
-                <th class="px-4 py-3 font-semibold text-right">Differenza</th>
+                <th class="px-4 py-3 font-semibold">Descrizione / Locale</th>
+                <th class="px-4 py-3 font-semibold text-right">Stima (€)</th>
+                <th class="px-4 py-3 font-semibold text-right">Pagato Effettivo (€)</th>
                 <th class="px-4 py-3 font-semibold text-center no-print">Azioni</th>
               </tr>
             </thead>
@@ -306,15 +284,76 @@
             </tbody>
             <tfoot class="bg-slate-50 font-bold text-slate-900 border-t-2 border-slate-300">
               <tr>
-                <td colspan="2" class="px-4 py-3 text-right">TOTALE GENERALE:</td>
+                <td colspan="3" class="px-4 py-3 text-right">TOTALE SPESE:</td>
                 <td class="px-4 py-3 text-right text-slate-600" id="tableTotalEstimated">2.000 €</td>
                 <td class="px-4 py-3 text-right text-emerald-700" id="tableTotalActual">0 €</td>
-                <td class="px-4 py-3 text-right" id="tableTotalDiff">+2.000 €</td>
                 <td class="no-print"></td>
               </tr>
             </tfoot>
           </table>
         </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 3: SPIAGGE LIBERE A FONDALE BASSO -->
+    <!-- ========================================================================= -->
+    <section id="tab-beaches" class="tab-pane hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-person-walking"></i>
+          </div>
+          <div>
+            <h2 class="text-2xl font-serif font-bold text-slate-900">
+              Spiagge Libere con Fondale Basso & Sabbioso
+            </h2>
+            <p class="text-slate-600 text-sm mt-0.5">
+              Tutte le spiagge selezionate hanno sabbia morbida e un fondale che degrada dolcemente per decine di metri: si tocca costantemente con i piedi, zero scogli scivolosi né dislivelli improvvisi.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="beachesContainer">
+        <!-- Injected via JS -->
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 4: ALLOGGI SELEZIONATI -->
+    <!-- ========================================================================= -->
+    <section id="tab-hotels" class="tab-pane hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+        <h2 class="text-2xl font-serif font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-bed text-sicily-gold"></i> Alloggi Consigliati con Ottime Recensioni
+        </h2>
+        <p class="text-slate-600 text-sm mt-1">
+          Opzioni divise in fasce (Smart, Best Value, Charme) con recensioni > 9.0/10. Clicca su "Seleziona per il viaggio" per impostare automaticamente l'alloggio nel tuo itinerario.
+        </p>
+      </div>
+
+      <div class="space-y-8" id="hotelsContainer">
+        <!-- Injected via JS -->
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 5: DOVE MANGIARE (NO-TRAP) -->
+    <!-- ========================================================================= -->
+    <section id="tab-food" class="tab-pane hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+        <h2 class="text-2xl font-serif font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-utensils text-sicily-terra"></i> Locali Consigliati (Pranzi sul Posto & Cene Tipiche)
+        </h2>
+        <p class="text-slate-600 text-sm mt-1">
+          <strong>Pranzi leggeri:</strong> direttamente sul litorale o nel borgo in cui ti trovi.  
+          <strong>Cene autentiche:</strong> trattorie sincere a piedi dal tuo hotel.
+        </p>
+      </div>
+
+      <div class="space-y-8" id="foodContainer">
+        <!-- Injected via JS -->
       </div>
     </section>
 
@@ -338,19 +377,15 @@
             <ul class="text-sm text-slate-600 space-y-2.5">
               <li class="flex items-start gap-2">
                 <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
-                <span><strong>Frequenza:</strong> Partenze continue ogni 40 minuti, servizio attivo 24h/24.</span>
+                <span><strong>Frequenza:</strong> Partenze continue ogni 40 minuti H24.</span>
               </li>
               <li class="flex items-start gap-2">
                 <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
-                <span><strong>Durata traversata:</strong> Circa 20 minuti di navigazione panoramica.</span>
+                <span><strong>Durata traversata:</strong> Solo 20 minuti di navigazione.</span>
               </li>
               <li class="flex items-start gap-2">
                 <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
-                <span><strong>Tariffa Consigliata:</strong> Biglietto A/R (ritorno entro 90 giorni) per auto + passeggeri (~85 € totali).</span>
-              </li>
-              <li class="flex items-start gap-2">
-                <i class="fa-solid fa-lightbulb text-sicily-gold mt-1"></i>
-                <span><strong>Consiglio:</strong> Puoi acquistare il biglietto comodamente ai caselli d'imbarco di Villa S. Giovanni o con Telepass senza scendere dall'auto.</span>
+                <span><strong>Tariffa Consigliata:</strong> Biglietto A/R 90 giorni per auto + passeggeri (~85 € totali).</span>
               </li>
             </ul>
           </div>
@@ -376,15 +411,11 @@
             <ul class="text-sm text-slate-600 space-y-2.5">
               <li class="flex items-start gap-2">
                 <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1"></i>
-                <span><strong>ZTL Ortigia:</strong> L'isola è vietata alle auto non residenti in determinate fasce orarie serali e festivi.</span>
+                <span><strong>ZTL Ortigia:</strong> Vietata alle auto non residenti in orari serali/weekend.</span>
               </li>
               <li class="flex items-start gap-2">
                 <i class="fa-solid fa-circle-check text-emerald-600 mt-1"></i>
-                <span><strong>Parcheggio Talete (Consigliatissimo):</strong> Coperto, all'inizio dell'isola. Costo ~15 € / 24 ore. A 5 minuti a piedi dal centro.</span>
-              </li>
-              <li class="flex items-start gap-2">
-                <i class="fa-solid fa-circle-check text-emerald-600 mt-1"></i>
-                <span><strong>Parcheggio Molo Sant'Antonio:</strong> Ampio, all'aperto, subito prima del ponte Umbertino. Tariffa molto conveniente.</span>
+                <span><strong>Parcheggio Talete:</strong> Coperto all'inizio dell'isola (~15€/24h), a 5 minuti a piedi dal centro.</span>
               </li>
             </ul>
           </div>
@@ -395,7 +426,7 @@
           </div>
         </div>
 
-        <!-- Parcheggi e Accesso a Taormina -->
+        <!-- Parcheggi Taormina -->
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between card-print">
           <div>
             <div class="flex items-center gap-3 mb-4">
@@ -404,21 +435,17 @@
               </div>
               <div>
                 <h3 class="font-serif font-bold text-lg text-slate-900">Parcheggi & Accesso a Taormina</h3>
-                <span class="text-xs text-slate-500">Città arroccata e totalmente pedonale</span>
+                <span class="text-xs text-slate-500">Città pedonale arroccata</span>
               </div>
             </div>
             <ul class="text-sm text-slate-600 space-y-2.5">
               <li class="flex items-start gap-2">
                 <i class="fa-solid fa-circle-check text-emerald-600 mt-1"></i>
-                <span><strong>Parcheggio Lumbi:</strong> Multipiano alle porte della città con navetta bus gratuita continua inclusa verso Porta Messina (~15-18€/24h).</span>
-              </li>
-              <li class="flex items-start gap-2">
-                <i class="fa-solid fa-circle-check text-emerald-600 mt-1"></i>
-                <span><strong>Parcheggio Porta Catania:</strong> Più vicino a Corso Umberto con ascensore diretto al centro storico.</span>
+                <span><strong>Parcheggio Lumbi:</strong> Multipiano con navetta bus gratuita inclusa per Porta Messina (~15-18€/gg).</span>
               </li>
               <li class="flex items-start gap-2">
                 <i class="fa-solid fa-umbrella-beach text-sicily-sea mt-1"></i>
-                <span><strong>Spiaggia di Giardini Naxos:</strong> Accesso comodo in auto o bus, parcheggi facili sul lungomare e sabbia con fondale dolcissimo.</span>
+                <span><strong>Baia di Giardini Naxos:</strong> Comodi parcheggi sul lungomare e sabbia con fondale dolcissimo.</span>
               </li>
             </ul>
           </div>
@@ -429,7 +456,7 @@
           </div>
         </div>
 
-        <!-- Consigli di Viaggio & Relax a Settembre -->
+        <!-- Sicurezza Fondali -->
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between card-print">
           <div>
             <div class="flex items-center gap-3 mb-4">
@@ -437,27 +464,23 @@
                 <i class="fa-solid fa-shield-heart"></i>
               </div>
               <div>
-                <h3 class="font-serif font-bold text-lg text-slate-900">Perché queste spiagge sono 100% sicure</h3>
+                <h3 class="font-serif font-bold text-lg text-slate-900">Spiagge Sicure per non nuotatori</h3>
                 <span class="text-xs text-slate-500">Massima tranquillità in acqua</span>
               </div>
             </div>
             <ul class="text-sm text-slate-600 space-y-2.5">
               <li class="flex items-start gap-2">
                 <i class="fa-solid fa-check text-emerald-600 mt-1"></i>
-                <span><strong>Piedi sempre a terra:</strong> Si cammina con l'acqua alle ginocchia o al bacino per 30-50 metri dalla riva.</span>
-              </li>
-              <li class="flex items-start gap-2">
-                <i class="fa-solid fa-check text-emerald-600 mt-1"></i>
-                <span><strong>Sabbia morbida:</strong> Nessun sasso scivoloso o scoglio tagliente sotto i piedi.</span>
+                <span><strong>Piedi sempre a terra:</strong> Si cammina con l'acqua alle ginocchia per 30-50 metri.</span>
               </li>
               <li class="flex items-start gap-2">
                 <i class="fa-solid fa-sun text-amber-500 mt-1"></i>
-                <span><strong>Mare calmo & caldo a Settembre:</strong> Baie riparate e temperatura dell'acqua perfetta (25-26°C).</span>
+                <span><strong>Settembre Ideale:</strong> Clima mite (27-29°C), mare caldo e calmo senza folla.</span>
               </li>
             </ul>
           </div>
           <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-400">
-            Itinerario pronto per un'esperienza rilassante e sicura!
+            Itinerario pronto per un'esperienza rilassante!
           </div>
         </div>
       </div>
@@ -465,41 +488,103 @@
 
   </main>
 
-  <!-- MODAL FOR ADDING CUSTOM EXPENSE -->
-  <div id="customExpenseModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="font-serif font-bold text-lg text-slate-900">Aggiungi Spesa Personalizzata</h3>
-        <button onclick="closeCustomExpenseModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-      </div>
-      <form id="customExpenseForm" onsubmit="handleCustomExpenseSubmit(event)" class="space-y-4">
+  <!-- ========================================================================= -->
+  <!-- MODAL 1: MODIFICA ATTIVITÀ / TAPPA (MATTINA, PRANZO, POMERIGGIO, CENA, HOTEL) -->
+  <!-- ========================================================================= -->
+  <div id="editSlotModal" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200">
+      <div class="flex justify-between items-center pb-3 border-b border-slate-100 mb-4">
         <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Categoria</label>
-          <select id="modalCategory" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sicily-sea focus:outline-none">
-            <option value="Alloggi">🏨 Alloggi</option>
-            <option value="Cibo">🍝 Ristoranti & Cibo</option>
-            <option value="Trasporti">🚗 Trasporti & Carburante</option>
-            <option value="Attrazioni">🏛️ Attrazioni & Musei</option>
-            <option value="Altro">🛍️ Altro / Extra</option>
+          <span class="text-xs font-bold text-sicily-sea uppercase tracking-wider" id="editSlotBadge">Modifica Attività</span>
+          <h3 class="font-serif font-bold text-lg text-slate-900" id="editSlotModalTitle">Personalizza Voce</h3>
+        </div>
+        <button onclick="closeEditSlotModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="editSlotForm" onsubmit="handleEditSlotSubmit(event)" class="space-y-4">
+        <input type="hidden" id="editDayId">
+        <input type="hidden" id="editSlotKey">
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Titolo / Nome del Luogo o Locale</label>
+          <input type="text" id="editTitleInput" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sicily-sea focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Descrizione / Note Pratiche</label>
+          <textarea id="editDescInput" rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sicily-sea focus:outline-none"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Link Google Maps (Opzionale)</label>
+          <input type="url" id="editMapInput" placeholder="https://maps.google.com/..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sicily-sea focus:outline-none">
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t border-slate-100">
+          <button type="button" onclick="closeEditSlotModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Annulla</button>
+          <button type="submit" class="px-4 py-2 text-xs font-semibold bg-sicily-seadeep text-white hover:bg-sicily-sea rounded-lg shadow-sm">Salva Modifiche</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 2: REGISTRA / AGGIUNGI NUOVA SPESA -->
+  <!-- ========================================================================= -->
+  <div id="newExpenseModal" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+      <div class="flex justify-between items-center pb-3 border-b border-slate-100 mb-4">
+        <h3 class="font-serif font-bold text-lg text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-receipt text-emerald-600"></i> Registra Nuova Spesa
+        </h3>
+        <button onclick="closeNewExpenseModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="newExpenseForm" onsubmit="handleNewExpenseSubmit(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Data Spesa</label>
+          <select id="modalExpDate" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sicily-sea focus:outline-none">
+            <option value="2026-09-08">Martedì 8 Set (G1 • Catania)</option>
+            <option value="2026-09-09">Mercoledì 9 Set (G2 • Catania/Playa)</option>
+            <option value="2026-09-10">Giovedì 10 Set (G3 • Etna/Catania)</option>
+            <option value="2026-09-11">Venerdì 11 Set (G4 • Siracusa/Ortigia)</option>
+            <option value="2026-09-12">Sabato 12 Set (G5 • Arenella/Noto)</option>
+            <option value="2026-09-13">Domenica 13 Set (G6 • San Lorenzo/Marzamemi)</option>
+            <option value="2026-09-14">Lunedì 14 Set (G7 • Naxos/Taormina)</option>
+            <option value="2026-09-15">Martedì 15 Set (G8 • Rientro)</option>
           </select>
         </div>
+
         <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Descrizione Voce</label>
-          <input type="text" id="modalDescription" required placeholder="es. Cena speciale a Ortigia" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sicily-sea focus:outline-none">
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Categoria</label>
+          <select id="modalExpCategory" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sicily-sea focus:outline-none">
+            <option value="Alloggi">🏨 Alloggi</option>
+            <option value="Cibo">🍝 Ristoranti & Cibo</option>
+            <option value="Trasporti">🚗 Trasporti, Benzina & Traghetto</option>
+            <option value="Attrazioni">🏛️ Attrazioni, Mare & Musei</option>
+            <option value="Altro">🛍️ Altro / Souvenir / Extra</option>
+          </select>
         </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Descrizione / Nome Locale</label>
+          <input type="text" id="modalExpName" required placeholder="es. Pranzo Chiosco Arenella, Ristorante da Antonio..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sicily-sea focus:outline-none">
+        </div>
+
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Stima Prevista (€)</label>
-            <input type="number" id="modalEstimated" step="0.5" required placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sicily-sea focus:outline-none">
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Stima Prevista (€)</label>
+            <input type="number" id="modalExpEstimated" step="0.50" value="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sicily-sea focus:outline-none">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Prezzo Pagato (€)</label>
-            <input type="number" id="modalActual" step="0.5" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sicily-sea focus:outline-none">
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Importo Pagato (€)</label>
+            <input type="number" id="modalExpActual" step="0.50" required placeholder="es. 45.00" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-bold text-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
           </div>
         </div>
+
         <div class="flex justify-end gap-3 pt-4 border-t border-slate-100">
-          <button type="button" onclick="closeCustomExpenseModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Annulla</button>
-          <button type="submit" class="px-4 py-2 text-xs font-semibold bg-sicily-seadeep text-white hover:bg-sicily-sea rounded-lg shadow-sm">Salva Voce</button>
+          <button type="button" onclick="closeNewExpenseModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Annulla</button>
+          <button type="submit" class="px-4 py-2 text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 rounded-lg shadow-sm">Salva Spesa</button>
         </div>
       </form>
     </div>
@@ -508,289 +593,306 @@
   <!-- FOOTER -->
   <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 mt-12 no-print">
     <div class="max-w-7xl mx-auto px-4 text-center text-xs space-y-2">
-      <p class="font-serif text-sm text-slate-200">Guida di Viaggio Interattiva • Costa Orientale della Sicilia (Logistica Zero-Stress)</p>
-      <p>Progettata per un viaggio sereno e memorabile • Tutti i link aprono direttamente Google Maps</p>
+      <p class="font-serif text-sm text-slate-200">Planner & Guida di Viaggio Interattiva • Sicilia Orientale</p>
+      <p>Tutte le modifiche e le spese restano salvate automaticamente nel browser • Dati esportabili</p>
     </div>
   </footer>
 
   <!-- JAVASCRIPT APPLICATION LOGIC -->
   <script>
     // ==========================================
-    // INITIAL DEFAULT DATA (LOGISTICA ZERO-STRESS)
+    // INITIAL DEFAULT DATA
     // ==========================================
     const DEFAULT_DAYS = [
       {
         id: "day1",
         date: "Martedì 8 Settembre",
+        dateKey: "2026-09-08",
         title: "Partenza da Alife & Arrivo a Catania Barocca",
         badge: "Giorno 1 • Arrivo",
+        hotelCity: "Catania (Notte 1 di 3)",
+        hotelName: "Habitat Boutique Hotel (o B&B Crociferi)",
+        hotelMap: "https://www.google.com/maps/search/?api=1&query=Habitat+Hotel+Catania",
         logisticsBadge: "🚗 Viaggio A2 + Traghetto (Totale ~5h30). Pomeriggio e sera: 0 km (Tutto a piedi)",
         morning: {
           title: "Partenza ore 06:00 da Alife (CE)",
           desc: "Guida tranquilla su A2 verso Villa San Giovanni (~4h30 con sosta caffè). Imbarco traghetto Caronte & Tourist (20 min) fino a Messina, poi A18 verso Catania (1h15).",
           tag: "Viaggio in Auto",
-          icon: "fa-car"
+          icon: "fa-car",
+          map: "https://www.google.com/maps/search/?api=1&query=Imbarco+Traghetti+Villa+San+Giovanni"
         },
         lunch: {
           title: "Pranzo leggero a piedi vicino all'alloggio",
           desc: "Dopo il check-in e aver parcheggiato l'auto, pranzo a piedi sotto casa: tavola calda artigianale (arancino e cipollina catanese) da Savia o Spinella su Via Etnea.",
-          map: "https://www.google.com/maps/search/?api=1&query=Pasticceria+Savia+Catania",
-          placeName: "Pasticceria Savia (Via Etnea - A piedi dal centro)"
+          map: "https://www.google.com/maps/search/?api=1&query=Pasticceria+Savia+Catania"
         },
         afternoon: {
           title: "Passeggiata Centro Storico (A piedi)",
           desc: "Relax in camera e verso le 17:30 passeggiata rilassante a piedi: Piazza del Duomo, fontana dell'Elefante (Liotru), via Crociferi e tramonto nei giardini di Villa Bellini.",
-          map: "https://www.google.com/maps/search/?api=1&query=Piazza+del+Duomo+Catania",
-          placeName: "Piazza Duomo & Villa Bellini (A piedi)"
+          map: "https://www.google.com/maps/search/?api=1&query=Piazza+del+Duomo+Catania"
         },
         dinner: {
           title: "Cena tipica catanese a piedi nel centro storico",
-          desc: "Trattoria tradizionale no-tourist-trap a pochi passi dall'alloggio: vera Pasta alla Norma e pescato del giorno.",
-          map: "https://www.google.com/maps/search/?api=1&query=Trattoria+da+Antonio+Catania",
-          placeName: "Trattoria da Antonio (Centro Storico - A piedi)"
-        },
-        hotelCity: "Catania (Notte 1 di 3)"
+          desc: "Trattoria tradizionale no-tourist-trap a pochi passi dall'alloggio: vera Pasta alla Norma e pescato del giorno da Antonio o Osteria Antica Marina.",
+          map: "https://www.google.com/maps/search/?api=1&query=Trattoria+da+Antonio+Catania"
+        }
       },
       {
         id: "day2",
         date: "Mercoledì 9 Settembre",
-        title: "Mare Basso alla Playa (Pranzo sul litorale) & Centro Storico",
+        dateKey: "2026-09-09",
+        title: "Mare Basso alla Playa & Catania Storica",
         badge: "Giorno 2 • Mare Basso 1 & Cultura",
+        hotelCity: "Catania (Notte 2 di 3)",
+        hotelName: "Habitat Boutique Hotel (o B&B Crociferi)",
+        hotelMap: "https://www.google.com/maps/search/?api=1&query=Habitat+Hotel+Catania",
         logisticsBadge: "🚗 Auto solo per andare alla Playa (8 min da centro). Pranzo sul litorale. Pomeriggio a piedi.",
         morning: {
           title: "Mattina al Mare: Spiaggia Libera della Playa di Catania",
           desc: "Sabbia dorata finissima e fondale bassissimo per oltre 40 metri (si tocca costantemente con i piedi, zero scogli). Solo 8 minuti d'auto dal centro città con parcheggio comodo sul Viale Kennedy.",
           tag: "Fondale Basso 1 (8 min auto)",
           icon: "fa-umbrella-beach",
-          map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+Libera+Playa+Catania",
-          placeName: "Spiaggia Libera della Playa (Viale Kennedy)"
+          map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+Libera+Playa+Catania"
         },
         lunch: {
           title: "Pranzo leggero DIRETTAMENTE SUL LITORALE della Playa",
           desc: "Pranzo sul posto senza spostamenti in auto: panino fresco, caprese o macedonia al chiosco/bar del litorale della Playa in totale relax in riva al mare.",
-          map: "https://www.google.com/maps/search/?api=1&query=Bar+Lidi+Playa+Catania",
-          placeName: "Chiosco / Bar sul litorale della Playa (0 metri dalla spiaggia)"
+          map: "https://www.google.com/maps/search/?api=1&query=Bar+Lidi+Playa+Catania"
         },
         afternoon: {
           title: "Rientro in hotel per doccia + Monastero dei Benedettini",
           desc: "Rientro comodo in hotel (8 min), doccia e riposino. Verso le 17:00 visita rilassante a piedi al grandioso Monastero dei Benedettini e via dei Crociferi.",
-          map: "https://www.google.com/maps/search/?api=1&query=Monastero+dei+Benedettini+di+San+Nicolo+l+Arena+Catania",
-          placeName: "Monastero dei Benedettini (A piedi)"
+          map: "https://www.google.com/maps/search/?api=1&query=Monastero+dei+Benedettini+di+San+Nicolo+l+Arena+Catania"
         },
         dinner: {
           title: "Cena verace a Catania (A piedi)",
           desc: "Pesce fresco grigliato o piatti tradizionali nei locali autentici attorno alla Pescheria o via Plebiscito, a due passi a piedi dall'alloggio.",
-          map: "https://www.google.com/maps/search/?api=1&query=Trattoria+del+Cavaliere+Catania",
-          placeName: "Trattoria del Cavaliere / Antica Marina (A piedi)"
-        },
-        hotelCity: "Catania (Notte 2 di 3)"
+          map: "https://www.google.com/maps/search/?api=1&query=Trattoria+del+Cavaliere+Catania"
+        }
       },
       {
         id: "day3",
         date: "Giovedì 10 Settembre",
-        title: "Escursione Soft Etna Crateri Silvestri (Pranzo sul posto) & Castello Ursino",
+        dateKey: "2026-09-10",
+        title: "Escursione Soft Etna Crateri Silvestri & Castello Ursino",
         badge: "Giorno 3 • Natura & Relax",
+        hotelCity: "Catania (Notte 3 di 3)",
+        hotelName: "Habitat Boutique Hotel (o B&B Crociferi)",
+        hotelMap: "https://www.google.com/maps/search/?api=1&query=Habitat+Hotel+Catania",
         logisticsBadge: "🚗 Salita all'Etna (45 min) e sosta a Zafferana lungo la via del ritorno. Pomeriggio/sera a piedi.",
         morning: {
           title: "Mattina: Salita Panoramica ai Crateri Silvestri (Etna)",
           desc: "Salita in auto senza fatica fino al Rifugio Sapienza (1.900m). Brezza fresca e passeggiata facile e pianeggiante sui crateri spenti con panorama su tutta la costa.",
           tag: "Natura Soft (45 min auto)",
           icon: "fa-mountain-sun",
-          map: "https://www.google.com/maps/search/?api=1&query=Crateri+Silvestri+Etna",
-          placeName: "Crateri Silvestri (Rifugio Sapienza)"
+          map: "https://www.google.com/maps/search/?api=1&query=Crateri+Silvestri+Etna"
         },
         lunch: {
           title: "Pranzo leggero sul percorso di discesa a Zafferana Etnea",
           desc: "Lungo la strada di rientro (zero deviazioni extra): focaccia rustica calda con provola ragusana, miele dell'Etna e frutta fresca nel grazioso borgo di Zafferana.",
-          map: "https://www.google.com/maps/search/?api=1&query=Zafferana+Etnea+centro",
-          placeName: "Zafferana Etnea (Lungo la strada di ritorno)"
+          map: "https://www.google.com/maps/search/?api=1&query=Zafferana+Etnea+centro"
         },
         afternoon: {
           title: "Rientro a Catania & Visita al Castello Ursino (A piedi)",
           desc: "Rientro a Catania, sosta rinfrescante e visita al possente castello normanno federiciano a piedi nel centro storico.",
-          map: "https://www.google.com/maps/search/?api=1&query=Castello+Ursino+Catania",
-          placeName: "Castello Ursino (A piedi)"
+          map: "https://www.google.com/maps/search/?api=1&query=Castello+Ursino+Catania"
         },
         dinner: {
           title: "Cena rilassante a piedi nel quartiere San Berillo",
           desc: "Atmosfera suggestiva nei vicoletti storici con piatti autentici della tradizione catanese.",
-          map: "https://www.google.com/maps/search/?api=1&query=First+Lounge+Bar+San+Berillo+Catania",
-          placeName: "Ristorantini di San Berillo (A piedi)"
-        },
-        hotelCity: "Catania (Notte 3 di 3)"
+          map: "https://www.google.com/maps/search/?api=1&query=First+Lounge+Bar+San+Berillo+Catania"
+        }
       },
       {
         id: "day4",
         date: "Venerdì 11 Settembre",
+        dateKey: "2026-09-11",
         title: "Trasferimento a Siracusa: Parco Neapolis & Fascino di Ortigia",
         badge: "Giorno 4 • Tappa Siracusa",
+        hotelCity: "Siracusa / Ortigia (Notte 1 di 3)",
+        hotelName: "Alla Giudecca / Domus Mariae (o B&B Ortigia Bedda)",
+        hotelMap: "https://www.google.com/maps/search/?api=1&query=Alla+Giudecca+Ortigia+Siracusa",
         logisticsBadge: "🚗 Viaggio Catania ➔ Siracusa (50 min). Auto parcheggiata al Talete: poi TUTTO A PIEDI a Ortigia!",
         morning: {
           title: "Partenza ore 09:30 & Parco Archeologico Neapolis",
           desc: "50 min di autostrada comoda. Tappa all'ingresso di Siracusa per visitare il Teatro Greco scavato nella roccia e il celebre Orecchio di Dionisio.",
           tag: "Cultura & Archeologia",
           icon: "fa-landmark",
-          map: "https://www.google.com/maps/search/?api=1&query=Parco+Archeologico+della+Neapolis+Siracusa",
-          placeName: "Parco Archeologico Neapolis (Siracusa)"
+          map: "https://www.google.com/maps/search/?api=1&query=Parco+Archeologico+della+Neapolis+Siracusa"
         },
         lunch: {
           title: "Pranzo leggero leggendario al Mercato di Ortigia",
           desc: "Dopo aver parcheggiato l'auto al Parcheggio Talete (inizio di Ortigia), pranzo a 3 minuti a piedi al celebre Caseificio Borderi (panino gourmet con formaggi caldi a km 0).",
-          map: "https://www.google.com/maps/search/?api=1&query=Caseificio+Borderi+Ortigia+Siracusa",
-          placeName: "Caseificio Borderi (Mercato di Ortigia - A piedi)"
+          map: "https://www.google.com/maps/search/?api=1&query=Caseificio+Borderi+Ortigia+Siracusa"
         },
         afternoon: {
           title: "Check-in e Passeggiata a Ortigia (A piedi)",
           desc: "Check-in in alloggio e pomeriggio lento senza auto: Piazza del Duomo (capolavoro barocco su tempio greco), Fonte Aretusa con i papiri e tramonto al Castello Maniace.",
-          map: "https://www.google.com/maps/search/?api=1&query=Piazza+Duomo+Ortigia+Siracusa",
-          placeName: "Piazza Duomo & Fonte Aretusa (A piedi)"
+          map: "https://www.google.com/maps/search/?api=1&query=Piazza+Duomo+Ortigia+Siracusa"
         },
         dinner: {
           title: "Cena marinara nei vicoletti della Giudecca / Graziella",
-          desc: "Cucina casereccia siracusana a base di pescato del giorno a 5 minuti a piedi dal tuo alloggio.",
-          map: "https://www.google.com/maps/search/?api=1&query=Trattoria+La+Foglia+Ortigia+Siracusa",
-          placeName: "Trattoria La Foglia / Osteria da Mariano (A piedi)"
-        },
-        hotelCity: "Siracusa / Ortigia (Notte 1 di 3)"
+          desc: "Cucina casereccia siracusana a base di pescato del giorno a 5 minuti a piedi dal tuo alloggio da La Foglia o Mariano.",
+          map: "https://www.google.com/maps/search/?api=1&query=Trattoria+La+Foglia+Ortigia+Siracusa"
+        }
       },
       {
         id: "day5",
         date: "Sabato 12 Settembre",
+        dateKey: "2026-09-12",
         title: "Spiaggia dell'Arenella (Pranzo sul posto) & Tramonto a Noto",
         badge: "Giorno 5 • Mare Basso 2 & Noto",
+        hotelCity: "Siracusa / Ortigia (Notte 2 di 3)",
+        hotelName: "Alla Giudecca / Domus Mariae (o B&B Ortigia Bedda)",
+        hotelMap: "https://www.google.com/maps/search/?api=1&query=Alla+Giudecca+Ortigia+Siracusa",
         logisticsBadge: "🚗 Ortigia ➔ Arenella (15 min). Arenella ➔ Noto (20 min). Rientro a Ortigia (30 min). Zero deviazioni!",
         morning: {
           title: "Mattina al Mare: Spiaggia dell'Arenella",
           desc: "Sabbia dorata e mare trasparente come una piscina. Fondale piatto e bassissimo per oltre 40-50 metri, ideale per passeggiare nell'acqua in totale sicurezza. Dista solo 15 minuti da Ortigia.",
           tag: "Fondale Basso 2 (15 min auto)",
           icon: "fa-umbrella-beach",
-          map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+Arenella+Siracusa",
-          placeName: "Spiaggia dell'Arenella (Siracusa)"
+          map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+Arenella+Siracusa"
         },
         lunch: {
           title: "Pranzo leggero DIRETTAMENTE ALL'ARENELLA",
           desc: "Zero spostamenti in auto: pranzo vista mare al bar/ristorantino della spiaggia dell'Arenella (insalata di mare, scaccia siracusana o piatto freddo).",
-          map: "https://www.google.com/maps/search/?api=1&query=Bar+Spiaggia+Arenella+Siracusa",
-          placeName: "Bar / Chiosco Spiaggia Arenella (0 metri dal mare)"
+          map: "https://www.google.com/maps/search/?api=1&query=Bar+Spiaggia+Arenella+Siracusa"
         },
         afternoon: {
           title: "Rientro per doccia + Partenza ore 16:45 verso Noto (20 min)",
           desc: "Doccia e relax, poi breve tragitto di 20 min verso Noto. Passeggiata su Corso Vittorio Emanuele con la Cattedrale barocca dorata dal sole del tramonto.",
-          map: "https://www.google.com/maps/search/?api=1&query=Cattedrale+di+Noto",
-          placeName: "Cattedrale di Noto & Palazzo Ducezio"
+          map: "https://www.google.com/maps/search/?api=1&query=Cattedrale+di+Noto"
         },
         dinner: {
           title: "Cena a Noto con la celebre granita di Caffè Sicilia",
           desc: "Cavatelli alla siracusana o cucina tipica iblea in trattoria a Noto e sosta obbligata da Corrado Assenza al Caffè Sicilia prima di rientrare.",
-          map: "https://www.google.com/maps/search/?api=1&query=Caffe+Sicilia+Noto",
-          placeName: "Trattoria del Crocifisso / Caffè Sicilia (Noto)"
-        },
-        hotelCity: "Siracusa / Ortigia (Notte 2 di 3)"
+          map: "https://www.google.com/maps/search/?api=1&query=Caffe+Sicilia+Noto"
+        }
       },
       {
         id: "day6",
         date: "Domenica 13 Settembre",
+        dateKey: "2026-09-13",
         title: "Spiaggia di San Lorenzo (Vendicari) & Pranzo al Borgo di Marzamemi",
         badge: "Giorno 6 • Mare Basso 3 & Borgo",
+        hotelCity: "Siracusa / Ortigia (Notte 3 di 3)",
+        hotelName: "Alla Giudecca / Domus Mariae (o B&B Ortigia Bedda)",
+        hotelMap: "https://www.google.com/maps/search/?api=1&query=Alla+Giudecca+Ortigia+Siracusa",
         logisticsBadge: "🚗 Ortigia ➔ San Lorenzo (35 min). San Lorenzo ➔ Marzamemi (SOLO 4 MINUTI d'auto!). Rientro e serata a piedi.",
         morning: {
           title: "Mattina al Mare: Spiaggia di San Lorenzo (Vendicari)",
           desc: "Sabbia chiarissima caraibica con fondale bassissimo privo di dislivelli, mare calmo e limpido. Si passeggia nell'acqua calda con i piedi sempre a terra in totale serenità.",
           tag: "Fondale Basso 3",
           icon: "fa-umbrella-beach",
-          map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+San+Lorenzo+Noto",
-          placeName: "Spiaggia di San Lorenzo (Vendicari Sud)"
+          map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+San+Lorenzo+Noto"
         },
         lunch: {
           title: "Pranzo leggero a Marzamemi (a soli 4 minuti dalla spiaggia!)",
-          desc: "A soli 2 km dalla spiaggia: arrivo nel suggestivo borgo marinaro di Marzamemi. Pranzo leggero in Piazza Regina Margherita con crostini di tonno di tonnara e pomodorini Pachino IGP.",
-          map: "https://www.google.com/maps/search/?api=1&query=Piazza+Regina+Margherita+Marzamemi",
-          placeName: "Piazza Regina Margherita (Marzamemi - 4 min dalla spiaggia)"
+          desc: "A soli 2 km dalla spiaggia: arrivo nel suggestivo borgo marinaro di Marzamemi. Pranzo leggero in Piazza Regina Margherita con tonno di tonnara e pomodorini Pachino IGP.",
+          map: "https://www.google.com/maps/search/?api=1&query=Piazza+Regina+Margherita+Marzamemi"
         },
         afternoon: {
           title: "Rientro rilassante a Ortigia & Relax lungomare (A piedi)",
           desc: "Rientro tranquillo nel primo pomeriggio a Ortigia, doccia, relax e passeggiata con gelato artigianale sul Lungomare Alfeo.",
-          map: "https://www.google.com/maps/search/?api=1&query=Lungomare+Alfeo+Ortigia+Siracusa",
-          placeName: "Lungomare Alfeo & Fonte Aretusa (A piedi)"
+          map: "https://www.google.com/maps/search/?api=1&query=Lungomare+Alfeo+Ortigia+Siracusa"
         },
         dinner: {
           title: "Cena di pesce di arrivederci a Ortigia (A piedi)",
           desc: "Frittura di paranza e caponata di mare in un'osteria informale e genuina tra le viuzze bianche.",
-          map: "https://www.google.com/maps/search/?api=1&query=Osteria+da+Mariano+Siracusa",
-          placeName: "Osteria da Mariano / A Pignata (A piedi)"
-        },
-        hotelCity: "Siracusa / Ortigia (Notte 3 di 3)"
+          map: "https://www.google.com/maps/search/?api=1&query=Osteria+da+Mariano+Siracusa"
+        }
       },
       {
         id: "day7",
         date: "Lunedì 14 Settembre",
-        title: "Verso Taormina: Mare a Giardini Naxos (Pranzo sul posto) & Teatro Antico",
+        dateKey: "2026-09-14",
+        title: "Verso Taormina: Mare a Giardini Naxos & Teatro Antico",
         badge: "Giorno 7 • Mare Basso 4 & Taormina",
+        hotelCity: "Taormina (Notte 1 di 1)",
+        hotelName: "Hotel Continental (o B&B Taormina Bedda)",
+        hotelMap: "https://www.google.com/maps/search/?api=1&query=Hotel+Continental+Taormina",
         logisticsBadge: "🚗 Siracusa ➔ Giardini Naxos (1h15). Pranzo sul lungomare di Naxos. Salita a Taormina (10 min): sera a piedi.",
         morning: {
           title: "Partenza ore 09:30 & Mare alla Baia di Giardini Naxos",
           desc: "Arrivo a Giardini Naxos (prima di salire a Taormina). Spiaggia di sabbia dorata con fondale basso e mare protetto dal golfo (molto più sicuro dei ciottoli ripidi di Isola Bella).",
           tag: "Fondale Basso 4",
           icon: "fa-umbrella-beach",
-          map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+Giardini+Naxos+Schiso",
-          placeName: "Spiaggia di Giardini Naxos (Baia di Schisò)"
+          map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+Giardini+Naxos+Schiso"
         },
         lunch: {
           title: "Pranzo leggero DIRETTAMENTE SUL LUNGOMARE DI NAXOS",
           desc: "A 20 metri dalla sabbia: panino con pesce spada fresco, insalata o arancino vista mare senza alcuno spostamento in auto.",
-          map: "https://www.google.com/maps/search/?api=1&query=Lungomare+Giardini+Naxos",
-          placeName: "Bar / Ristoro Lungomare Giardini Naxos (Sul posto)"
+          map: "https://www.google.com/maps/search/?api=1&query=Lungomare+Giardini+Naxos"
         },
         afternoon: {
           title: "Salita a Taormina (10 min), Check-in & Teatro Antico (A piedi)",
           desc: "Salita comoda in hotel a Taormina, doccia e visita a piedi del grandioso Teatro Antico con vista sull'Etna e passeggiata panoramica su Piazza IX Aprile.",
-          map: "https://www.google.com/maps/search/?api=1&query=Teatro+Antico+di+Taormina",
-          placeName: "Teatro Antico & Corso Umberto (A piedi)"
+          map: "https://www.google.com/maps/search/?api=1&query=Teatro+Antico+di+Taormina"
         },
         dinner: {
           title: "Cena nei vicoli tipici di Taormina (A piedi)",
           desc: "Trattoria nascosta lontana dalla folla turistica: ottima pasta con le sarde, involtini di pesce spada e vini dell'Etna.",
-          map: "https://www.google.com/maps/search/?api=1&query=Osteria+RossoDiVino+Taormina",
-          placeName: "Osteria RossoDiVino / Trattoria Tiramisù (A piedi)"
-        },
-        hotelCity: "Taormina (Notte 1 di 1)"
+          map: "https://www.google.com/maps/search/?api=1&query=Osteria+RossoDiVino+Taormina"
+        }
       },
       {
         id: "day8",
         date: "Martedì 15 Settembre",
+        dateKey: "2026-09-15",
         title: "Granita da Bam Bar & Partenza per il Rientro con Calma",
         badge: "Giorno 8 • Rientro Sereno",
+        hotelCity: "Rientro a Casa",
+        hotelName: "Casa dolce casa",
+        hotelMap: "#",
         logisticsBadge: "🚗 Taormina ➔ Messina Traghetto (45 min) ➔ Autostrada A2 ➔ Alife (Campania).",
         morning: {
           title: "Colazione Mitica al Bam Bar di Taormina (A piedi)",
           desc: "La colazione siciliana per eccellenza a 3 minuti dal tuo alloggio: granita al pistacchio, mandorla o fico con panna e brioche fragrante.",
           tag: "Colazione Regina",
           icon: "fa-mug-hot",
-          map: "https://www.google.com/maps/search/?api=1&query=Bam+Bar+Taormina",
-          placeName: "Bam Bar (Taormina - A piedi)"
+          map: "https://www.google.com/maps/search/?api=1&query=Bam+Bar+Taormina"
         },
         lunch: {
           title: "Partenza ore 10:00 & Pranzo sereno durante il viaggio",
           desc: "Traghetto Messina ➔ Villa San Giovanni (ore 11:00). Rientro tranquillo su A2 con soste ristoro.",
-          map: "https://www.google.com/maps/search/?api=1&query=Traghetto+Messina+Villa+San+Giovanni",
-          placeName: "Traghetto Stretto di Messina"
+          map: "https://www.google.com/maps/search/?api=1&query=Traghetto+Messina+Villa+San+Giovanni"
         },
         afternoon: {
           title: "Arrivo ad Alife (Campania) nel tardo pomeriggio",
           desc: "Viaggio completato senza fretta, rientro a casa con ricordi splendidi della Sicilia!",
           tag: "Arrivo a Casa",
           icon: "fa-house",
-          map: "https://www.google.com/maps/search/?api=1&query=Alife+Caserta",
-          placeName: "Alife (Campania)"
+          map: "https://www.google.com/maps/search/?api=1&query=Alife+Caserta"
         },
         dinner: {
           title: "Cena a casa con i dolci siciliani portati dal viaggio",
           desc: "Cannoli freschi e pasta di mandorle per concludere in bellezza.",
-          map: "#",
-          placeName: "Casa dolce casa"
-        },
-        hotelCity: "Rientro a Casa"
+          map: "#"
+        }
       }
+    ];
+
+    const DEFAULT_EXPENSES = [
+      { id: "exp_1", date: "2026-09-08", category: "Trasporti", name: "Carburante A2 (Alife ➔ Villa San Giovanni)", estimated: 90, actual: 0 },
+      { id: "exp_2", date: "2026-09-08", category: "Trasporti", name: "Traghetto Caronte & Tourist A/R (Auto + passeggeri)", estimated: 85, actual: 0 },
+      { id: "exp_3", date: "2026-09-08", category: "Alloggi", name: "Alloggio Catania (3 Notti - Habitat / Crociferi)", estimated: 300, actual: 0 },
+      { id: "exp_4", date: "2026-09-08", category: "Cibo", name: "Pranzo Savia & Cena Catania centro (Giorno 1)", estimated: 65, actual: 0 },
+      { id: "exp_5", date: "2026-09-09", category: "Cibo", name: "Pranzo chiosco Playa & Cena Pescheria (Giorno 2)", estimated: 75, actual: 0 },
+      { id: "exp_6", date: "2026-09-09", category: "Attrazioni", name: "Ingresso Monastero dei Benedettini Catania", estimated: 20, actual: 0 },
+      { id: "exp_7", date: "2026-09-10", category: "Cibo", name: "Degustazione Zafferana & Cena San Berillo (Giorno 3)", estimated: 70, actual: 0 },
+      { id: "exp_8", date: "2026-09-11", category: "Attrazioni", name: "Biglietti Parco Neapolis Siracusa (Teatro Greco)", estimated: 30, actual: 0 },
+      { id: "exp_9", date: "2026-09-11", category: "Alloggi", name: "Alloggio Siracusa/Ortigia (3 Notti - Alla Giudecca / Ortigia Bedda)", estimated: 330, actual: 0 },
+      { id: "exp_10", date: "2026-09-11", category: "Altro", name: "Parcheggio Talete Ortigia (3 giorni)", estimated: 45, actual: 0 },
+      { id: "exp_11", date: "2026-09-11", category: "Cibo", name: "Pranzo Borderi Mercato & Cena Ortigia (Giorno 4)", estimated: 80, actual: 0 },
+      { id: "exp_12", date: "2026-09-12", category: "Cibo", name: "Pranzo Arenella + Caffè Sicilia & Cena a Noto (Giorno 5)", estimated: 85, actual: 0 },
+      { id: "exp_13", date: "2026-09-13", category: "Cibo", name: "Pranzo Marzamemi Piazza & Cena Ortigia (Giorno 6)", estimated: 80, actual: 0 },
+      { id: "exp_14", date: "2026-09-14", category: "Alloggi", name: "Alloggio Taormina (1 Notte - Continental / Taormina Bedda)", estimated: 140, actual: 0 },
+      { id: "exp_15", date: "2026-09-14", category: "Attrazioni", name: "Biglietti Teatro Antico di Taormina", estimated: 27, actual: 0 },
+      { id: "exp_16", date: "2026-09-14", category: "Altro", name: "Parcheggio Lumbi Taormina", estimated: 20, actual: 0 },
+      { id: "exp_17", date: "2026-09-14", category: "Cibo", name: "Pranzo Giardini Naxos & Cena Taormina (Giorno 7)", estimated: 90, actual: 0 },
+      { id: "exp_18", date: "2026-09-15", category: "Cibo", name: "Colazione Bam Bar & Pranzo rientro (Giorno 8)", estimated: 45, actual: 0 },
+      { id: "exp_19", date: "2026-09-15", category: "Trasporti", name: "Carburante rientro autostrada A2", estimated: 110, actual: 0 },
+      { id: "exp_20", date: "2026-09-15", category: "Altro", name: "Fondo souvenir, dolci e prodotti tipici da portare a casa", estimated: 113, actual: 0 }
     ];
 
     const DEFAULT_BEACHES = [
@@ -1097,37 +1199,18 @@
       }
     ];
 
-    const DEFAULT_EXPENSES = [
-      { id: "exp_fuel", category: "Trasporti", name: "Carburante A/R auto (~1.400 km totali)", estimated: 200, actual: 0 },
-      { id: "exp_tolls", category: "Trasporti", name: "Pedaggi autostradali (A18 e raccordi)", estimated: 60, actual: 0 },
-      { id: "exp_ferry", category: "Trasporti", name: "Traghetto Caronte & Tourist A/R (Villa S. Giovanni - Messina)", estimated: 85, actual: 0 },
-      { id: "exp_hotel_cat", category: "Alloggi", name: "Alloggio Catania (3 Notti - 8, 9, 10 Set)", estimated: 300, actual: 0 },
-      { id: "exp_hotel_syr", category: "Alloggi", name: "Alloggio Siracusa/Ortigia (3 Notti - 11, 12, 13 Set)", estimated: 330, actual: 0 },
-      { id: "exp_hotel_tao", category: "Alloggi", name: "Alloggio Taormina (1 Notte - 14 Set)", estimated: 140, actual: 0 },
-      { id: "exp_lunches", category: "Cibo", name: "Pranzi leggeri sul posto / chioschi spiaggia (8 giorni)", estimated: 180, actual: 0 },
-      { id: "exp_dinners", category: "Cibo", name: "Cene in trattorie autentiche a piedi (7 sere)", estimated: 460, actual: 0 },
-      { id: "exp_tickets", category: "Attrazioni", name: "Ingressi: Teatro Neapolis Siracusa, Teatro Taormina, Benedettini", estimated: 75, actual: 0 },
-      { id: "exp_parking", category: "Altro", name: "Parcheggi custodia (Talete Ortigia, Lumbi Taormina)", estimated: 90, actual: 0 },
-      { id: "exp_extras", category: "Altro", name: "Fondo souvenir, dolci tipici, imprevisti & caffè", estimated: 80, actual: 0 }
-    ];
-
     // ==========================================
-    // APP STATE & LOCALSTORAGE MANAGEMENT
+    // APP STATE & LOCALSTORAGE
     // ==========================================
     let appState = {
       budget: 2000,
       days: DEFAULT_DAYS,
       expenses: DEFAULT_EXPENSES,
-      selectedHotels: {
-        Catania: "cat_opt2",
-        Siracusa: "syr_opt2",
-        Taormina: "tao_opt2"
-      },
       dayNotes: {}
     };
 
     function loadState() {
-      const saved = localStorage.getItem('sicily_trip_state_2026_nostress');
+      const saved = localStorage.getItem('sicily_planner_v3_state');
       if (saved) {
         try {
           appState = JSON.parse(saved);
@@ -1138,22 +1221,17 @@
     }
 
     function saveState() {
-      localStorage.setItem('sicily_trip_state_2026_nostress', JSON.stringify(appState));
+      localStorage.setItem('sicily_planner_v3_state', JSON.stringify(appState));
       updateBudgetCalculations();
     }
 
     function resetToDefaults() {
       if (confirm("Sei sicuro di voler ripristinare tutti i dati e le spese iniziali?")) {
-        localStorage.removeItem('sicily_trip_state_2026_nostress');
+        localStorage.removeItem('sicily_planner_v3_state');
         appState = {
           budget: 2000,
           days: DEFAULT_DAYS,
           expenses: DEFAULT_EXPENSES,
-          selectedHotels: {
-            Catania: "cat_opt2",
-            Siracusa: "syr_opt2",
-            Taormina: "tao_opt2"
-          },
           dayNotes: {}
         };
         renderAll();
@@ -1190,7 +1268,8 @@
       appState.days.forEach((d, idx) => {
         const note = appState.dayNotes[d.id] || '';
         const dayCard = document.createElement('div');
-        dayCard.className = "bg-white rounded-2xl p-6 shadow-sm border border-slate-200 card-print transition-all hover:shadow-md";
+        dayCard.id = 'day-card-' + d.id;
+        dayCard.className = "day-card-item bg-white rounded-2xl p-6 shadow-sm border border-slate-200 card-print transition-all hover:shadow-md";
         dayCard.innerHTML = `
           <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
             <div>
@@ -1199,8 +1278,15 @@
               </span>
               <h3 class="text-xl font-serif font-bold text-slate-900">${d.date} — ${d.title}</h3>
             </div>
-            <div class="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg self-start sm:self-center flex items-center gap-1.5">
-              <i class="fa-solid fa-moon text-sicily-sea"></i> ${d.hotelCity}
+            
+            <div class="flex flex-wrap items-center gap-2 self-start sm:self-center">
+              <button onclick="openEditHotelModal('${d.id}')" class="no-print text-xs font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition" title="Cambia Alloggio">
+                <i class="fa-solid fa-hotel"></i> <span>${d.hotelName || d.hotelCity}</span> <i class="fa-solid fa-pen text-[10px]"></i>
+              </button>
+
+              <button onclick="printSingleDay('${d.id}')" class="btn-keep-print text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition shadow-sm" title="Stampa solo la scheda di questa giornata">
+                <i class="fa-solid fa-print text-sicily-sea"></i> <span>Stampa Questo Giorno</span>
+              </button>
             </div>
           </div>
 
@@ -1212,88 +1298,266 @@
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
             <!-- MATTINA -->
-            <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200/60 flex gap-3">
-              <div class="w-8 h-8 rounded-lg bg-amber-200 text-amber-800 flex items-center justify-center flex-shrink-0 text-sm mt-0.5">
-                <i class="fa-solid ${d.morning.icon || 'fa-sun'}"></i>
-              </div>
-              <div class="flex-grow">
-                <span class="text-xs font-bold uppercase tracking-wider text-amber-800">Mattina • ${d.morning.tag || 'Attività'}</span>
-                <h4 class="font-bold text-slate-800 text-sm mt-0.5">${d.morning.title}</h4>
+            <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200/60 flex flex-col justify-between">
+              <div>
+                <div class="flex justify-between items-start">
+                  <span class="text-xs font-bold uppercase tracking-wider text-amber-800 flex items-center gap-1">
+                    <i class="fa-solid ${d.morning.icon || 'fa-sun'}"></i> Mattina • ${d.morning.tag || 'Attività'}
+                  </span>
+                  <button onclick="openEditSlotModal('${d.id}', 'morning', 'Attività della Mattina')" class="no-print text-xs text-amber-900 bg-amber-200/70 hover:bg-amber-300 px-2 py-0.5 rounded flex items-center gap-1 font-semibold">
+                    <i class="fa-solid fa-pen text-[10px]"></i> Modifica
+                  </button>
+                </div>
+                <h4 class="font-bold text-slate-900 text-sm mt-1.5">${d.morning.title}</h4>
                 <p class="text-xs text-slate-600 mt-1 leading-relaxed">${d.morning.desc}</p>
-                ${d.morning.map ? `
-                  <a href="${d.morning.map}" target="_blank" class="inline-flex items-center gap-1 mt-2 text-xs font-semibold text-sicily-sea hover:underline">
-                    <i class="fa-solid fa-map-location-dot"></i> Mappa: ${d.morning.placeName}
+              </div>
+              <div class="mt-3 pt-2 border-t border-amber-200/50">
+                ${d.morning.map && d.morning.map !== '#' ? `
+                  <a href="${d.morning.map}" target="_blank" class="inline-flex items-center gap-1 text-xs font-semibold text-sicily-sea hover:underline">
+                    <i class="fa-solid fa-map-location-dot"></i> Vedi su Google Maps
                   </a>
-                ` : ''}
+                ` : '<span class="text-xs text-slate-400">Nessun link mappa</span>'}
               </div>
             </div>
 
             <!-- PRANZO SUL POSTO -->
-            <div class="bg-emerald-50/70 p-4 rounded-xl border border-emerald-200 flex gap-3">
-              <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 text-sm mt-0.5 shadow-sm">
-                <i class="fa-solid fa-utensils"></i>
-              </div>
-              <div class="flex-grow">
-                <div class="flex justify-between items-center">
-                  <span class="text-xs font-bold uppercase tracking-wider text-emerald-800">Pranzo Leggero</span>
-                  <span class="text-[10px] font-bold bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-md">Sul Posto (Zero Viaggi)</span>
+            <div class="bg-emerald-50/70 p-4 rounded-xl border border-emerald-200 flex flex-col justify-between">
+              <div>
+                <div class="flex justify-between items-start">
+                  <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 flex items-center gap-1">
+                    <i class="fa-solid fa-utensils"></i> Pranzo Leggero
+                  </span>
+                  <button onclick="openEditSlotModal('${d.id}', 'lunch', 'Pranzo Leggero')" class="no-print text-xs text-emerald-900 bg-emerald-200 hover:bg-emerald-300 px-2 py-0.5 rounded flex items-center gap-1 font-semibold">
+                    <i class="fa-solid fa-pen text-[10px]"></i> Modifica
+                  </button>
                 </div>
-                <h4 class="font-bold text-slate-800 text-sm mt-0.5">${d.lunch.title}</h4>
+                <h4 class="font-bold text-slate-900 text-sm mt-1.5">${d.lunch.title}</h4>
                 <p class="text-xs text-slate-600 mt-1 leading-relaxed">${d.lunch.desc}</p>
-                ${d.lunch.map ? `
-                  <a href="${d.lunch.map}" target="_blank" class="inline-flex items-center gap-1 mt-2 text-xs font-semibold text-emerald-700 hover:underline">
-                    <i class="fa-solid fa-map-location-dot"></i> Mappa: ${d.lunch.placeName}
+              </div>
+              <div class="mt-3 pt-2 border-t border-emerald-200/50">
+                ${d.lunch.map && d.lunch.map !== '#' ? `
+                  <a href="${d.lunch.map}" target="_blank" class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 hover:underline">
+                    <i class="fa-solid fa-map-location-dot"></i> Vedi su Google Maps
                   </a>
-                ` : ''}
+                ` : '<span class="text-xs text-slate-400">Nessun link mappa</span>'}
               </div>
             </div>
 
             <!-- POMERIGGIO -->
-            <div class="bg-sky-50/60 p-4 rounded-xl border border-sky-200/60 flex gap-3">
-              <div class="w-8 h-8 rounded-lg bg-sky-200 text-sky-800 flex items-center justify-center flex-shrink-0 text-sm mt-0.5">
-                <i class="fa-solid fa-landmark"></i>
-              </div>
-              <div class="flex-grow">
-                <span class="text-xs font-bold uppercase tracking-wider text-sky-800">Pomeriggio & Cultura</span>
-                <h4 class="font-bold text-slate-800 text-sm mt-0.5">${d.afternoon.title}</h4>
+            <div class="bg-sky-50/60 p-4 rounded-xl border border-sky-200/60 flex flex-col justify-between">
+              <div>
+                <div class="flex justify-between items-start">
+                  <span class="text-xs font-bold uppercase tracking-wider text-sky-800 flex items-center gap-1">
+                    <i class="fa-solid fa-landmark"></i> Pomeriggio & Cultura
+                  </span>
+                  <button onclick="openEditSlotModal('${d.id}', 'afternoon', 'Attività del Pomeriggio')" class="no-print text-xs text-sky-900 bg-sky-200/70 hover:bg-sky-300 px-2 py-0.5 rounded flex items-center gap-1 font-semibold">
+                    <i class="fa-solid fa-pen text-[10px]"></i> Modifica
+                  </button>
+                </div>
+                <h4 class="font-bold text-slate-900 text-sm mt-1.5">${d.afternoon.title}</h4>
                 <p class="text-xs text-slate-600 mt-1 leading-relaxed">${d.afternoon.desc}</p>
-                ${d.afternoon.map ? `
-                  <a href="${d.afternoon.map}" target="_blank" class="inline-flex items-center gap-1 mt-2 text-xs font-semibold text-sicily-sea hover:underline">
-                    <i class="fa-solid fa-map-location-dot"></i> Mappa: ${d.afternoon.placeName}
+              </div>
+              <div class="mt-3 pt-2 border-t border-sky-200/50">
+                ${d.afternoon.map && d.afternoon.map !== '#' ? `
+                  <a href="${d.afternoon.map}" target="_blank" class="inline-flex items-center gap-1 text-xs font-semibold text-sicily-sea hover:underline">
+                    <i class="fa-solid fa-map-location-dot"></i> Vedi su Google Maps
                   </a>
-                ` : ''}
+                ` : '<span class="text-xs text-slate-400">Nessun link mappa</span>'}
               </div>
             </div>
 
             <!-- CENA A PIEDI -->
-            <div class="bg-rose-50/60 p-4 rounded-xl border border-rose-200/60 flex gap-3">
-              <div class="w-8 h-8 rounded-lg bg-rose-200 text-rose-800 flex items-center justify-center flex-shrink-0 text-sm mt-0.5">
-                <i class="fa-solid fa-wine-glass"></i>
-              </div>
-              <div class="flex-grow">
-                <div class="flex justify-between items-center">
-                  <span class="text-xs font-bold uppercase tracking-wider text-rose-800">Cena Autentica</span>
-                  <span class="text-[10px] font-bold bg-rose-100 text-rose-800 px-2 py-0.5 rounded-md">A Piedi dall'Alloggio</span>
+            <div class="bg-rose-50/60 p-4 rounded-xl border border-rose-200/60 flex flex-col justify-between">
+              <div>
+                <div class="flex justify-between items-start">
+                  <span class="text-xs font-bold uppercase tracking-wider text-rose-800 flex items-center gap-1">
+                    <i class="fa-solid fa-wine-glass"></i> Cena Autentica
+                  </span>
+                  <button onclick="openEditSlotModal('${d.id}', 'dinner', 'Cena Autentica')" class="no-print text-xs text-rose-900 bg-rose-200/70 hover:bg-rose-300 px-2 py-0.5 rounded flex items-center gap-1 font-semibold">
+                    <i class="fa-solid fa-pen text-[10px]"></i> Modifica
+                  </button>
                 </div>
-                <h4 class="font-bold text-slate-800 text-sm mt-0.5">${d.dinner.title}</h4>
+                <h4 class="font-bold text-slate-900 text-sm mt-1.5">${d.dinner.title}</h4>
                 <p class="text-xs text-slate-600 mt-1 leading-relaxed">${d.dinner.desc}</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-rose-200/50">
                 ${d.dinner.map && d.dinner.map !== '#' ? `
-                  <a href="${d.dinner.map}" target="_blank" class="inline-flex items-center gap-1 mt-2 text-xs font-semibold text-rose-700 hover:underline">
-                    <i class="fa-solid fa-map-location-dot"></i> Mappa: ${d.dinner.placeName}
+                  <a href="${d.dinner.map}" target="_blank" class="inline-flex items-center gap-1 text-xs font-semibold text-rose-700 hover:underline">
+                    <i class="fa-solid fa-map-location-dot"></i> Vedi su Google Maps
                   </a>
-                ` : ''}
+                ` : '<span class="text-xs text-slate-400">Nessun link mappa</span>'}
               </div>
             </div>
           </div>
 
-          <!-- NOTE GIORNALIERE INTERATTIVE -->
-          <div class="mt-4 pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center gap-2 no-print">
-            <label class="text-xs font-semibold text-slate-500 whitespace-nowrap"><i class="fa-regular fa-pen-to-square"></i> Note & Scelte del Giorno:</label>
-            <input type="text" value="${note}" placeholder="Aggiungi una nota o preferenza oraria..." class="w-full text-xs px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:ring-1 focus:ring-sicily-sea focus:outline-none" onchange="updateDayNote('${d.id}', this.value)">
+          <!-- Note & Spese veloci del Giorno -->
+          <div class="mt-4 pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="flex-grow w-full flex items-center gap-2">
+              <label class="text-xs font-semibold text-slate-500 whitespace-nowrap"><i class="fa-regular fa-pen-to-square"></i> Note Giorno:</label>
+              <input type="text" value="${note}" placeholder="Aggiungi note personali su orari o preferenze..." class="w-full text-xs px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:ring-1 focus:ring-sicily-sea focus:outline-none" onchange="updateDayNote('${d.id}', this.value)">
+            </div>
+            <button onclick="quickAddExpenseForDay('${d.dateKey}', '${d.title}')" class="no-print text-xs font-bold text-emerald-700 bg-emerald-100 hover:bg-emerald-200 px-3 py-1.5 rounded-lg flex items-center gap-1 whitespace-nowrap transition">
+              <i class="fa-solid fa-plus-circle"></i> + Spesa per questo giorno
+            </button>
           </div>
         `;
         container.appendChild(dayCard);
       });
+    }
+
+    function renderBudgetDashboard() {
+      // 1. Calculations
+      const budgetInput = document.getElementById('totalBudgetInput');
+      appState.budget = parseFloat(budgetInput.value) || 2000;
+
+      let totalEst = 0;
+      let totalAct = 0;
+
+      const catTotals = {
+        'Alloggi': { est: 0, act: 0, icon: 'fa-hotel', color: 'purple', bg: 'bg-purple-500' },
+        'Cibo': { est: 0, act: 0, icon: 'fa-utensils', color: 'amber', bg: 'bg-amber-500' },
+        'Trasporti': { est: 0, act: 0, icon: 'fa-car', color: 'blue', bg: 'bg-blue-500' },
+        'Attrazioni': { est: 0, act: 0, icon: 'fa-landmark', color: 'sky', bg: 'bg-sky-500' },
+        'Altro': { est: 0, act: 0, icon: 'fa-bag-shopping', color: 'slate', bg: 'bg-slate-500' }
+      };
+
+      const dailyTotals = {};
+      appState.days.forEach(d => {
+        dailyTotals[d.dateKey] = { label: d.date, title: d.title, act: 0, est: 0 };
+      });
+
+      appState.expenses.forEach(e => {
+        totalEst += (e.estimated || 0);
+        const actualVal = (e.actual || 0);
+        totalAct += actualVal;
+
+        const cat = catTotals[e.category] || catTotals['Altro'];
+        cat.est += (e.estimated || 0);
+        cat.act += actualVal;
+
+        if (e.date && dailyTotals[e.date]) {
+          dailyTotals[e.date].act += actualVal;
+          dailyTotals[e.date].est += (e.estimated || 0);
+        }
+      });
+
+      // Update Header Display
+      document.getElementById('headerBudgetDisplay').innerText = appState.budget.toLocaleString('it-IT') + ' €';
+      document.getElementById('headerSpentDisplay').innerText = totalAct.toLocaleString('it-IT') + ' €';
+      const remaining = appState.budget - totalAct;
+      const remEl = document.getElementById('headerRemainingDisplay');
+      remEl.innerText = remaining.toLocaleString('it-IT') + ' €';
+      remEl.className = remaining >= 0 ? "text-base sm:text-xl font-bold text-white" : "text-base sm:text-xl font-bold text-rose-300";
+
+      document.getElementById('totalSpentText').innerText = totalAct.toFixed(2) + ' €';
+      const totalRemTextEl = document.getElementById('totalRemainingText');
+      totalRemTextEl.innerText = remaining.toFixed(2) + ' €';
+      totalRemTextEl.className = remaining >= 0 ? "text-emerald-600 font-bold" : "text-rose-600 font-bold";
+
+      const pct = Math.min(100, Math.round((totalAct / appState.budget) * 100));
+      document.getElementById('budgetPercentageText').innerText = pct + '%';
+      const pBar = document.getElementById('budgetProgressBar');
+      pBar.style.width = pct + '%';
+      pBar.className = totalAct > appState.budget 
+        ? "bg-rose-500 h-4 rounded-full transition-all duration-500" 
+        : "bg-gradient-to-r from-emerald-500 to-sicily-sea h-4 rounded-full transition-all duration-500";
+
+      // 2. Render Category Breakdown Bars
+      const catContainer = document.getElementById('categoryBarsContainer');
+      catContainer.innerHTML = '';
+      Object.keys(catTotals).forEach(catKey => {
+        const item = catTotals[catKey];
+        const catPct = totalAct > 0 ? Math.round((item.act / totalAct) * 100) : 0;
+        const barEl = document.createElement('div');
+        barEl.innerHTML = `
+          <div>
+            <div class="flex justify-between items-center text-xs font-semibold mb-1">
+              <span class="text-slate-700 flex items-center gap-1.5">
+                <i class="fa-solid ${item.icon} text-${item.color}-600"></i> ${catKey}
+              </span>
+              <span class="text-slate-900 font-bold">${item.act.toFixed(2)} € <span class="text-slate-400 text-[11px]">(${catPct}% del totale)</span></span>
+            </div>
+            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200">
+              <div class="${item.bg} h-2.5 rounded-full" style="width: ${Math.min(100, catPct)}%"></div>
+            </div>
+          </div>
+        `;
+        catContainer.appendChild(barEl);
+      });
+
+      // 3. Render Daily Breakdown List
+      const dailyContainer = document.getElementById('dailyExpensesBreakdown');
+      dailyContainer.innerHTML = '';
+      Object.keys(dailyTotals).forEach(dateKey => {
+        const dObj = dailyTotals[dateKey];
+        const row = document.createElement('div');
+        row.className = "flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition border border-slate-200/70 text-xs";
+        row.innerHTML = `
+          <div>
+            <span class="font-bold text-slate-800">${dObj.label}</span>
+            <p class="text-[11px] text-slate-500 truncate max-w-[220px] sm:max-w-xs">${dObj.title}</p>
+          </div>
+          <div class="text-right">
+            <span class="font-bold text-sm ${dObj.act > 0 ? 'text-emerald-700' : 'text-slate-400'}">${dObj.act.toFixed(2)} €</span>
+          </div>
+        `;
+        dailyContainer.appendChild(row);
+      });
+
+      renderExpensesTable();
+    }
+
+    function renderExpensesTable() {
+      const tbody = document.getElementById('expensesTableBody');
+      tbody.innerHTML = '';
+
+      const filterCat = document.getElementById('expenseFilterCategory') ? document.getElementById('expenseFilterCategory').value : 'ALL';
+
+      let totalEst = 0;
+      let totalAct = 0;
+
+      appState.expenses.forEach((exp, idx) => {
+        if (filterCat !== 'ALL' && exp.category !== filterCat) return;
+
+        totalEst += (exp.estimated || 0);
+        totalAct += (exp.actual || 0);
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50/80 transition";
+        tr.innerHTML = `
+          <td class="px-4 py-3 text-xs font-semibold text-slate-600 whitespace-nowrap">
+            ${exp.date ? formatDateLabel(exp.date) : 'Non impostata'}
+          </td>
+          <td class="px-4 py-3">
+            <span class="px-2 py-0.5 rounded text-xs font-semibold ${
+              exp.category === 'Alloggi' ? 'bg-purple-100 text-purple-800' :
+              exp.category === 'Cibo' ? 'bg-amber-100 text-amber-800' :
+              exp.category === 'Trasporti' ? 'bg-blue-100 text-blue-800' :
+              exp.category === 'Attrazioni' ? 'bg-sky-100 text-sky-800' : 'bg-slate-100 text-slate-700'
+            }">${exp.category}</span>
+          </td>
+          <td class="px-4 py-3 font-medium text-slate-800">${exp.name}</td>
+          <td class="px-4 py-3 text-right font-semibold text-slate-500">${(exp.estimated || 0).toFixed(2)} €</td>
+          <td class="px-4 py-3 text-right">
+            <div class="inline-flex items-center justify-end gap-1">
+              <input type="number" step="0.5" value="${exp.actual || 0}" class="w-24 px-2 py-1 bg-white border border-slate-300 rounded text-right text-xs font-bold text-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:outline-none" onchange="updateExpenseActual('${exp.id}', this.value)">
+              <span class="text-xs font-semibold text-slate-500">€</span>
+            </div>
+          </td>
+          <td class="px-4 py-3 text-center no-print">
+            <button onclick="removeExpense('${exp.id}')" class="text-slate-400 hover:text-rose-500 text-xs p-1" title="Elimina Spesa"><i class="fa-solid fa-trash-can"></i></button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('tableTotalEstimated').innerText = totalEst.toFixed(2) + ' €';
+      document.getElementById('tableTotalActual').innerText = totalAct.toFixed(2) + ' €';
+    }
+
+    function formatDateLabel(dateStr) {
+      const match = appState.days.find(d => d.dateKey === dateStr);
+      return match ? match.date.split(' ')[0] + ' ' + match.date.split(' ')[1] : dateStr;
     }
 
     function renderBeaches() {
@@ -1350,9 +1614,8 @@
         
         let optionsHtml = '';
         cityGroup.options.forEach(opt => {
-          const isSelected = appState.selectedHotels[cityGroup.city.split(' ')[0]] === opt.id;
           optionsHtml += `
-            <div class="p-4 rounded-xl border ${isSelected ? 'border-sicily-gold bg-amber-50/40 ring-2 ring-sicily-gold/30' : 'border-slate-200 bg-slate-50/50'} flex flex-col justify-between transition">
+            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 flex flex-col justify-between transition hover:border-sicily-gold">
               <div>
                 <div class="flex justify-between items-start gap-2">
                   <span class="px-2 py-0.5 rounded-md text-xs font-bold ${opt.tier.includes('Best') ? 'bg-amber-100 text-amber-800' : opt.tier.includes('Charme') ? 'bg-purple-100 text-purple-800' : 'bg-slate-200 text-slate-700'}">
@@ -1373,10 +1636,10 @@
                 </div>
                 <div class="flex items-center justify-between gap-2 mt-1">
                   <a href="${opt.map}" target="_blank" class="text-xs font-semibold text-sicily-sea hover:underline flex items-center gap-1">
-                    <i class="fa-solid fa-map-location-dot"></i> Valuta su Google Maps
+                    <i class="fa-solid fa-map-location-dot"></i> Valuta su Mappa
                   </a>
-                  <button onclick="selectHotel('${cityGroup.city.split(' ')[0]}', '${opt.id}', ${opt.totalEst})" class="no-print px-3 py-1 text-xs font-semibold rounded-lg ${isSelected ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'} transition flex items-center gap-1">
-                    <i class="fa-solid ${isSelected ? 'fa-check' : 'fa-hand-pointer'}"></i> ${isSelected ? 'Selezionato' : 'Seleziona'}
+                  <button onclick="applyHotelToDays('${cityGroup.city.split(' ')[0]}', '${opt.name}', '${opt.map}')" class="no-print px-3 py-1 text-xs font-semibold rounded-lg bg-sicily-seadeep text-white hover:bg-sicily-sea transition flex items-center gap-1">
+                    <i class="fa-solid fa-check"></i> Scegli per l'itinerario
                   </button>
                 </div>
               </div>
@@ -1389,7 +1652,7 @@
             <h3 class="font-serif font-bold text-xl text-slate-900 flex items-center gap-2">
               <i class="fa-solid fa-location-dot text-sicily-terra"></i> ${cityGroup.city}
             </h3>
-            <span class="text-xs text-slate-500 font-medium">Scegli l'opzione preferita o inserisci il prezzo effettivo</span>
+            <span class="text-xs text-slate-500 font-medium">Clicca per applicare all'itinerario o modificare</span>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             ${optionsHtml}
@@ -1464,122 +1727,128 @@
       });
     }
 
-    function renderBudgetTable() {
-      const tbody = document.getElementById('expensesTableBody');
-      tbody.innerHTML = '';
+    // ==========================================
+    // USER ACTIONS, EDITING & MODALS
+    // ==========================================
+    function openEditSlotModal(dayId, slotKey, titleLabel) {
+      const dayObj = appState.days.find(d => d.id === dayId);
+      if (!dayObj) return;
 
-      appState.expenses.forEach((exp, idx) => {
-        const diff = exp.estimated - (exp.actual || 0);
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-slate-50/80 transition";
-        tr.innerHTML = `
-          <td class="px-4 py-3">
-            <span class="px-2 py-0.5 rounded text-xs font-semibold ${
-              exp.category === 'Alloggi' ? 'bg-purple-100 text-purple-800' :
-              exp.category === 'Cibo' ? 'bg-amber-100 text-amber-800' :
-              exp.category === 'Trasporti' ? 'bg-blue-100 text-blue-800' :
-              exp.category === 'Attrazioni' ? 'bg-sky-100 text-sky-800' : 'bg-slate-100 text-slate-700'
-            }">${exp.category}</span>
-          </td>
-          <td class="px-4 py-3 font-medium text-slate-800">${exp.name}</td>
-          <td class="px-4 py-3 text-right font-semibold text-slate-600">${exp.estimated.toFixed(2)} €</td>
-          <td class="px-4 py-3 text-right">
-            <div class="inline-flex items-center justify-end gap-1">
-              <input type="number" step="0.5" value="${exp.actual || 0}" class="w-24 px-2 py-1 bg-white border border-slate-300 rounded text-right text-xs font-bold text-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:outline-none" onchange="updateExpenseActual('${exp.id}', this.value)">
-              <span class="text-xs font-semibold text-slate-500">€</span>
-            </div>
-          </td>
-          <td class="px-4 py-3 text-right font-bold text-xs ${diff >= 0 ? 'text-emerald-600' : 'text-rose-600'}">
-            ${diff >= 0 ? '+' : ''}${diff.toFixed(2)} €
-          </td>
-          <td class="px-4 py-3 text-center no-print">
-            <button onclick="removeExpense('${exp.id}')" class="text-slate-400 hover:text-rose-500 text-xs p-1" title="Rimuovi"><i class="fa-solid fa-trash-can"></i></button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
+      document.getElementById('editDayId').value = dayId;
+      document.getElementById('editSlotKey').value = slotKey;
+      document.getElementById('editSlotBadge').innerText = `${dayObj.date} • ${titleLabel}`;
+      document.getElementById('editSlotModalTitle').innerText = `Modifica ${titleLabel}`;
+
+      const currentSlot = dayObj[slotKey] || {};
+      document.getElementById('editTitleInput').value = currentSlot.title || '';
+      document.getElementById('editDescInput').value = currentSlot.desc || '';
+      document.getElementById('editMapInput').value = currentSlot.map && currentSlot.map !== '#' ? currentSlot.map : '';
+
+      document.getElementById('editSlotModal').classList.remove('hidden');
     }
 
-    function updateBudgetCalculations() {
-      const budgetInput = document.getElementById('totalBudgetInput');
-      appState.budget = parseFloat(budgetInput.value) || 2000;
+    function closeEditSlotModal() {
+      document.getElementById('editSlotModal').classList.add('hidden');
+    }
 
-      let totalEst = 0;
-      let totalAct = 0;
+    function handleEditSlotSubmit(e) {
+      e.preventDefault();
+      const dayId = document.getElementById('editDayId').value;
+      const slotKey = document.getElementById('editSlotKey').value;
+      const titleVal = document.getElementById('editTitleInput').value;
+      const descVal = document.getElementById('editDescInput').value;
+      const mapVal = document.getElementById('editMapInput').value || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(titleVal)}`;
 
-      const catTotals = {
-        'Alloggi': { est: 0, act: 0, icon: 'fa-hotel', color: 'purple' },
-        'Cibo': { est: 0, act: 0, icon: 'fa-utensils', color: 'amber' },
-        'Trasporti': { est: 0, act: 0, icon: 'fa-car', color: 'blue' },
-        'Attrazioni': { est: 0, act: 0, icon: 'fa-landmark', color: 'sky' },
-        'Altro': { est: 0, act: 0, icon: 'fa-bag-shopping', color: 'slate' }
+      const dayObj = appState.days.find(d => d.id === dayId);
+      if (dayObj) {
+        if (!dayObj[slotKey]) dayObj[slotKey] = {};
+        dayObj[slotKey].title = titleVal;
+        dayObj[slotKey].desc = descVal;
+        dayObj[slotKey].map = mapVal;
+
+        saveState();
+        renderDays();
+      }
+
+      closeEditSlotModal();
+    }
+
+    function openEditHotelModal(dayId) {
+      const dayObj = appState.days.find(d => d.id === dayId);
+      if (!dayObj) return;
+
+      const newHotel = prompt(`Modifica alloggio per ${dayObj.date}:`, dayObj.hotelName || dayObj.hotelCity);
+      if (newHotel !== null && newHotel.trim() !== '') {
+        dayObj.hotelName = newHotel.trim();
+        dayObj.hotelMap = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(newHotel.trim())}`;
+        saveState();
+        renderDays();
+      }
+    }
+
+    function applyHotelToDays(cityKey, hotelName, hotelMap) {
+      appState.days.forEach(d => {
+        if (d.hotelCity.includes(cityKey)) {
+          d.hotelName = hotelName;
+          d.hotelMap = hotelMap;
+        }
+      });
+      saveState();
+      renderDays();
+      alert(`Alloggio "${hotelName}" applicato con successo per le notti a ${cityKey}!`);
+    }
+
+    function openNewExpenseModal() {
+      document.getElementById('newExpenseForm').reset();
+      document.getElementById('newExpenseModal').classList.remove('hidden');
+    }
+
+    function closeNewExpenseModal() {
+      document.getElementById('newExpenseModal').classList.add('hidden');
+    }
+
+    function quickAddExpenseForDay(dateKey, dayTitle) {
+      openNewExpenseModal();
+      document.getElementById('modalExpDate').value = dateKey;
+    }
+
+    function handleNewExpenseSubmit(e) {
+      e.preventDefault();
+      const dateVal = document.getElementById('modalExpDate').value;
+      const catVal = document.getElementById('modalExpCategory').value;
+      const nameVal = document.getElementById('modalExpName').value;
+      const estVal = parseFloat(document.getElementById('modalExpEstimated').value) || 0;
+      const actVal = parseFloat(document.getElementById('modalExpActual').value) || 0;
+
+      const newExpense = {
+        id: 'exp_' + Date.now(),
+        date: dateVal,
+        category: catVal,
+        name: nameVal,
+        estimated: estVal,
+        actual: actVal
       };
 
-      appState.expenses.forEach(e => {
-        totalEst += e.estimated;
-        totalAct += (e.actual || 0);
-        const cat = catTotals[e.category] || catTotals['Altro'];
-        cat.est += e.estimated;
-        cat.act += (e.actual || 0);
-      });
-
-      // Update Summary DOM
-      document.getElementById('headerBudgetDisplay').innerText = appState.budget.toLocaleString('it-IT') + ' €';
-      document.getElementById('headerSpentDisplay').innerText = totalAct.toLocaleString('it-IT') + ' €';
-      document.getElementById('totalSpentText').innerText = totalAct.toFixed(2) + ' €';
-
-      const remaining = appState.budget - totalAct;
-      const remainingEl = document.getElementById('totalRemainingText');
-      remainingEl.innerText = remaining.toFixed(2) + ' €';
-      remainingEl.className = remaining >= 0 ? "text-emerald-600 font-bold" : "text-rose-600 font-bold";
-
-      const pct = Math.min(100, Math.round((totalAct / appState.budget) * 100));
-      document.getElementById('budgetPercentageText').innerText = pct + '%';
-      const pBar = document.getElementById('budgetProgressBar');
-      pBar.style.width = pct + '%';
-      pBar.className = totalAct > appState.budget 
-        ? "bg-rose-500 h-4 rounded-full transition-all duration-500" 
-        : "bg-gradient-to-r from-emerald-500 to-sicily-sea h-4 rounded-full transition-all duration-500";
-
-      document.getElementById('tableTotalEstimated').innerText = totalEst.toFixed(2) + ' €';
-      document.getElementById('tableTotalActual').innerText = totalAct.toFixed(2) + ' €';
-      const totDiff = appState.budget - totalAct;
-      const diffEl = document.getElementById('tableTotalDiff');
-      diffEl.innerText = (totDiff >= 0 ? '+' : '') + totDiff.toFixed(2) + ' €';
-      diffEl.className = "px-4 py-3 text-right " + (totDiff >= 0 ? "text-emerald-700 font-bold" : "text-rose-700 font-bold");
-
-      // Render category mini cards
-      const catContainer = document.getElementById('budgetCategorySummary');
-      catContainer.innerHTML = '';
-      Object.keys(catTotals).forEach(catName => {
-        const item = catTotals[catName];
-        const card = document.createElement('div');
-        card.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between";
-        card.innerHTML = `
-          <div>
-            <span class="text-xs font-semibold text-slate-500">${catName}</span>
-            <div class="flex items-baseline gap-2 mt-0.5">
-              <span class="text-base font-bold text-slate-900">${item.act.toFixed(0)} €</span>
-              <span class="text-xs text-slate-400">/ ${item.est.toFixed(0)} €</span>
-            </div>
-          </div>
-          <div class="w-8 h-8 rounded-lg bg-${item.color}-100 text-${item.color}-700 flex items-center justify-center text-sm">
-            <i class="fa-solid ${item.icon}"></i>
-          </div>
-        `;
-        catContainer.appendChild(card);
-      });
+      appState.expenses.push(newExpense);
+      closeNewExpenseModal();
+      saveState();
+      renderBudgetDashboard();
     }
 
-    // ==========================================
-    // USER ACTIONS & UPDATES
-    // ==========================================
     function updateExpenseActual(id, val) {
       const exp = appState.expenses.find(e => e.id === id);
       if (exp) {
         exp.actual = parseFloat(val) || 0;
         saveState();
-        renderBudgetTable();
+        renderBudgetDashboard();
+      }
+    }
+
+    function removeExpense(id) {
+      if (confirm("Vuoi eliminare questa voce di spesa?")) {
+        appState.expenses = appState.expenses.filter(e => e.id !== id);
+        saveState();
+        renderBudgetDashboard();
       }
     }
 
@@ -1588,52 +1857,35 @@
       saveState();
     }
 
-    function selectHotel(cityKey, optId, totalCost) {
-      appState.selectedHotels[cityKey] = optId;
-      const expId = cityKey === 'Catania' ? 'exp_hotel_cat' : cityKey === 'Siracusa' ? 'exp_hotel_syr' : 'exp_hotel_tao';
-      const exp = appState.expenses.find(e => e.id === expId);
-      if (exp) {
-        exp.estimated = totalCost;
+    function updateBudgetCalculations() {
+      renderBudgetDashboard();
+    }
+
+    // ==========================================
+    // PRINT LOGIC (FULL VS SINGLE DAY)
+    // ==========================================
+    function printFullItinerary() {
+      document.body.classList.remove('print-single-mode');
+      document.querySelectorAll('.day-card-item').forEach(el => el.classList.remove('print-active-day'));
+      switchTab('itinerary');
+      setTimeout(() => {
+        window.print();
+      }, 150);
+    }
+
+    function printSingleDay(dayId) {
+      switchTab('itinerary');
+      document.body.classList.add('print-single-mode');
+      document.querySelectorAll('.day-card-item').forEach(el => el.classList.remove('print-active-day'));
+      const targetCard = document.getElementById('day-card-' + dayId);
+      if (targetCard) {
+        targetCard.classList.add('print-active-day');
       }
-      saveState();
-      renderHotels();
-      renderBudgetTable();
-    }
-
-    function removeExpense(id) {
-      appState.expenses = appState.expenses.filter(e => e.id !== id);
-      saveState();
-      renderBudgetTable();
-    }
-
-    function addNewCustomExpenseModal() {
-      document.getElementById('customExpenseModal').classList.remove('hidden');
-    }
-
-    function closeCustomExpenseModal() {
-      document.getElementById('customExpenseModal').classList.add('hidden');
-    }
-
-    function handleCustomExpenseSubmit(e) {
-      e.preventDefault();
-      const cat = document.getElementById('modalCategory').value;
-      const desc = document.getElementById('modalDescription').value;
-      const est = parseFloat(document.getElementById('modalEstimated').value) || 0;
-      const act = parseFloat(document.getElementById('modalActual').value) || 0;
-
-      const newId = 'custom_' + Date.now();
-      appState.expenses.push({
-        id: newId,
-        category: cat,
-        name: desc,
-        estimated: est,
-        actual: act
-      });
-
-      closeCustomExpenseModal();
-      document.getElementById('customExpenseForm').reset();
-      saveState();
-      renderBudgetTable();
+      setTimeout(() => {
+        window.print();
+        document.body.classList.remove('print-single-mode');
+        document.querySelectorAll('.day-card-item').forEach(el => el.classList.remove('print-active-day'));
+      }, 150);
     }
 
     function renderAll() {
@@ -1641,8 +1893,7 @@
       renderBeaches();
       renderHotels();
       renderFood();
-      renderBudgetTable();
-      updateBudgetCalculations();
+      renderBudgetDashboard();
     }
 
     // Initialize on load
