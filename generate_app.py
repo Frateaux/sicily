@@ -84,6 +84,9 @@ html_content = '''<!DOCTYPE html>
 
         <!-- Action Buttons -->
         <div class="flex flex-wrap gap-2.5 self-start md:self-center btn-actions no-print">
+          <a href="cicerone.html" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold hover:brightness-110 transition-all shadow-md transform hover:-translate-y-0.5 text-xs sm:text-sm border border-amber-300/40">
+            <i class="fa-solid fa-headset text-base"></i> Cicerone AI
+          </a>
           <button onclick="printFullItinerary()" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white text-sicily-seadeep font-bold hover:bg-sicily-gold hover:text-white transition-all shadow-md transform hover:-translate-y-0.5 text-xs sm:text-sm">
             <i class="fa-solid fa-print"></i> Stampa Tutto (PDF)
           </button>
@@ -140,6 +143,9 @@ html_content = '''<!DOCTYPE html>
         <button onclick="switchTab('logistics')" id="tab-btn-logistics" class="tab-button px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sicily-seadeep hover:bg-slate-100 transition-all whitespace-nowrap flex items-center gap-2">
           <i class="fa-solid fa-car"></i> Traghetto, ZTL & Parcheggi
         </button>
+        <a href="cicerone.html" class="px-3.5 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap bg-gradient-to-r from-sicily-terra to-sicily-gold text-white shadow-sm flex items-center gap-2 hover:brightness-110 ml-auto border border-amber-300/30">
+          <i class="fa-solid fa-headset text-amber-200"></i> Cicerone Vocale
+        </a>
       </div>
     </div>
   </nav>
