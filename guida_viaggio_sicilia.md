@@ -1,200 +1,209 @@
-# 🗺️ Guida di Viaggio & Planner Interattivo: Costa Orientale della Sicilia
+# 🗺️ Guida di Viaggio: Costa Orientale della Sicilia
 **Date:** Martedì 8 Settembre – Martedì 15 Settembre (8 Giorni / 7 Notti)  
 **Partenza:** Alife (Campania) in auto  
-**Budget di riferimento:** 2.000 €  
-**Caratteristiche:** **Itinerario modificabile**, **tracciamento spese con report per categoria e data**, **stampa selettiva giorno per giorno (PDF)** e **spiagge a fondale basso e sicuro**.
+**Alloggi Confermati:**
+* 📍 **Catania (3 notti: 8-11 Settembre):** *"CentroCittà My House"* (Via D'Amico, 12) — **226 € totali**
+* 📍 **Siracusa (4 notti: 11-15 Settembre):** *"Punto Zero Apartments"* (Via Augusto Von Platen, 24) — **303 € totali**
+* 💰 **Totale Alloggi:** **529 €** (risparmio di oltre 240 € rispetto alla stima iniziale!)  
+* 🎯 **Budget Totale di Riferimento:** 2.000 € (Rimanente: **1.471 €**)  
+* 🧭 **Modalità di Viaggio:** **Itinerario Fluido & Continuativo** (Zero rientri intermedi per la doccia che spezzano la giornata: le visite a Noto, Orecchio di Dionisio, Riviera dei Ciclopi e Modica si fanno direttamente nel pomeriggio/tramonto sul posto!).
 
 ---
 
 ## 📌 Indice Rapido
-1. [Nuove Funzionalità Interattive](#1-nuove-funzionalità-interattive)
-2. [Filosofia Logistica "Zero Stress"](#2-filosofia-logistica-zero-stress)
-3. [Riepilogo Itinerario & Tappe](#3-riepilogo-itinerario--tappe)
-4. [Programma Dettagliato Giorno per Giorno](#4-programma-dettagliato-giorno-per-giorno)
-5. [Guida Spiagge Libere a Fondale Basso e Sicuro](#5-guida-spiagge-libere-a-fondale-basso-e-sicuro)
-6. [Selezione Alloggi & Come Personalizzarli](#6-selezione-alloggi-consigliati)
-7. [Guida Gastronomica Autentica](#7-guida-gastronomica-autentica)
-8. [Reportistica Spese & Budget Tracker](#8-reportistica-spese--budget-tracker)
-9. [Consigli Logistici, Parcheggi, ZTL e Traghetto](#9-consigli-logistici-e-auto)
-10. [Applicazione Interattiva Web (`index.html`)](#10-applicazione-interattiva-web)
+1. [Riepilogo Nuovo Itinerario Continuo & Tappe](#1-riepilogo-nuovo-itinerario-continuo--tappe)
+2. [Programma Dettagliato Giorno per Giorno (Orari & Flusso Continuo)](#2-programma-dettagliato-giorno-per-giorno)
+3. [Dettagli dei Due Alloggi Confermati](#3-dettagli-dei-due-alloggi-confermati)
+4. [Guida Spiagge Libere a Fondale Basso e Sicuro](#4-guida-spiagge-libere-a-fondale-basso-e-sicuro)
+5. [Guida Gastronomica Autentica](#5-guida-gastronomica-autentica)
+6. [Quadro Budget Aggiornato](#6-quadro-budget-aggiornato)
+7. [Consigli Logistici, Percorsi Ricalcolati & Parcheggi Custoditi](#7-consigli-logistici-percorsi-ricalcolati--parcheggi-custoditi)
+8. [Applicazione Interattiva Web (`index.html`)](#8-applicazione-interattiva-web)
 
 ---
 
-## 1. Nuove Funzionalità Interattive
+## 1. Riepilogo Nuovo Itinerario Continuo & Tappe
 
-Nell'applicazione web **[`index.html`](file:///c:/Users/Utente/Desktop/ricircolo/sicily/index.html)** puoi ora:
-
-1. ✏️ **Modificare qualsiasi tappa:** cliccando sul pulsante `Modifica` presente su ogni blocco (Mattina, Pranzo, Pomeriggio, Cena o Alloggio) puoi cambiare titolo, note e link Google Maps personalizzato.
-2. 🏨 **Cambiare alloggio con 1 click:** puoi selezionare una delle alternative consigliate (Smart, Best Value, Charme) oppure digitare il nome del tuo hotel preferito.
-3. 💳 **Registrare spese in tempo reale:** pulsante rapido `+ Registra Spesa` per salvare ogni scontrino con data, categoria (Alloggi, Ristoranti, Carburante, Ingressi, Extra), locale ed importo effettivo.
-4. 📊 **Reportistica spese avanzata:**
-   * **Report per Categoria:** barre percentuali per capire subito quanto hai speso in cibo, alloggi, trasporti o extra.
-   * **Report per Data:** visualizzazione giorno per giorno di quanto hai speso.
-5. 🖨️ **Stampa Selettiva Giorno per Giorno:** ogni giorno ha il pulsante `🖨️ Stampa Questo Giorno` per generare un PDF / foglio A4 compatto con il solo programma di quella giornata da portare comodamente con te.
-
----
-
-## 2. Filosofia Logistica "Zero Stress"
-
-* 🏖️ **Pranzo Leggero sempre SUL POSTO della mattina:** se la mattina sei al mare, il pranzo è al chiosco/bar a 10 metri dalla sabbia; se sei sull'Etna, il pranzo è lungo la strada di discesa; se sei in città, è a piedi sotto l'alloggio.
-* 🚶 **Pomeriggio & Cena a Piedi:** dopo il mare si torna in hotel, doccia rilassante, riposino e la sera si esce a piedi senza più toccare l'auto.
-* 📍 **Tappe Lineari:** gite vicine (Arenella ➔ Noto: 20 min; San Lorenzo ➔ Marzamemi: 4 min).
+| Giorno | Data | Mattina (Mare Basso / Natura) | Pranzo Leggero | Pomeriggio Continuo (Senza Rientri a Vuoto!) | Cena & Serata | Alloggio |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **G1** | Mar 8 Set | Viaggio da Alife (A2 + traghetto) | Savia/Spinella (sotto casa) | **Catania Barocca:** Piazza Duomo, Liotru, Via Crociferi, Villa Bellini | Trattoria tipica catanese a piedi | **Catania** (N1) |
+| **G2** | Mer 9 Set | **La Playa di Catania** (fondale bassissimo) | Chiosco fronte mare alla Playa | **Riviera dei Ciclopi:** Castello Normanno di Aci Castello & Faraglioni di Aci Trezza | Pescheria / Centro storico a piedi | **Catania** (N2) |
+| **G3** | Gio 10 Set | **Crateri Silvestri Etna** (1.900m) | Zafferana Etnea (borgo miele) | **Acireale Barocca:** Cattedrale, San Sebastiano & Belvedere della Timpa | San Berillo a piedi a Catania | **Catania** (N3) |
+| **G4** | Ven 11 Set | **Parco Archeologico Neapolis & ORECCHIO DI DIONISIO** | Mercato di Ortigia (Borderi) | **Ortigia Completa:** Duomo (Tempio di Atena), Fonte Aretusa, Maniace al tramonto | Giudecca a piedi | **Siracusa** (N1) |
+| **G5** | Sab 12 Set | **Spiaggia dell'Arenella** (fondale piatto) | Bar Arenella (a 10m da riva) | **NOTO COMPLETA (Diretto!):** Cattedrale, Palazzo Nicolaci & Porta Reale | Cena a Noto + granita Caffè Sicilia | **Siracusa** (N2) |
+| **G6** | Dom 13 Set | **Spiaggia di San Lorenzo** (Vendicari) | Piazza a Marzamemi (a 4 min) | **Borgo di Marzamemi & Tonnara:** vicoli marinari, botteghe e riserva | Lungomare Ortigia a piedi | **Siracusa** (N3) |
+| **G7** | Lun 14 Set | **Spiaggia di Fontane Bianche** (sabbia bianca) | Chiosco litorale Fontane Bianche | **MODICA:** Duomo di San Giorgio & Cioccolato Bonajuto (oppure SCICLI) | Gran Cena Arrivederci a Ortigia | **Siracusa** (N4) |
+| **G8** | Mar 15 Set | Check-out Siracusa ➔ **Sosta Taormina** | Bam Bar (granita con brioche) | **Teatro Antico di Taormina & Belvedere** ➔ Traghetto ➔ Autostrada A2 | Rientro ad Alife in serata | Casa |
 
 ---
 
-## 3. Riepilogo Itinerario & Tappe
-
-| Giorno | Data | Mattina (Mare Basso / Natura) | Pranzo Leggero (Sul Posto) | Pomeriggio & Sera (A Piedi) | Alloggio & Notti |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **G1** | Mar 8 Set | Viaggio da Alife (A2 + traghetto) | All'arrivo sotto l'hotel a Catania | Duomo, Via Etnea, Villa Bellini | Catania (Notte 1) |
-| **G2** | Mer 9 Set | **La Playa di Catania** (fondale bassissimo) | **Chiosco/Bar della Playa** (a 0m dalla sabbia) | Rientro hotel, doccia, Benedettini & cena a piedi | Catania (Notte 2) |
-| **G3** | Gio 10 Set | **Crateri Silvestri Etna** (passeggiata fresca) | **Zafferana Etnea** (sul percorso di discesa) | Castello Ursino & cena a San Berillo a piedi | Catania (Notte 3) |
-| **G4** | Ven 11 Set | **Teatro Greco Neapolis** (ingresso Siracusa) | **Mercato di Ortigia** (a piedi dal parcheggio) | Duomo Ortigia, Fonte Aretusa, Maniace a piedi | Ortigia (Notte 1) |
-| **G5** | Sab 12 Set | **Spiaggia dell'Arenella** (fondale bassissimo) | **Bar Spiaggia Arenella** (a 10m dalla sabbia) | Doccia + tramonto a **Noto** (20 min) & cena a Noto | Ortigia (Notte 2) |
-| **G6** | Dom 13 Set | **Spiaggia di San Lorenzo** (Vendicari) | **Marzamemi** (a soli 4 min dalla spiaggia!) | Rientro Ortigia, doccia, passeggiata & cena a piedi | Ortigia (Notte 3) |
-| **G7** | Lun 14 Set | **Baia di Giardini Naxos** (sabbia e mare calmo) | **Lungomare Naxos** (a 20m dalla sabbia) | Salita hotel Taormina (10 min), Teatro Antico & cena a piedi | Taormina (Notte 1) |
-| **G8** | Mar 15 Set | **Bam Bar** (granita a piedi da hotel) | Pranzo durante il viaggio su A2 | Rientro tranquillo ad Alife in serata | Casa |
+## 🌅 Orari del Tramonto & Golden Hour in Sicilia Orientale (8-15 Settembre)
+Per non arrivare mai troppo tardi e godersi la visita con la luce ideale, gli spostamenti pomeridiani tengono conto degli **orari astronomici del tramonto**:
+* **Tramonto reale:** tra le **19:18** (l'8 settembre) e le **19:08** (il 15 settembre).
+* **Golden Hour (L'ora d'oro fotografica):** dalle **18:15 alle 19:15** (la luce radente scalda la pietra calcarea dorata di Noto, Modica, Ortigia e Acireale).
+* **Crepuscolo & Prime luci serali:** dalle **19:15 alle 19:40** (i monumenti si illuminano e l'aria rinfresca per la cena).
+* **Strategia oraria adottata:** arrivo nei borghi e siti archeologici **tra le 15:00 e le 15:30**. In questo modo hai **ben 3 ore piene di luce diurna** per visitare musei e palazzi all'aperto, goderti la Golden Hour al tramonto e fermarti per l'aperitivo e la cena senza alcuna fretta!
 
 ---
 
-## 4. Programma Dettagliato Giorno per Giorno
+## 2. Programma Dettagliato Giorno per Giorno (Orari & Flusso Continuo)
 
-### 🚗 Giorno 1: Martedì 8 Settembre – Da Alife a Catania (Benvenuti in Sicilia)
-* **06:00 - 11:30:** Partenza da Alife (CE) su A2 verso Villa San Giovanni (4h30 con sosta caffè).
-* **11:30 - 12:30:** Traghetto Caronte & Tourist (Villa San Giovanni ➔ Messina, 20 min).
-* **12:30 - 14:00:** Da Messina a Catania su autostrada A18 (1h15).
-* **Pranzo Leggero:** Dopo aver parcheggiato l'auto e fatto il check-in, pranzo a piedi sotto casa con arancino e tavola calda artigianale da Savia o Spinella su Via Etnea.
-* **Pomeriggio & Sera (Tutto a piedi):** Riposo in camera. Verso le 17:30 passeggiata rilassante per Piazza Duomo, fontana dell'Elefante (*Liotru*), via Crociferi e Villa Bellini. Cena tipica a piedi nel centro storico.
-
----
-
-### 🌊 Giorno 2: Mercoledì 9 Settembre – Mare Basso alla Playa & Catania Barocca
-* **Mattinata (Mare Basso 1):** **Spiaggia Libera della Playa di Catania** (Viale Kennedy). A soli **8 minuti d'auto** dal centro con parcheggio agevole. Sabbia dorata finissima, fondale bassissimo per oltre 40 metri (si tocca sempre, zero scogli).
-* **Pranzo Leggero SUL POSTO:** Pranzo direttamente al chiosco/bar del litorale della Playa (insalata fresca, caprese o macedonia) senza dover guidare o cambiarsi prima di pranzo.
-* **Pomeriggio (A piedi):** Rientro in hotel (8 min), doccia e riposino. Alle 17:00 visita a piedi al Monastero dei Benedettini di San Nicolò.
-* **Cena (A piedi):** Trattoria tipica nel centro storico a pochi passi dall'hotel.
+### 🚗 Giorno 1: Martedì 8 Settembre – Da Alife a Catania Barocca
+* 🌅 **Partenza Mattina:** Ore **06:00** da Alife (CE).
+* ⏱️ **Tempo Tragitto:** ~6h00 totali (4h30 autostrada A2 fino a Villa S. Giovanni con sosta caffè + 20 min traghetto + 1h15 autostrada A18 Messina ➔ Catania).
+* 🥪 **Pranzo:** Ore **13:00** arrivo a Catania in **Via D'Amico, 12** (*CentroCittà My House*). Auto al Garage Sturzo (150m), sistemazione e pranzo leggero con tavola calda artigianale da Savia o Spinella su Via Etnea.
+* 🏛️ **Pomeriggio & Tramonto (Tramonto ore 19:18 • Golden Hour 18:20-19:15):** Dalle **15:30** passeggiata culturale con luce perfetta: Piazza del Duomo, Cattedrale di Sant'Agata, fontana dell'Elefante (*Liotru*), via Crociferi e tramonto spettacolare sui giardini di Villa Bellini.
+* 🍽️ **Cena:** Ore **20:30** in trattoria tipica catanese a piedi (Pasta alla Norma e pescato del giorno).
 
 ---
 
-### 🌋 Giorno 3: Giovedì 10 Settembre – Etna Crateri Silvestri & Castello Ursino
-* **Mattinata:** Salita panoramica in auto (45 min) fino ai **Crateri Silvestri (Rifugio Sapienza, 1.900m)**. Passeggiata facile e pianeggiante sui crateri spenti con aria fresca e vista sul golfo.
-* **Pranzo Leggero LUNGO IL PERCORSO:** Sosta a **Zafferana Etnea** durante la discesa (zero deviazioni): focaccia rustica con provola ragusana e degustazione miele dell'Etna.
-* **Pomeriggio & Sera (A piedi):** Rientro a Catania, visita al **Castello Ursino** e cena rilassante nei vicoletti storici di San Berillo.
+### 🌊 Giorno 2: Mercoledì 9 Settembre – Mare Basso alla Playa & Pomeriggio a Scelta
+* 🌅 **Partenza Mattina:** Ore **09:15** da Via D'Amico (soli **10 minuti d'auto** fino alla Playa).
+* 🏖️ **Mattina al mare:** **Spiaggia Libera della Playa** (sabbia dorata finissima, fondale bassissimo per oltre 40 metri dove si tocca sempre con i piedi, zero scogli).
+* 🥪 **Pranzo leggero SUL POSTO:** Ore **13:00** al chiosco/bar del litorale della Playa in riva al mare in totale relax.
+* 🔀 **Pomeriggio (Tramonto ore 19:16 • Scegli al momento in base alle energie):**
+  * 🚗 **OPZIONE A (Tour Continuo - Senza Rientro):** Ore **14:45** risalita di 15 min verso la **Riviera dei Ciclopi**: visita al **Castello Normanno di Aci Castello** sulla rupe lavica a picco sul mare, poi passeggiata ad **Aci Trezza con i Faraglioni dei Ciclopi** illuminati dalla Golden Hour (18:15-19:15) e granita vista mare.
+  * 🏠 **OPZIONE B (Doccia & Relax - Con Rientro):** Ore **14:30** rientro a Catania in Via D'Amico (10 min). Doccia rinfrescante, aria condizionata e riposo fino alle 17:30. Uscita a piedi per visitare il grandioso **Monastero dei Benedettini** e via dei Crociferi.
+* 🍽️ **Cena:** Ore **20:30** a piedi nei locali veraci attorno alla Pescheria o via Plebiscito.
 
 ---
 
-### 🏛️ Giorno 4: Venerdì 11 Settembre – Verso Siracusa: Neapolis & Incanto di Ortigia
-* **09:30 - 10:30:** Partenza da Catania verso Siracusa (50 min).
-* **Mattinata:** Visita al **Parco Archeologico della Neapolis** (Teatro Greco e Orecchio di Dionisio) all'ingresso della città.
-* **Pranzo Leggero (A piedi):** Trasferimento all'inizio di Ortigia, parcheggio al **Parcheggio Talete** e pranzo a 3 minuti a piedi al **Mercato di Ortigia** (Caseificio Borderi con panini gourmet preparati al momento).
-* **Pomeriggio & Sera (Tutto a piedi):** Check-in. Pomeriggio lento: Piazza Duomo, Fonte Aretusa, tramonto al Castello Maniace e cena marinara nei vicoli della Giudecca. *L'auto non si tocca più fino all'indomani!*
+### 🌋 Giorno 3: Giovedì 10 Settembre – Crateri Silvestri Etna ➔ Zafferana ➔ Pomeriggio a Scelta
+* 🌅 **Partenza Mattina:** Ore **09:00** (salita panoramica sull'Etna di 45-50 min fino al Rifugio Sapienza a 1.900m).
+* 🚶 **Passeggiata sui Crateri:** 10:00 - 12:15 passeggiata pianeggiante e fresca sui crateri spenti con vista panoramica sulla costa ionica.
+* 🥪 **Pranzo:** Ore **12:45** lungo la via di discesa a **Zafferana Etnea** (focaccia rustica calda con provola ragusana e degustazione miele dell'Etna).
+* 🔀 **Pomeriggio (Tramonto ore 19:15 • Scegli al momento):**
+  * 🚗 **OPZIONE A (Tour Continuo - Senza Rientro):** Ore **15:00** discesa diretta ad **Acireale** (città barocca delle cento campane): grandiosa Piazza Duomo, la Basilica di San Sebastiano e affaccio mozzafiato sul mare dal belvedere della Timpa al tramonto.
+  * 🏠 **OPZIONE B (Doccia & Relax - Con Rientro):** Ore **14:30** rientro a Catania in alloggio. Doccia e riposino nelle ore calde. Dalle 18:00 passeggiata a piedi verso il possente **Castello Ursino** e i vicoletti di San Berillo.
+* 🍽️ **Cena:** Ore **20:45** suggestiva cena a piedi nei vicoli storici di San Berillo tra lucine e trattorie tipiche.
 
 ---
 
-### 🏖️ Giorno 5: Sabato 12 Settembre – Spiaggia dell'Arenella & Tramonto a Noto
-* **Mattinata (Mare Basso 2):** **Spiaggia dell'Arenella** (a soli 15 min d'auto da Ortigia). Sabbia dorata fine e acqua limpida come una piscina con fondale piatto e bassissimo per oltre 40 metri.
-* **Pranzo Leggero SUL POSTO:** Pranzo direttamente al bar/ristorantino della spiaggia dell'Arenella a 10 metri dalla riva.
-* **Pomeriggio:** Rientro in alloggio a Ortigia (15 min) per doccia e relax. Verso le 16:45 partenza verso **Noto** (soli 20 min d'auto).
-* **Tramonto & Cena a Noto:** Passeggiata lungo Corso Vittorio Emanuele, Cattedrale barocca dorata dal sole, cena tipica iblea in trattoria e granita di mandorla al celebre **Caffè Sicilia**. Rientro a Ortigia per la notte (30 min).
+### 🏛️ Giorno 4: Venerdì 11 Settembre – Parco Archeologico Neapolis con ORECCHIO DI DIONISIO & Cuore di Ortigia
+* 🌅 **Partenza Mattina:** Ore **09:00** check-out da Catania ➔ Siracusa (50 min di autostrada comoda).
+* 🏛️ **Visita Straordinaria alla Neapolis (10:00 - 12:30):**
+  * **Orecchio di Dionisio:** la celeberrima grotta calcarea a forma di padiglione auricolare dall'acustica leggendaria (dove il tiranno Dionisio ascoltava i prigionieri).
+  * **Latomie del Paradiso e Grotta dei Cordari.**
+  * **Teatro Greco:** il più grande e spettacolare della Sicilia, scavato interamente nella viva roccia.
+  * **Anfiteatro Romano e Ara di Ierone II.**
+* 🏠 **Arrivo all'Alloggio & Pranzo:** Ore **12:45** check-in a **"Punto Zero Apartments"** (Via Augusto Von Platen, 24), situato a soli 400 metri dalla Neapolis! Auto nel parcheggio gratuito a 50m. Pranzo leggero al **Mercato di Ortigia** (panini gourmet e formaggi caldi del Caseificio Borderi).
+* 🚶 **Pomeriggio Continuo a Ortigia (Tramonto al Castello Maniace ore 18:30-19:14):** Dalle **15:30** Piazza del Duomo (capolavoro barocco su tempio greco di Atena), Fonte Aretusa con i papiri a picco sul mare e tramonto al Castello Maniace.
+* 🍽️ **Cena:** Ore **20:30** nei vicoli della Giudecca da Trattoria La Foglia o Mariano.
 
 ---
 
-### 🦩 Giorno 6: Domenica 13 Settembre – San Lorenzo (Vendicari) & Borgo di Marzamemi
-* **Mattinata (Mare Basso 3):** **Spiaggia di San Lorenzo** (35 min da Ortigia). Sabbia chiarissima caraibica con fondale bassissimo, acqua calma e trasparente.
-* **Pranzo Leggero A SOLI 4 MINUTI DALLA SPIAGGIA:** Spostamento di appena 2 km nel suggestivo borgo marinaro di **Marzamemi**. Pranzo in Piazza Regina Margherita con tonno di tonnara e pomodorini Pachino IGP.
-* **Pomeriggio & Sera (A piedi a Ortigia):** Rientro rilassante a Ortigia nel primo pomeriggio, doccia, gelato sul lungomare e cena di commiato a base di pescato fresco a due passi dall'alloggio.
+### 🏖️ Giorno 5: Sabato 12 Settembre – Spiaggia dell'Arenella ➔ NOTO (Pomeriggio a Scelta)
+* 🌅 **Partenza Mattina:** Ore **09:15** da Punto Zero Apartments (soli **14-15 minuti d'auto** fino all'Arenella).
+* 🏖️ **Mattina al mare:** **Spiaggia dell'Arenella** (mare trasparente come una piscina, fondale piatto e bassissimo per 50 metri).
+* 🥪 **Pranzo leggero SUL POSTO:** Ore **13:00** direttamente al bar/ristorantino a 10 metri dalla sabbia.
+* 🔀 **Pomeriggio (Tramonto ore 19:12 • Scegli al momento):**
+  * 🚗 **OPZIONE A (Tour Continuo a Noto - Senza Rientro):** Ore **14:45** partenza diretta dall'Arenella per Noto (soli **20 minuti d'auto**): ben 3 ore piene di luce per la monumentale **Cattedrale di San Nicolò**, Palazzo Ducezio e i balconi di **Palazzo Nicolaci**. Tramonto sulla pietra dorata (18:10-19:12), granita al **Caffè Sicilia** e cena tipica a Noto! Rientro sereno a Siracusa dopo cena (ore 22:30).
+  * 🏠 **OPZIONE B (Doccia & Relax a Siracusa - Con Rientro):** Ore **14:30** rientro a Punto Zero Apartments (15 min). Doccia rinfrescante e relax. Ore **16:45** partenza comoda per Noto (20 min) per godersi la passeggiata della Golden Hour al tramonto, la granita al Caffè Sicilia e la cena. *(Oppure restare a Ortigia a piedi se si preferisce non guidare la sera).*
+* 🍽️ **Cena:** Ore **20:00** cena tipica iblea a Noto (o sul lungomare di Ortigia).
 
 ---
 
-### 🌺 Giorno 7: Lunedì 14 Settembre – Baia di Giardini Naxos & Taormina Centro
-* **09:30:** Partenza da Siracusa verso l'area di Taormina (1h15 autostrada A18).
-* **Mattinata (Mare Basso 4):** Arrivo alla **Baia di Giardini Naxos (Schisò)** prima di salire in collina. Spiaggia sabbiosa riparata dal golfo con fondale graduale e mare calmo.
-* **Pranzo Leggero SUL POSTO:** Panino con spada o insalata fresca nei bar del lungomare a 20 metri dalla spiaggia.
-* **Pomeriggio:** Salita a Taormina centro (10 min), check-in, doccia e visita a piedi del **Teatro Antico di Taormina** e passeggiata panoramica su Piazza IX Aprile.
-* **Cena (A piedi):** Trattoria tipica nei vicoli storici di Taormina lontana dal caos.
+### 🦩 Giorno 6: Domenica 13 Settembre – Spiaggia di San Lorenzo (Vendicari) ➔ Borgo di Marzamemi & Tonnara
+* 🌅 **Partenza Mattina:** Ore **09:00** da Punto Zero Apartments (35 min autostrada fino a Noto sud).
+* 🏖️ **Mattina al mare:** **Spiaggia di San Lorenzo** (sabbia chiarissima caraibica con fondale bassissimo privo di dislivelli, mare calmo e limpido).
+* 🥪 **Pranzo a Marzamemi:** Ore **12:45** spostamento di **soli 4 minuti d'auto (2 km)** fino a **Marzamemi**; pranzo alle 13:00 in Piazza Regina Margherita con tonno di tonnara e pomodorini Pachino IGP.
+* ⛵ **Pomeriggio Continuo (Tramonto ore 19:11):** Dalle **15:30** passeggiata tra le casette di pietra dei pescatori, la vecchia Tonnara, i vicoli fioriti e le botteghe artigianali di prodotti marinari.
+* 🍽️ **Cena:** Ore **20:30** rientro a Siracusa e cena a base di pesce fresco sul lungomare di Ortigia.
 
 ---
 
-### ☕ Giorno 8: Martedì 15 Settembre – Granita da Bam Bar & Rientro Sereno
-* **08:30 - 09:30:** Colazione a piedi dall'hotel al mitico **Bam Bar** di Taormina (granita con panna e brioche).
-* **10:00:** Partenza da Taormina verso Messina (45 min) e imbarco sul traghetto per Villa San Giovanni.
-* **11:30 - 17:30:** Rientro sereno su A2 con tappe ristoro e arrivo ad Alife nel tardo pomeriggio.
+### 🌊 Giorno 7: Lunedì 14 Settembre – Fontane Bianche ➔ Pomeriggio a Scelta (Modica vs Relax)
+* 🌅 **Partenza Mattina:** Ore **09:15** da Punto Zero Apartments (15 min d'auto su SS115).
+* 🏖️ **Mattina al mare:** **Spiaggia di Fontane Bianche** (sabbia bianca finissima, acqua trasparente e fondale dolcissimo per oltre 40 metri).
+* 🥪 **Pranzo leggero SUL POSTO:** Ore **13:00** al chiosco/bar del litorale di Fontane Bianche.
+* 🔀 **Pomeriggio (Tramonto ore 19:10 • Scegli al momento):**
+  * 🚗 **OPZIONE A (Gita a Modica - Senza Rientro):** Ore **14:45** proseguimento diretto per **Modica** (35 min): visita al maestoso **Duomo di San Giorgio** arroccato sulla collina e degustazione del famoso cioccolato all'**Antica Dolceria Bonajuto** (fondata nel 1880). Rientro a Siracusa per le 19:30.
+  * 🏠 **OPZIONE B (Doccia & Shopping a Ortigia - Con Rientro):** Ore **14:30** rientro all'alloggio a Siracusa (15 min). Doccia e riposino. Dalle 17:30 passeggiata lenta tra le botteghe artigianali di Ortigia (ceramiche siciliane, pasta di mandorla, enoteche) in totale serenità a piedi.
+* 🍽️ **Gran Cena di Arrivederci:** Ore **20:30** cena memorabile nei vicoli illuminati di Ortigia.
 
 ---
 
-## 5. Guida Spiagge Libere a Fondale Basso e Sicuro
-
-| Spiaggia | Zona | Distanza dall'Alloggio | Dove Pranzare | Caratteristiche Fondale | Link Mappa |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **La Playa di Catania** | Catania | **8 min d'auto** | Chiosco litorale Playa (sul posto) | Sabbia finissima, si tocca per 40m, zero scogli | [Mappa](https://www.google.com/maps/search/?api=1&query=Spiaggia+Libera+Playa+Catania) |
-| **Spiaggia dell'Arenella** | Siracusa | **15 min d'auto** | Bar Arenella (a 10m dalla sabbia) | Piscina naturale, piatto e bassissimo per 50m | [Mappa](https://www.google.com/maps/search/?api=1&query=Spiaggia+Arenella+Siracusa) |
-| **Spiaggia di San Lorenzo** | Vendicari/Noto | **35 min d'auto** | Marzamemi (a 4 min dalla spiaggia) | Sabbia caraibica, acqua alle ginocchia per decine di metri | [Mappa](https://www.google.com/maps/search/?api=1&query=Spiaggia+San+Lorenzo+Noto) |
-| **Baia di Giardini Naxos** | Taormina mare | **10 min prima dell'hotel** | Bar lungomare Naxos (sul posto) | Baia sabbiosa protetta, fondale graduale e calmo | [Mappa](https://www.google.com/maps/search/?api=1&query=Spiaggia+Giardini+Naxos+Schiso) |
-
----
-
-## 6. Selezione Alloggi Consigliati
-
-### 📍 Tappa 1: Catania (3 Notti: 8, 9, 10 Settembre)
-1. **Fascia Smart / Budget:** *B&B Crociferi Catania Centro* (~60-75 €/notte) – Voto 9.2/10. [Mappa](https://www.google.com/maps/search/?api=1&query=BB+Via+Crociferi+Catania)
-2. **Fascia Media / Best Value:** *Duomo Suites & Spa / Habitat Boutique Hotel* (~90-120 €/notte) – Voto 9.4/10. [Mappa](https://www.google.com/maps/search/?api=1&query=Habitat+Hotel+Catania)
-3. **Fascia Charme:** *Palazzo Marletta Luxury House* (~150-180 €/notte) – Voto 9.6/10. [Mappa](https://www.google.com/maps/search/?api=1&query=Palazzo+Marletta+Catania)
-
-### 📍 Tappa 2: Siracusa / Ortigia (3 Notti: 11, 12, 13 Settembre)
-1. **Fascia Smart / Budget:** *B&B Ortigia Bedda / Casa D'Amico* (~65-80 €/notte) – Voto 9.1/10. [Mappa](https://www.google.com/maps/search/?api=1&query=BB+Ortigia+Siracusa)
-2. **Fascia Media / Best Value:** *Alla Giudecca / Domus Mariae Albergo* (~95-130 €/notte) – Voto 9.3/10. [Mappa](https://www.google.com/maps/search/?api=1&query=Alla+Giudecca+Ortigia+Siracusa)
-3. **Fascia Charme:** *Hotel Algilà Ortigia Charme* (~170-210 €/notte) – Voto 9.5/10. [Mappa](https://www.google.com/maps/search/?api=1&query=Algila+Ortigia+Charme+Hotel+Siracusa)
-
-### 📍 Tappa 3: Taormina (1 Notte: 14 Settembre)
-1. **Fascia Smart / Best Value:** *B&B Taormina Bedda / Villa Schuler dependance* (~85-110 €/notte) – Voto 9.1/10. [Mappa](https://www.google.com/maps/search/?api=1&query=BB+Taormina+centro)
-2. **Fascia Media / Panorama:** *Hotel Continental Taormina / Villa Ducale* (~130-170 €/notte) – Voto 9.2/10. [Mappa](https://www.google.com/maps/search/?api=1&query=Hotel+Continental+Taormina)
-3. **Fascia Charme:** *Hotel Villa Schuler* (~220-270 €/notte) – Voto 9.6/10. [Mappa](https://www.google.com/maps/search/?api=1&query=Hotel+Villa+Schuler+Taormina)
+### ☕ Giorno 8: Martedì 15 Settembre – Check-out Siracusa ➔ TAORMINA (Teatro Antico & Bam Bar) ➔ Rientro
+* 🌅 **Partenza Mattina:** Ore **09:00** check-out da Punto Zero Apartments a Siracusa.
+* ⏱️ **Tempo Tragitto:** **1h15 d'auto** fino a Taormina (autostrada A18 verso nord).
+* 🏛️ **Sosta Taormina (10:15 - 12:30):** Auto al Parcheggio Lumbi con navetta inclusa, passeggiata panoramica su Corso Umberto, balconata di Piazza IX Aprile vista mare ed Etna, e visita al grandioso **Teatro Antico di Taormina**.
+* ☕ **Granita Mitica:** Sosta d'obbligo al celebre **Bam Bar** per granita con panna e brioche fragrante.
+* 🚗 **Verso Messina:** Ore **12:45** partenza per Messina (40 min).
+* 🚢 **Traghetto & Viaggio di Rientro:** Traghetto ore **13:40** (20 min) per Villa San Giovanni; risalita serena su A2 con tappe ristoro e arrivo ad Alife (Campania) verso le **19:30 - 20:00**.
 
 ---
 
-## 7. Guida Gastronomica Autentica
+## 3. Dettagli dei Due Alloggi Confermati
 
-* **A Catania:**
-  * *Pranzo Leggero:* Chiosco sul litorale della Playa (giorno di mare) o [Pasticceria Savia](https://www.google.com/maps/search/?api=1&query=Pasticceria+Savia+Catania) in centro.
-  * *Cena Autentica:* [Trattoria da Antonio](https://www.google.com/maps/search/?api=1&query=Trattoria+da+Antonio+Catania) o [Osteria Antica Marina](https://www.google.com/maps/search/?api=1&query=Osteria+Antica+Marina+Catania).
+| Soggiorno | Nome Struttura | Date | Notti | Costo Totale | Posizione & Vantaggi |
+| :--- | :--- | :---: | :---: | :---: | :--- |
+| **Catania** | **"CentroCittà My House"** (Via D'Amico, 12) | 8-11 Set | 3 | **226 €** | Fuori ZTL, comodo in auto dall'A18, a 150m dal Garage Sturzo. Centro a piedi in 8-10 min. |
+| **Siracusa** | **"Punto Zero Apartments"** (Via Von Platen, 24) | 11-15 Set | 4 | **303 €** | Fuori ZTL Ortigia, parcheggio gratuito sotto casa a 50m. **A soli 400m dall'Orecchio di Dionisio e Neapolis!** |
+| **TOTALE** | | | **7 notti** | **529 €** | **Risparmio netto: +241 €** rispetto al budget iniziale! |
+
+---
+
+## 4. Guida Spiagge Libere a Fondale Basso e Sicuro
+
+| Spiaggia | Zona | Distanza Alloggio | Dove Pranzare | Proseguimento Pomeridiano Diretto |
+| :--- | :--- | :--- | :--- | :--- |
+| **La Playa di Catania** | Catania | **10 min d'auto** | Chiosco litorale Playa | ➔ **Aci Castello & Aci Trezza (Faraglioni dei Ciclopi)** |
+| **Spiaggia dell'Arenella** | Siracusa | **14-15 min d'auto** | Bar Arenella a 10m da riva | ➔ **NOTO COMPLETA (Cattedrale, Palazzo Nicolaci & Caffè Sicilia)** |
+| **Spiaggia di San Lorenzo** | Vendicari | **35 min d'auto** | Piazza a Marzamemi (4 min) | ➔ **Borgo Marinaro di Marzamemi & Tonnara** |
+| **Spiaggia di Fontane Bianche**| Siracusa | **15 min d'auto** | Bar litorale Fontane Bianche | ➔ **MODICA (Duomo di San Giorgio & Cioccolato) o Scicli** |
+
+---
+
+## 5. Guida Gastronomica Autentica
+
+* **A Catania & Riviera dei Ciclopi:**
+  * *Pranzo:* Chiosco Playa o [Pasticceria Savia](https://www.google.com/maps/search/?api=1&query=Pasticceria+Savia+Catania) vicino a Via D'Amico.
+  * *Cena:* [Trattoria da Antonio](https://www.google.com/maps/search/?api=1&query=Trattoria+da+Antonio+Catania) o [Osteria Antica Marina](https://www.google.com/maps/search/?api=1&query=Osteria+Antica+Marina+Catania).
 * **A Siracusa & Ortigia:**
-  * *Pranzo Leggero:* [Caseificio Borderi al Mercato di Ortigia](https://www.google.com/maps/search/?api=1&query=Caseificio+Borderi+Ortigia+Siracusa) o Bar Ristorantino all'Arenella.
-  * *Cena Autentica:* [Trattoria La Foglia](https://www.google.com/maps/search/?api=1&query=Trattoria+La+Foglia+Ortigia+Siracusa) o [Osteria da Mariano](https://www.google.com/maps/search/?api=1&query=Osteria+da+Mariano+Siracusa).
-* **A Noto & Marzamemi:**
+  * *Pranzo:* [Caseificio Borderi al Mercato di Ortigia](https://www.google.com/maps/search/?api=1&query=Caseificio+Borderi+Ortigia+Siracusa) o Bar Arenella / Fontane Bianche.
+  * *Cena:* [Trattoria La Foglia](https://www.google.com/maps/search/?api=1&query=Trattoria+La+Foglia+Ortigia+Siracusa) o [Osteria da Mariano](https://www.google.com/maps/search/?api=1&query=Osteria+da+Mariano+Siracusa).
+* **A Noto, Marzamemi & Modica:**
   * *Noto:* Granita di mandorla al [Caffè Sicilia](https://www.google.com/maps/search/?api=1&query=Caffe+Sicilia+Noto) e cena alla [Trattoria del Crocifisso](https://www.google.com/maps/search/?api=1&query=Trattoria+del+Crocifisso+Noto).
-  * *Marzamemi:* Taglieri marinari in Piazza da [Liccamùciula](https://www.google.com/maps/search/?api=1&query=Liccamuciula+Marzamemi).
-* **A Taormina:**
-  * *Colazione:* [Bam Bar](https://www.google.com/maps/search/?api=1&query=Bam+Bar+Taormina).
-  * *Cena:* [Osteria RossoDiVino](https://www.google.com/maps/search/?api=1&query=Osteria+RossoDiVino+Taormina) o [Trattoria Tiramisù](https://www.google.com/maps/search/?api=1&query=Trattoria+Tiramisu+Taormina).
+  * *Marzamemi:* Taglieri marinari da [Liccamùciula](https://www.google.com/maps/search/?api=1&query=Liccamuciula+Marzamemi).
+  * *Modica:* Degustazione all'[Antica Dolceria Bonajuto](https://www.google.com/maps/search/?api=1&query=Antica+Dolceria+Bonajuto+Modica).
+* **A Taormina:** Granita con brioche al [Bam Bar](https://www.google.com/maps/search/?api=1&query=Bam+Bar+Taormina).
 
 ---
 
-## 8. Reportistica Spese & Budget Tracker
+## 6. Quadro Budget Aggiornato
 
-Tutte le spese possono essere inserite al momento nell'applicazione `index.html`. La stima iniziale è bilanciata sui 2.000 €:
-
-| Categoria Spesa | Dettaglio / Voci Principali | Stima (2 Persone) |
-| :--- | :--- | :--- |
-| **Viaggio & Auto** | Carburante A/R (~1.400 km) + Pedaggi autostradali | ~260 € |
-| **Traghetto Stretto** | Caronte & Tourist A/R (Auto + passeggeri) | ~85 € |
-| **Alloggi (7 notti)** | Catania (3n ~300€) + Ortigia (3n ~330€) + Taormina (1n ~140€) | ~770 € |
-| **Pranzi Leggeri (8 gg)** | Chioschi spiaggia, street food, granite, panini gourmet | ~180 € |
-| **Cene Tipiche (7 sere)** | Trattorie autentiche a piedi, pesce fresco, vino locale | ~460 € |
-| **Monumenti & Ingressi** | Teatro Greco Siracusa, Teatro Taormina, Benedettini | ~75 € |
-| **Extra & Parcheggi** | Parcheggi Talete & Lumbi + Caffè & Imprevisti | ~170 € |
-| **TOTALE STIMATO** | | **~2.000 €** |
-
----
-
-## 9. Consigli Logistici e Auto
-
-1. **Traghetto Messina:** Biglietto A/R al casello o Telepass senza scendere dall'auto. Partenze ogni 40 min H24.
-2. **Parcheggi a Ortigia:** Parcheggio Talete (coperto, all'ingresso dell'isola). Ortigia si gira interamente a piedi.
-3. **Parcheggi a Taormina:** Parcheggio Lumbi con navetta inclusa per Porta Messina.
+| Categoria Spesa | Dettaglio / Voci Principali | Spesa Effettiva / Stima |
+| :--- | :--- | :---: |
+| **Alloggio Catania (3 notti)** | *"CentroCittà My House"* (Via D'Amico 12) | **226 € (REALE)** |
+| **Alloggio Siracusa (4 notti)** | *"Punto Zero Apartments"* (Via Von Platen 24) | **303 € (REALE)** |
+| **Viaggio in Auto** | Carburante A/R (~1.400 km) + Pedaggi | ~200 € |
+| **Traghetto Stretto** | Caronte & Tourist A/R | ~85 € |
+| **Pranzi Leggeri (8 gg)** | Chioschi spiaggia, granite, street food sul posto | ~180 € |
+| **Cene Tipiche (7 sere)** | Trattorie autentiche di pesce e piatti tipici | ~460 € |
+| **Monumenti & Ingressi** | Orecchio di Dionisio, Neapolis, Teatro Taormina, Castello Aci | ~75 € |
+| **Parcheggi & Extra** | Garage Sturzo, Parcheggio Lumbi Taormina | ~45 € |
+| **Fondo Souvenir** | Cioccolato di Modica, pasta di mandorle, conserve | ~125 € |
+| **TOTALE STIMATO COMPLESSIVO** | | **~1.699 €** |
+| **MARGINE DI RISPARMIO SU BUDGET 2.000 €** | | **+301 € di margine!** |
 
 ---
 
-## 10. Applicazione Interattiva Web
+## 7. Consigli Logistici, Percorsi Ricalcolati & Parcheggi Custoditi
 
-È disponibile l'applicazione interattiva completa:  
+### 🅿️ PARCHEGGI CUSTODITI A CATANIA (Via D'Amico, 12)
+* **[Garage Sturzo (Via Luigi Sturzo, 21)](https://www.google.com/maps/search/?api=1&query=Garage+Sturzo+Via+Luigi+Sturzo+Catania) (A SOLI 150 METRI):** Autorimessa coperta e custodita (~15-18€/24h), a 2 minuti a piedi da Via D'Amico 12.
+* **[Parcheggio AMTS Corso Sicilia / Repubblica](https://www.google.com/maps/search/?api=1&query=Parcheggio+AMTS+Corso+Sicilia+Catania):** Struttura sotterranea automatizzata H24 a 350 metri.
+
+### 🅿️ PARCHEGGI A SIRACUSA (Via Augusto Von Platen, 24)
+* **[Parcheggio Comunale Von Platen](https://www.google.com/maps/search/?api=1&query=Parcheggio+Von+Platen+Siracusa) (A SOLI 50 METRI):** Ampio piazzale al civico 38, **completamente GRATUITO per autovetture**.
+* **Vicinanza monumenti:** A soli 400 metri a piedi dal Parco Archeologico Neapolis (Orecchio di Dionisio e Teatro Greco) e dal Santuario della Madonna delle Lacrime.
+
+### 🅿️ SOSTA A TAORMINA (Martedì 15)
+* **[Parcheggio Multipiano Lumbi](https://www.google.com/maps/search/?api=1&query=Parcheggio+Lumbi+Taormina):** Con navetta bus gratuita inclusa per Porta Messina, Corso Umberto e Teatro Antico.
+
+---
+
+## 8. Applicazione Interattiva Web
+
+L'applicazione web aggiornata è disponibile con tutte le nuove attrazioni e percorsi continui:  
 👉 **[`index.html`](file:///c:/Users/Utente/Desktop/ricircolo/sicily/index.html)** (apribile con doppio click nel browser)

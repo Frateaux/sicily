@@ -6,7 +6,7 @@ html_content = '''<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Planner & Guida Interattiva: Sicilia Orientale (8-15 Settembre)</title>
+  <title>Planner & Guida di Viaggio: Sicilia Orientale (8-15 Settembre)</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -47,7 +47,6 @@ html_content = '''<!DOCTYPE html>
       .page-break { page-break-after: always; }
       .card-print { break-inside: avoid; border: 1px solid #ddd !important; box-shadow: none !important; margin-bottom: 12px !important; }
       .tab-pane { display: block !important; }
-      /* Stampa selettiva singolo giorno */
       body.print-single-mode .day-card-item:not(.print-active-day) { display: none !important; }
       body.print-single-mode #tab-beaches,
       body.print-single-mode #tab-hotels,
@@ -73,13 +72,13 @@ html_content = '''<!DOCTYPE html>
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-sicily-gold font-semibold text-xs tracking-wider uppercase mb-3 backdrop-blur-sm border border-white/10">
-            <i class="fa-solid fa-pen-to-square"></i> Planner Interattivo & Modificabile • Fondali Bassi
+            <i class="fa-solid fa-compass text-emerald-400"></i> Itinerario Fluido Senza Sprechi di Tempo • Noto, Orecchio di Dionisio & Borghi
           </div>
           <h1 class="text-3xl sm:text-4xl md:text-5xl font-serif font-bold tracking-tight">
             Sicilia Orientale in Auto
           </h1>
           <p class="mt-2 text-slate-200 text-sm sm:text-base max-w-2xl font-light">
-            Da <strong>Alife (Campania)</strong> a <strong>Catania, Siracusa/Ortigia, Noto & Taormina</strong> • 8-15 Settembre • Personalizza ogni tappa, registra le spese e stampa giorno per giorno.
+            Da <strong>Alife</strong> a <strong>Catania (CentroCittà My House)</strong> e <strong>Siracusa (Punto Zero)</strong> • Tappe continue: Orecchio di Dionisio, Noto, Riviera dei Ciclopi, Marzamemi, Modica e Taormina!
           </p>
         </div>
 
@@ -100,8 +99,8 @@ html_content = '''<!DOCTYPE html>
       <!-- Quick Summary Metric Bar -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-7 pt-5 border-t border-white/15 text-center">
         <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/10">
-          <span class="block text-xs uppercase tracking-wider text-slate-300 font-medium">Durata</span>
-          <span class="text-base sm:text-xl font-bold text-white">8 Giorni / 7 Notti</span>
+          <span class="block text-xs uppercase tracking-wider text-slate-300 font-medium">Soggiorni Confermati</span>
+          <span class="text-base sm:text-lg font-bold text-white">3n CT (226€) + 4n SR (303€)</span>
         </div>
         <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/10">
           <span class="block text-xs uppercase tracking-wider text-slate-300 font-medium">Budget Impostato</span>
@@ -109,11 +108,11 @@ html_content = '''<!DOCTYPE html>
         </div>
         <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/10">
           <span class="block text-xs uppercase tracking-wider text-slate-300 font-medium">Speso Effettivo</span>
-          <span class="text-base sm:text-xl font-bold text-emerald-300" id="headerSpentDisplay">0 €</span>
+          <span class="text-base sm:text-xl font-bold text-emerald-300" id="headerSpentDisplay">529 €</span>
         </div>
         <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/10">
-          <span class="block text-xs uppercase tracking-wider text-slate-300 font-medium">Rimanente</span>
-          <span class="text-base sm:text-xl font-bold text-white" id="headerRemainingDisplay">2.000 €</span>
+          <span class="block text-xs uppercase tracking-wider text-slate-300 font-medium">Rimanente dal Budget</span>
+          <span class="text-base sm:text-xl font-bold text-white" id="headerRemainingDisplay">1.471 €</span>
         </div>
       </div>
     </div>
@@ -124,22 +123,22 @@ html_content = '''<!DOCTYPE html>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex space-x-1 sm:space-x-2 overflow-x-auto py-2.5 scrollbar-none" id="navTabs">
         <button onclick="switchTab('itinerary')" id="tab-btn-itinerary" class="tab-button active px-3.5 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap bg-sicily-seadeep text-white shadow-sm flex items-center gap-2">
-          <i class="fa-solid fa-calendar-days"></i> Itinerario 8-15 Set
+          <i class="fa-solid fa-calendar-days"></i> Itinerario Fluido & Completo
         </button>
         <button onclick="switchTab('budget')" id="tab-btn-budget" class="tab-button px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sicily-seadeep hover:bg-slate-100 transition-all whitespace-nowrap flex items-center gap-2">
-          <i class="fa-solid fa-chart-pie"></i> Report Spese & Dashboard
+          <i class="fa-solid fa-chart-pie"></i> Report Spese & Budget (€2000)
+        </button>
+        <button onclick="switchTab('hotels')" id="tab-btn-hotels" class="tab-button px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sicily-seadeep hover:bg-slate-100 transition-all whitespace-nowrap flex items-center gap-2">
+          <i class="fa-solid fa-hotel"></i> I Tuoi Alloggi (CT & SR)
         </button>
         <button onclick="switchTab('beaches')" id="tab-btn-beaches" class="tab-button px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sicily-seadeep hover:bg-slate-100 transition-all whitespace-nowrap flex items-center gap-2">
           <i class="fa-solid fa-umbrella-beach"></i> Spiagge a Fondale Basso
-        </button>
-        <button onclick="switchTab('hotels')" id="tab-btn-hotels" class="tab-button px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sicily-seadeep hover:bg-slate-100 transition-all whitespace-nowrap flex items-center gap-2">
-          <i class="fa-solid fa-hotel"></i> Alloggi & Alternative
         </button>
         <button onclick="switchTab('food')" id="tab-btn-food" class="tab-button px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sicily-seadeep hover:bg-slate-100 transition-all whitespace-nowrap flex items-center gap-2">
           <i class="fa-solid fa-utensils"></i> Locali Consigliati (No-Trap)
         </button>
         <button onclick="switchTab('logistics')" id="tab-btn-logistics" class="tab-button px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sicily-seadeep hover:bg-slate-100 transition-all whitespace-nowrap flex items-center gap-2">
-          <i class="fa-solid fa-car"></i> Traghetto, ZTL & Auto
+          <i class="fa-solid fa-car"></i> Traghetto, ZTL & Parcheggi
         </button>
       </div>
     </div>
@@ -149,20 +148,23 @@ html_content = '''<!DOCTYPE html>
   <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
 
     <!-- ========================================================================= -->
-    <!-- TAB 1: ITINERARIO MODIFICABILE + STAMPA SINGOLO GIORNO -->
+    <!-- TAB 1: ITINERARIO FLUIDO (SENZA RIENTRI INTERMEDI SPRECA-TEMPO) -->
     <!-- ========================================================================= -->
     <section id="tab-itinerary" class="tab-pane block space-y-6">
-      <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="bg-gradient-to-r from-blue-50 via-teal-50 to-emerald-50 border border-teal-200 p-5 rounded-2xl shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div class="flex items-start gap-3">
-          <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 text-lg shadow-sm">
-            <i class="fa-solid fa-sliders"></i>
+          <div class="w-10 h-10 rounded-xl bg-sicily-seadeep text-white flex items-center justify-center flex-shrink-0 text-lg">
+            <i class="fa-solid fa-route"></i>
           </div>
           <div>
-            <h3 class="font-serif font-bold text-slate-900 text-base sm:text-lg">Itinerario 100% Personalizzabile</h3>
+            <h3 class="font-serif font-bold text-slate-900 text-base">Itinerario Ottimizzato: Tour Fluido & Tappe Consequenziali</h3>
             <p class="text-xs sm:text-sm text-slate-600 mt-0.5">
-              Clicca sul pulsante <span class="inline-flex items-center px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 text-xs font-semibold"><i class="fa-solid fa-pencil text-[10px] mr-1"></i> Modifica</span> presente su ogni attività (Mattina, Pranzo, Pomeriggio, Cena o Hotel) per sostituirla con la tua preferita o aggiornare il link Google Maps. Puoi anche stampare i singoli giorni separatamente!
+              <strong>Niente rientri forzati a metà giornata!</strong> Quando sei già in una zona (es. verso Noto, Riviera dei Ciclopi, Neapolis o Marzamemi), si prosegue direttamente per godersi le visite culturali con il tramonto e la cena sul posto, tornando all'alloggio solo a fine giornata.
             </p>
           </div>
+        </div>
+        <div class="text-xs font-semibold text-sicily-seadeep bg-white/80 px-3 py-1.5 rounded-xl border border-teal-200 whitespace-nowrap shadow-xs">
+          <i class="fa-solid fa-clock"></i> Più tempo per visite & scoperte
         </div>
       </div>
 
@@ -173,7 +175,7 @@ html_content = '''<!DOCTYPE html>
     </section>
 
     <!-- ========================================================================= -->
-    <!-- TAB 2: REPORT SPESE AVANZATO & DASHBOARD (CATEGORIA + DATA) -->
+    <!-- TAB 2: REPORT SPESE AVANZATO & DASHBOARD -->
     <!-- ========================================================================= -->
     <section id="tab-budget" class="tab-pane hidden space-y-6">
       <!-- Main Budget Overview Card -->
@@ -184,7 +186,7 @@ html_content = '''<!DOCTYPE html>
               <i class="fa-solid fa-chart-line text-emerald-600"></i> Reportistica Spese & Monitoraggio Budget
             </h2>
             <p class="text-slate-600 text-sm mt-1">
-              Visualizza la ripartizione per categoria e per giorno, registra ogni scontrino/ricevuta ed esporta i dati.
+              Alloggi confermati: 226 € (Catania) + 303 € (Siracusa) = 529 € totali. Monitora le altre spese in tempo reale!
             </p>
           </div>
 
@@ -207,14 +209,14 @@ html_content = '''<!DOCTYPE html>
         <div class="mt-6 pt-6 border-t border-slate-100">
           <div class="flex justify-between items-center text-sm font-semibold mb-2">
             <span id="budgetStatusText" class="text-slate-700">Avanzamento Spesa Effettiva</span>
-            <span id="budgetPercentageText" class="text-sicily-seadeep font-bold">0%</span>
+            <span id="budgetPercentageText" class="text-sicily-seadeep font-bold">26%</span>
           </div>
           <div class="w-full bg-slate-100 rounded-full h-4 overflow-hidden border border-slate-200">
-            <div id="budgetProgressBar" class="bg-gradient-to-r from-emerald-500 to-sicily-sea h-4 rounded-full transition-all duration-500" style="width: 0%"></div>
+            <div id="budgetProgressBar" class="bg-gradient-to-r from-emerald-500 to-sicily-sea h-4 rounded-full transition-all duration-500" style="width: 26%"></div>
           </div>
           <div class="flex justify-between text-xs text-slate-500 mt-2 font-medium">
-            <span>Spesi Effettivi: <strong id="totalSpentText" class="text-slate-800">0 €</strong></span>
-            <span>Rimanenti dal Budget: <strong id="totalRemainingText" class="text-emerald-600">2.000 €</strong></span>
+            <span>Spesi Effettivi (Alloggi + Spese): <strong id="totalSpentText" class="text-slate-800">529.00 €</strong></span>
+            <span>Rimanenti dal Budget: <strong id="totalRemainingText" class="text-emerald-600">1.471.00 €</strong></span>
           </div>
         </div>
       </div>
@@ -253,7 +255,7 @@ html_content = '''<!DOCTYPE html>
             <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
               <i class="fa-solid fa-receipt text-sicily-seadeep"></i> Registro Dettagliato di Tutte le Spese
             </h3>
-            <span class="text-xs text-slate-500">Filtra per categoria o aggiungi nuove voci al volo</span>
+            <span class="text-xs text-slate-500">Inserisci o modifica i prezzi realmente pagati</span>
           </div>
           <div class="flex items-center gap-2 self-stretch sm:self-auto">
             <select id="expenseFilterCategory" onchange="renderExpensesTable()" class="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 focus:ring-1 focus:ring-sicily-sea">
@@ -288,8 +290,8 @@ html_content = '''<!DOCTYPE html>
             <tfoot class="bg-slate-50 font-bold text-slate-900 border-t-2 border-slate-300">
               <tr>
                 <td colspan="3" class="px-4 py-3 text-right">TOTALE SPESE:</td>
-                <td class="px-4 py-3 text-right text-slate-600" id="tableTotalEstimated">2.000 €</td>
-                <td class="px-4 py-3 text-right text-emerald-700" id="tableTotalActual">0 €</td>
+                <td class="px-4 py-3 text-right text-slate-600" id="tableTotalEstimated">1.759 €</td>
+                <td class="px-4 py-3 text-right text-emerald-700" id="tableTotalActual">529 €</td>
                 <td class="no-print"></td>
               </tr>
             </tfoot>
@@ -299,7 +301,81 @@ html_content = '''<!DOCTYPE html>
     </section>
 
     <!-- ========================================================================= -->
-    <!-- TAB 3: SPIAGGE LIBERE A FONDALE BASSO -->
+    <!-- TAB 3: I TUOI ALLOGGI PRENOTATI (CATANIA & SIRACUSA) -->
+    <!-- ========================================================================= -->
+    <section id="tab-hotels" class="tab-pane hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+        <h2 class="text-2xl font-serif font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-bed text-sicily-gold"></i> I Tuoi Alloggi Prenotati per il Viaggio
+        </h2>
+        <p class="text-slate-600 text-sm mt-1">
+          Dettagli, posizioni su Google Maps, date di soggiorno e costi confermati per i due alloggi del viaggio.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Alloggio 1: Catania -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border-2 border-purple-200 flex flex-col justify-between card-print">
+          <div>
+            <div class="flex justify-between items-start gap-2">
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800 uppercase tracking-wide">
+                Catania • 3 Notti (8-11 Settembre)
+              </span>
+              <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                Confermato: 226 €
+              </span>
+            </div>
+            <h3 class="font-serif font-bold text-2xl text-slate-900 mt-3">CentroCittà My House</h3>
+            <p class="text-xs font-semibold text-slate-500 mt-1"><i class="fa-solid fa-location-dot text-sicily-terra"></i> Via D'Amico, 12 • Catania</p>
+            
+            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 mt-4 text-xs text-slate-600 space-y-2">
+              <div><strong>Check-in:</strong> Martedì 8 Settembre (pomeriggio)</div>
+              <div><strong>Check-out:</strong> Venerdì 11 Settembre (mattina)</div>
+              <div><strong>Costo:</strong> 226 € totali (~75.33 € a notte)</div>
+              <div><strong>Vantaggi logistici:</strong> Fuori dalla ZTL, comodo per arrivare in auto dall'A18 e a soli 150m dal Garage Sturzo custodito. A 8-10 min a piedi da Via Etnea.</div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+            <a href="https://www.google.com/maps/search/?api=1&query=Via+D+Amico+12+Catania+CentroCitta+My+House" target="_blank" class="px-4 py-2 bg-sicily-sea text-white text-xs font-semibold rounded-lg hover:bg-sicily-seadeep transition flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-map-location-dot"></i> Vedi Posizione su Google Maps
+            </a>
+          </div>
+        </div>
+
+        <!-- Alloggio 2: Siracusa -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border-2 border-emerald-200 flex flex-col justify-between card-print">
+          <div>
+            <div class="flex justify-between items-start gap-2">
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 uppercase tracking-wide">
+                Siracusa • 4 Notti (11-15 Settembre)
+              </span>
+              <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                Confermato: 303 €
+              </span>
+            </div>
+            <h3 class="font-serif font-bold text-2xl text-slate-900 mt-3">Punto Zero Apartments</h3>
+            <p class="text-xs font-semibold text-slate-500 mt-1"><i class="fa-solid fa-location-dot text-sicily-terra"></i> Via Augusto Von Platen, 24 • Siracusa</p>
+            
+            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 mt-4 text-xs text-slate-600 space-y-2">
+              <div><strong>Check-in:</strong> Venerdì 11 Settembre (pomeriggio)</div>
+              <div><strong>Check-out:</strong> Martedì 15 Settembre (mattina per il rientro)</div>
+              <div><strong>Costo:</strong> 303 € totali (~75.75 € a notte)</div>
+              <div><strong>Vantaggi logistici:</strong> Totalmente fuori dalla ZTL di Ortigia, con parcheggio comunale gratuito per auto a soli 50 metri (civico 38). A 400m dal Parco Archeologico Neapolis e dall'Orecchio di Dionisio!</div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+            <a href="https://www.google.com/maps/search/?api=1&query=Punto+Zero+Apartments+Siracusa" target="_blank" class="px-4 py-2 bg-emerald-600 text-white text-xs font-semibold rounded-lg hover:bg-emerald-700 transition flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-map-location-dot"></i> Vedi Posizione su Google Maps
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 4: SPIAGGE LIBERE A FONDALE BASSO -->
     <!-- ========================================================================= -->
     <section id="tab-beaches" class="tab-pane hidden space-y-6">
       <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
@@ -309,7 +385,7 @@ html_content = '''<!DOCTYPE html>
           </div>
           <div>
             <h2 class="text-2xl font-serif font-bold text-slate-900">
-              Spiagge Libere con Fondale Basso & Sabbioso
+              Spiagge Libere con Fondale Basso & Sabbioso (Non nuotatori)
             </h2>
             <p class="text-slate-600 text-sm mt-0.5">
               Tutte le spiagge selezionate hanno sabbia morbida e un fondale che degrada dolcemente per decine di metri: si tocca costantemente con i piedi, zero scogli scivolosi né dislivelli improvvisi.
@@ -324,24 +400,6 @@ html_content = '''<!DOCTYPE html>
     </section>
 
     <!-- ========================================================================= -->
-    <!-- TAB 4: ALLOGGI SELEZIONATI -->
-    <!-- ========================================================================= -->
-    <section id="tab-hotels" class="tab-pane hidden space-y-6">
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-        <h2 class="text-2xl font-serif font-bold text-slate-900 flex items-center gap-2">
-          <i class="fa-solid fa-bed text-sicily-gold"></i> Alloggi Consigliati con Ottime Recensioni
-        </h2>
-        <p class="text-slate-600 text-sm mt-1">
-          Opzioni divise in fasce (Smart, Best Value, Charme) con recensioni > 9.0/10. Clicca su "Seleziona per il viaggio" per impostare automaticamente l'alloggio nel tuo itinerario.
-        </p>
-      </div>
-
-      <div class="space-y-8" id="hotelsContainer">
-        <!-- Injected via JS -->
-      </div>
-    </section>
-
-    <!-- ========================================================================= -->
     <!-- TAB 5: DOVE MANGIARE (NO-TRAP) -->
     <!-- ========================================================================= -->
     <section id="tab-food" class="tab-pane hidden space-y-6">
@@ -351,7 +409,7 @@ html_content = '''<!DOCTYPE html>
         </h2>
         <p class="text-slate-600 text-sm mt-1">
           <strong>Pranzi leggeri:</strong> direttamente sul litorale o nel borgo in cui ti trovi.  
-          <strong>Cene autentiche:</strong> trattorie sincere a piedi dal tuo hotel.
+          <strong>Cene autentiche:</strong> trattorie sincere a piedi dal tuo hotel o nel borgo serale.
         </p>
       </div>
 
@@ -361,11 +419,115 @@ html_content = '''<!DOCTYPE html>
     </section>
 
     <!-- ========================================================================= -->
-    <!-- TAB 6: LOGISTICA, AUTO & PARCHEGGI -->
+    <!-- TAB 6: LOGISTICA, AUTO & PARCHEGGI CUSTODITI DETTAGLIATI -->
     <!-- ========================================================================= -->
     <section id="tab-logistics" class="tab-pane hidden space-y-6">
+      <div class="bg-gradient-to-r from-blue-900 to-sicily-seadeep text-white p-6 rounded-2xl shadow-md card-print">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-10 h-10 rounded-xl bg-white/10 text-sicily-gold flex items-center justify-center text-xl">
+            <i class="fa-solid fa-square-parking"></i>
+          </div>
+          <div>
+            <h2 class="text-xl sm:text-2xl font-serif font-bold text-white">Parcheggi Custoditi & Percorsi Ottimizzati</h2>
+            <p class="text-xs sm:text-sm text-slate-200">Verificati in base agli indirizzi esatti di <strong>CentroCittà My House (Catania)</strong> e <strong>Punto Zero Apartments (Siracusa)</strong>.</p>
+          </div>
+        </div>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Traghetto Villa San Giovanni -> Messina -->
+        <!-- Parcheggi Custoditi Catania (CentroCittà My House - Via D'Amico 12) -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border-2 border-purple-200 flex flex-col justify-between card-print">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div>
+                <h3 class="font-serif font-bold text-lg text-slate-900">Parcheggi Custoditi a Catania</h3>
+                <span class="text-xs text-purple-700 font-semibold">Zona "CentroCittà My House" (Via D'Amico, 12)</span>
+              </div>
+            </div>
+            
+            <p class="text-xs text-slate-600 mb-3">
+              L'alloggio è in <strong>Via D'Amico, 12</strong>, <strong>totalmente fuori dalla ZTL pedonale</strong>. Puoi entrare comodamente in auto e scegliere tra queste eccellenti soluzioni:
+            </p>
+
+            <ul class="text-xs text-slate-700 space-y-3">
+              <li class="p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200">
+                <div class="flex justify-between font-bold text-slate-900">
+                  <span>1. Garage Sturzo (Via Luigi Sturzo, 21)</span>
+                  <span class="text-emerald-700 font-bold">A soli 150m (~15-18€/24h)</span>
+                </div>
+                <p class="text-slate-600 mt-0.5">Autorimessa coperta e custodita con personale, a letteralmente 2 minuti a piedi da Via D'Amico 12.</p>
+                <a href="https://www.google.com/maps/search/?api=1&query=Garage+Sturzo+Via+Luigi+Sturzo+Catania" target="_blank" class="inline-flex items-center gap-1 text-emerald-700 font-semibold mt-1 hover:underline">
+                  <i class="fa-solid fa-location-dot"></i> Vedi Garage Sturzo su Maps (150m)
+                </a>
+              </li>
+
+              <li class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                <div class="flex justify-between font-bold text-slate-900">
+                  <span>2. Parcheggio AMTS Corso Sicilia / Repubblica</span>
+                  <span class="text-slate-700">~15-18€/24h</span>
+                </div>
+                <p class="text-slate-500 mt-0.5">Grande struttura automatizzata e videosorvegliata H24 a 350 metri da Via D'Amico.</p>
+                <a href="https://www.google.com/maps/search/?api=1&query=Parcheggio+AMTS+Corso+Sicilia+Catania" target="_blank" class="inline-flex items-center gap-1 text-sicily-sea font-semibold mt-1 hover:underline">
+                  <i class="fa-solid fa-location-dot"></i> Vedi Parcheggio Corso Sicilia su Maps
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-amber-800 bg-amber-50 p-2 rounded-lg border border-amber-200">
+            <i class="fa-solid fa-triangle-exclamation"></i> <strong>Attenzione ZTL Catania:</strong> non entrare mai in auto su Via Etnea (corsia riservata). Arriva sempre da Via Vincenzo Giuffrida ➔ Viale Libertà ➔ Via D'Amico.
+          </div>
+        </div>
+
+        <!-- Parcheggi Siracusa (Punto Zero Apartments - Via Von Platen) -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border-2 border-emerald-200 flex flex-col justify-between card-print">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-square-parking"></i>
+              </div>
+              <div>
+                <h3 class="font-serif font-bold text-lg text-slate-900">Parcheggi a Siracusa</h3>
+                <span class="text-xs text-emerald-700 font-semibold">Punto Zero Apartments (Via Augusto Von Platen, 24)</span>
+              </div>
+            </div>
+            
+            <p class="text-xs text-slate-600 mb-3">
+              L'appartamento è in una posizione ideale: <strong>completamente fuori dalla ZTL</strong> e a soli 400m dal Parco Archeologico Neapolis:
+            </p>
+
+            <ul class="text-xs text-slate-700 space-y-3">
+              <li class="p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200">
+                <div class="flex justify-between font-bold text-slate-900">
+                  <span>1. Parcheggio Von Platen (a 50 metri dal portone!)</span>
+                  <span class="text-emerald-700 font-bold">GRATUITO per Auto</span>
+                </div>
+                <p class="text-slate-600 mt-0.5">Situato al civico 38 di Via Von Platen. Ampio piazzale comunale gratuito per auto, comodissimo per lasciare la macchina per le 4 notti.</p>
+                <a href="https://www.google.com/maps/search/?api=1&query=Parcheggio+Von+Platen+Siracusa" target="_blank" class="inline-flex items-center gap-1 text-emerald-700 font-semibold mt-1 hover:underline">
+                  <i class="fa-solid fa-location-dot"></i> Vedi Parcheggio Von Platen su Maps
+                </a>
+              </li>
+
+              <li class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                <div class="flex justify-between font-bold text-slate-900">
+                  <span>2. Parcheggio Molo Sant'Antonio (Custodito H24)</span>
+                  <span class="text-slate-700">~12-15€/24h</span>
+                </div>
+                <p class="text-slate-500 mt-0.5">Se desideri un parcheggio con sbarra e custode fisso prima dei ponti di Ortigia (Via Rodi, a 1.5 km dall'appartamento).</p>
+                <a href="https://www.google.com/maps/search/?api=1&query=Parcheggio+Molo+Sant+Antonio+Siracusa" target="_blank" class="inline-flex items-center gap-1 text-sicily-sea font-semibold mt-1 hover:underline">
+                  <i class="fa-solid fa-location-dot"></i> Vedi Parcheggio Molo Sant'Antonio su Maps
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-emerald-800 bg-emerald-50 p-2 rounded-lg border border-emerald-200">
+            <i class="fa-solid fa-check-circle"></i> <strong>Zero Multe:</strong> per andare a Ortigia la sera ci si muove a piedi in 20 min o con la navetta bus, lasciando l'auto serena sotto casa.
+          </div>
+        </div>
+
+        <!-- Traghetto Stretto di Messina -->
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between card-print">
           <div>
             <div class="flex items-center gap-3 mb-4">
@@ -377,19 +539,10 @@ html_content = '''<!DOCTYPE html>
                 <span class="text-xs text-slate-500">Caronte & Tourist (Villa San Giovanni ➔ Messina)</span>
               </div>
             </div>
-            <ul class="text-sm text-slate-600 space-y-2.5">
-              <li class="flex items-start gap-2">
-                <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
-                <span><strong>Frequenza:</strong> Partenze continue ogni 40 minuti H24.</span>
-              </li>
-              <li class="flex items-start gap-2">
-                <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
-                <span><strong>Durata traversata:</strong> Solo 20 minuti di navigazione.</span>
-              </li>
-              <li class="flex items-start gap-2">
-                <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
-                <span><strong>Tariffa Consigliata:</strong> Biglietto A/R 90 giorni per auto + passeggeri (~85 € totali).</span>
-              </li>
+            <ul class="text-xs text-slate-600 space-y-2">
+              <li>• <strong>Partenze continue H24:</strong> un traghetto ogni 40 minuti senza orario fisso.</li>
+              <li>• <strong>Traversata:</strong> 20 minuti di navigazione.</li>
+              <li>• <strong>Biglietto consigliato:</strong> Tariffa A/R 90 giorni (~85 € totale auto + tutti i passeggeri). Si acquista al casello anche con Telepass.</li>
             </ul>
           </div>
           <div class="mt-6 pt-4 border-t border-slate-100">
@@ -399,37 +552,7 @@ html_content = '''<!DOCTYPE html>
           </div>
         </div>
 
-        <!-- Parcheggi e ZTL Ortigia -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between card-print">
-          <div>
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg">
-                <i class="fa-solid fa-square-parking"></i>
-              </div>
-              <div>
-                <h3 class="font-serif font-bold text-lg text-slate-900">Parcheggi & ZTL a Siracusa / Ortigia</h3>
-                <span class="text-xs text-slate-500">Come evitare multe e girare comodi</span>
-              </div>
-            </div>
-            <ul class="text-sm text-slate-600 space-y-2.5">
-              <li class="flex items-start gap-2">
-                <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1"></i>
-                <span><strong>ZTL Ortigia:</strong> Vietata alle auto non residenti in orari serali/weekend.</span>
-              </li>
-              <li class="flex items-start gap-2">
-                <i class="fa-solid fa-circle-check text-emerald-600 mt-1"></i>
-                <span><strong>Parcheggio Talete:</strong> Coperto all'inizio dell'isola (~15€/24h), a 5 minuti a piedi dal centro.</span>
-              </li>
-            </ul>
-          </div>
-          <div class="mt-6 pt-4 border-t border-slate-100">
-            <a href="https://www.google.com/maps/search/?api=1&query=Parcheggio+Talete+Siracusa" target="_blank" class="text-xs font-semibold text-sicily-sea hover:underline flex items-center gap-1">
-              <i class="fa-solid fa-location-dot"></i> Vedi Parcheggio Talete su Google Maps
-            </a>
-          </div>
-        </div>
-
-        <!-- Parcheggi Taormina -->
+        <!-- Parcheggio Taormina per la sosta del 15 Settembre -->
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between card-print">
           <div>
             <div class="flex items-center gap-3 mb-4">
@@ -437,53 +560,20 @@ html_content = '''<!DOCTYPE html>
                 <i class="fa-solid fa-mountain"></i>
               </div>
               <div>
-                <h3 class="font-serif font-bold text-lg text-slate-900">Parcheggi & Accesso a Taormina</h3>
-                <span class="text-xs text-slate-500">Città pedonale arroccata</span>
+                <h3 class="font-serif font-bold text-lg text-slate-900">Sosta a Taormina (Martedì 15 Rientro)</h3>
+                <span class="text-xs text-slate-500">Parcheggio Custodito Multipiano Lumbi</span>
               </div>
             </div>
-            <ul class="text-sm text-slate-600 space-y-2.5">
-              <li class="flex items-start gap-2">
-                <i class="fa-solid fa-circle-check text-emerald-600 mt-1"></i>
-                <span><strong>Parcheggio Lumbi:</strong> Multipiano con navetta bus gratuita inclusa per Porta Messina (~15-18€/gg).</span>
-              </li>
-              <li class="flex items-start gap-2">
-                <i class="fa-solid fa-umbrella-beach text-sicily-sea mt-1"></i>
-                <span><strong>Baia di Giardini Naxos:</strong> Comodi parcheggi sul lungomare e sabbia con fondale dolcissimo.</span>
-              </li>
+            <ul class="text-xs text-slate-600 space-y-2">
+              <li>• <strong>Autostrada A18:</strong> uscita Taormina, segui subito per Parcheggio Lumbi.</li>
+              <li>• <strong>Struttura:</strong> Multipiano custodito e videosorvegliato (~3-4€/ora o ~10€ sosta mezza giornata).</li>
+              <li>• <strong>Navetta inclusa:</strong> Minibus gratuito che ti porta direttamente a Porta Messina per Corso Umberto, Teatro Antico e Bam Bar.</li>
             </ul>
           </div>
-          <div class="mt-6 pt-4 border-t border-slate-100">
+          <div class="mt-4 pt-3 border-t border-slate-100">
             <a href="https://www.google.com/maps/search/?api=1&query=Parcheggio+Lumbi+Taormina" target="_blank" class="text-xs font-semibold text-sicily-sea hover:underline flex items-center gap-1">
               <i class="fa-solid fa-location-dot"></i> Vedi Parcheggio Lumbi su Google Maps
             </a>
-          </div>
-        </div>
-
-        <!-- Sicurezza Fondali -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between card-print">
-          <div>
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg">
-                <i class="fa-solid fa-shield-heart"></i>
-              </div>
-              <div>
-                <h3 class="font-serif font-bold text-lg text-slate-900">Spiagge Sicure per non nuotatori</h3>
-                <span class="text-xs text-slate-500">Massima tranquillità in acqua</span>
-              </div>
-            </div>
-            <ul class="text-sm text-slate-600 space-y-2.5">
-              <li class="flex items-start gap-2">
-                <i class="fa-solid fa-check text-emerald-600 mt-1"></i>
-                <span><strong>Piedi sempre a terra:</strong> Si cammina con l'acqua alle ginocchia per 30-50 metri.</span>
-              </li>
-              <li class="flex items-start gap-2">
-                <i class="fa-solid fa-sun text-amber-500 mt-1"></i>
-                <span><strong>Settembre Ideale:</strong> Clima mite (27-29°C), mare caldo e calmo senza folla.</span>
-              </li>
-            </ul>
-          </div>
-          <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-400">
-            Itinerario pronto per un'esperienza rilassante!
           </div>
         </div>
       </div>
@@ -492,7 +582,7 @@ html_content = '''<!DOCTYPE html>
   </main>
 
   <!-- ========================================================================= -->
-  <!-- MODAL 1: MODIFICA ATTIVITÀ / TAPPA (MATTINA, PRANZO, POMERIGGIO, CENA, HOTEL) -->
+  <!-- MODAL 1: MODIFICA ATTIVITÀ / TAPPA -->
   <!-- ========================================================================= -->
   <div id="editSlotModal" class="modal fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200">
@@ -548,13 +638,13 @@ html_content = '''<!DOCTYPE html>
           <label class="block text-xs font-semibold text-slate-700 mb-1">Data Spesa</label>
           <select id="modalExpDate" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sicily-sea focus:outline-none">
             <option value="2026-09-08">Martedì 8 Set (G1 • Catania)</option>
-            <option value="2026-09-09">Mercoledì 9 Set (G2 • Catania/Playa)</option>
-            <option value="2026-09-10">Giovedì 10 Set (G3 • Etna/Catania)</option>
-            <option value="2026-09-11">Venerdì 11 Set (G4 • Siracusa/Ortigia)</option>
-            <option value="2026-09-12">Sabato 12 Set (G5 • Arenella/Noto)</option>
-            <option value="2026-09-13">Domenica 13 Set (G6 • San Lorenzo/Marzamemi)</option>
-            <option value="2026-09-14">Lunedì 14 Set (G7 • Naxos/Taormina)</option>
-            <option value="2026-09-15">Martedì 15 Set (G8 • Rientro)</option>
+            <option value="2026-09-09">Mercoledì 9 Set (G2 • Playa & Ciclopi)</option>
+            <option value="2026-09-10">Giovedì 10 Set (G3 • Etna & Acireale)</option>
+            <option value="2026-09-11">Venerdì 11 Set (G4 • Neapolis & Ortigia)</option>
+            <option value="2026-09-12">Sabato 12 Set (G5 • Arenella & Noto Barocca)</option>
+            <option value="2026-09-13">Domenica 13 Set (G6 • Vendicari & Marzamemi)</option>
+            <option value="2026-09-14">Lunedì 14 Set (G7 • Fontane Bianche & Modica/Scicli)</option>
+            <option value="2026-09-15">Martedì 15 Set (G8 • Taormina & Rientro)</option>
           </select>
         </div>
 
@@ -571,7 +661,7 @@ html_content = '''<!DOCTYPE html>
 
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1">Descrizione / Nome Locale</label>
-          <input type="text" id="modalExpName" required placeholder="es. Pranzo Chiosco Arenella, Ristorante da Antonio..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sicily-sea focus:outline-none">
+          <input type="text" id="modalExpName" required placeholder="es. Biglietto Neapolis, Ristorante Noto..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sicily-sea focus:outline-none">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
@@ -596,43 +686,54 @@ html_content = '''<!DOCTYPE html>
   <!-- FOOTER -->
   <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 mt-12 no-print">
     <div class="max-w-7xl mx-auto px-4 text-center text-xs space-y-2">
-      <p class="font-serif text-sm text-slate-200">Planner & Guida di Viaggio Interattiva • Sicilia Orientale</p>
-      <p>Tutte le modifiche e le spese restano salvate automaticamente nel browser • Dati esportabili</p>
+      <p class="font-serif text-sm text-slate-200">Planner & Guida di Viaggio Interattiva • Sicilia Orientale 2026</p>
+      <p>Catania: "CentroCittà My House" • Siracusa: "Punto Zero Apartments" • Itinerario Fluido</p>
     </div>
   </footer>
 
   <!-- JAVASCRIPT APPLICATION LOGIC -->
   <script>
     // ==========================================
-    // INITIAL DEFAULT DATA
+    // INITIAL DATA - FLUID ITINERARY WITHOUT TIME WASTING
     // ==========================================
+    
     const DEFAULT_DAYS = [
       {
         id: "day1",
         date: "Martedì 8 Settembre",
         dateKey: "2026-09-08",
         title: "Partenza da Alife & Arrivo a Catania Barocca",
-        badge: "Giorno 1 • Arrivo",
+        badge: "Giorno 1 • Arrivo a Catania",
         hotelCity: "Catania (Notte 1 di 3)",
-        hotelName: "Habitat Boutique Hotel (o B&B Crociferi)",
-        hotelMap: "https://www.google.com/maps/search/?api=1&query=Habitat+Hotel+Catania",
-        logisticsBadge: "🚗 Viaggio A2 + Traghetto (Totale ~5h30). Pomeriggio e sera: 0 km (Tutto a piedi)",
+        hotelName: "CentroCittà My House (226€ tot.)",
+        hotelMap: "https://www.google.com/maps/search/?api=1&query=Via+D+Amico+12+Catania+CentroCitta+My+House",
+        logisticsBadge: "🚗 Viaggio A2 + Traghetto (Totale ~6h00). Arrivo in Via D'Amico, parcheggio e pomeriggio a piedi!",
+        sunsetInfo: "Tramonto ore 19:18 (Golden Hour 18:20 - 19:15)",
         morning: {
-          title: "Partenza ore 06:00 da Alife (CE)",
-          desc: "Guida tranquilla su A2 verso Villa San Giovanni (~4h30 con sosta caffè). Imbarco traghetto Caronte & Tourist (20 min) fino a Messina, poi A18 verso Catania (1h15).",
+          title: "Partenza ore 06:00 da Alife (CE) ➔ Villa San Giovanni",
+          desc: "Guida tranquilla su autostrada A2 del Mediterraneo (~4h30 con 1 sosta caffè). Imbarco traghetto Caronte & Tourist (20 min) fino a Messina, poi A18 verso Catania (1h15).",
           tag: "Viaggio in Auto",
           icon: "fa-car",
           map: "https://www.google.com/maps/search/?api=1&query=Imbarco+Traghetti+Villa+San+Giovanni"
         },
         lunch: {
-          title: "Pranzo leggero a piedi vicino all'alloggio",
-          desc: "Dopo il check-in e aver parcheggiato l'auto, pranzo a piedi sotto casa: tavola calda artigianale (arancino e cipollina catanese) da Savia o Spinella su Via Etnea.",
+          title: "Pranzo leggero a piedi: Tavola Calda Catanese d'Autore",
+          desc: "Arrivo in Via D'Amico 12, auto al Garage Sturzo (150m) e pranzo a piedi: arancino al ragù e cipollina artigianale da Savia o Spinella su Via Etnea.",
           map: "https://www.google.com/maps/search/?api=1&query=Pasticceria+Savia+Catania"
         },
-        afternoon: {
-          title: "Passeggiata Centro Storico (A piedi)",
-          desc: "Relax in camera e verso le 17:30 passeggiata rilassante a piedi: Piazza del Duomo, fontana dell'Elefante (Liotru), via Crociferi e tramonto nei giardini di Villa Bellini.",
+        optionA: {
+          tag: "Pomeriggio Continuo",
+          title: "Piazza Duomo, Cattedrale, Via Crociferi & Tramonto a Villa Bellini",
+          desc: "Senza pause forzate: passeggiata tra i capolavori del barocco lavico, la fontana dell'Elefante (Liotru), via dei Crociferi e tramonto spettacolare sui giardini di Villa Bellini.",
+          flow: "Dalle 15:30 passeggiata culturale ➔ 18:20 Golden Hour a Villa Bellini ➔ 20:30 Cena",
           map: "https://www.google.com/maps/search/?api=1&query=Piazza+del+Duomo+Catania"
+        },
+        optionB: {
+          tag: "Riposo in Stanza & Serata Lenta",
+          title: "Riposo pomeridiano dopo il viaggio ➔ Uscita rilassata alle 18:00",
+          desc: "Sistemazione valigie, doccia rinfrescante e pisolino fino alle 17:45. Uscita solo all'ora del fresco per una passeggiata dolce su Via Etnea e cena tipica.",
+          flow: "14:00 - 17:45 Riposo in camera ➔ 18:00 Passeggiata fresca ➔ 20:30 Cena",
+          map: "https://www.google.com/maps/search/?api=1&query=Via+Etnea+Catania"
         },
         dinner: {
           title: "Cena tipica catanese a piedi nel centro storico",
@@ -644,16 +745,17 @@ html_content = '''<!DOCTYPE html>
         id: "day2",
         date: "Mercoledì 9 Settembre",
         dateKey: "2026-09-09",
-        title: "Mare Basso alla Playa & Catania Storica",
-        badge: "Giorno 2 • Mare Basso 1 & Cultura",
+        title: "Mare Basso alla Playa ➔ RIVIERA DEI CICLOPI (Aci Castello & Aci Trezza)",
+        badge: "Giorno 2 • Mare Basso 1 & Riviera dei Ciclopi",
         hotelCity: "Catania (Notte 2 di 3)",
-        hotelName: "Habitat Boutique Hotel (o B&B Crociferi)",
-        hotelMap: "https://www.google.com/maps/search/?api=1&query=Habitat+Hotel+Catania",
-        logisticsBadge: "🚗 Auto solo per andare alla Playa (8 min da centro). Pranzo sul litorale. Pomeriggio a piedi.",
+        hotelName: "CentroCittà My House",
+        hotelMap: "https://www.google.com/maps/search/?api=1&query=Via+D+Amico+12+Catania",
+        logisticsBadge: "🚗 Playa ➔ Aci Castello & Aci Trezza (15 min lungo costa). Scegli al momento se proseguire o rientrare!",
+        sunsetInfo: "Tramonto ore 19:16 (Luce sui Faraglioni 18:15 - 19:15)",
         morning: {
           title: "Mattina al Mare: Spiaggia Libera della Playa di Catania",
-          desc: "Sabbia dorata finissima e fondale bassissimo per oltre 40 metri (si tocca costantemente con i piedi, zero scogli). Solo 8 minuti d'auto dal centro città con parcheggio comodo sul Viale Kennedy.",
-          tag: "Fondale Basso 1 (8 min auto)",
+          desc: "Sabbia dorata finissima e fondale bassissimo per oltre 40 metri (si tocca costantemente con i piedi, zero scogli). Solo 10 minuti d'auto da Via D'Amico con parcheggio comodo sul Viale Kennedy.",
+          tag: "Fondale Basso 1 (10 min)",
           icon: "fa-umbrella-beach",
           map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+Libera+Playa+Catania"
         },
@@ -662,14 +764,23 @@ html_content = '''<!DOCTYPE html>
           desc: "Pranzo sul posto senza spostamenti in auto: panino fresco, caprese o macedonia al chiosco/bar del litorale della Playa in totale relax in riva al mare.",
           map: "https://www.google.com/maps/search/?api=1&query=Bar+Lidi+Playa+Catania"
         },
-        afternoon: {
-          title: "Rientro in hotel per doccia + Monastero dei Benedettini",
-          desc: "Rientro comodo in hotel (8 min), doccia e riposino. Verso le 17:00 visita rilassante a piedi al grandioso Monastero dei Benedettini e via dei Crociferi.",
+        optionA: {
+          tag: "Tour A: Riviera Ciclopi (Senza Rientro)",
+          title: "Aci Castello (Castello Normanno) & Aci Trezza (Faraglioni dei Ciclopi)",
+          desc: "Ore 14:45: si prosegue lungo la costa (15 min). Visita al Castello Normanno arroccato sulla roccia lavica a picco sul mare, poi passeggiata sul molo di Aci Trezza con vista sui Faraglioni dei Ciclopi e granita al tramonto.",
+          flow: "14:45 Partenza per costa ➔ 15:15 Castello Aci ➔ 17:30 Faraglioni Aci Trezza ➔ 19:30 Rientro",
+          map: "https://www.google.com/maps/search/?api=1&query=Faraglioni+Aci+Trezza"
+        },
+        optionB: {
+          tag: "Tour B: Doccia & Relax (Con Rientro)",
+          title: "Rientro in alloggio per Doccia & Relax ➔ Monastero dei Benedettini a piedi",
+          desc: "Ore 14:30: rientro a Via D'Amico 12 (10 min). Doccia rinfrescante, aria condizionata e riposo fino alle 17:30. Uscita a piedi per visitare il grandioso Monastero dei Benedettini e Via Crociferi.",
+          flow: "14:30 Rientro in camera ➔ Doccia & Riposo ➔ 17:30 Monastero Benedettini ➔ 20:30 Cena",
           map: "https://www.google.com/maps/search/?api=1&query=Monastero+dei+Benedettini+di+San+Nicolo+l+Arena+Catania"
         },
         dinner: {
-          title: "Cena verace a Catania (A piedi)",
-          desc: "Pesce fresco grigliato o piatti tradizionali nei locali autentici attorno alla Pescheria o via Plebiscito, a due passi a piedi dall'alloggio.",
+          title: "Cena verace a Catania nel quartiere della Pescheria",
+          desc: "Pesce fresco grigliato e piatti tradizionali nei locali autentici attorno alla Pescheria o via Plebiscito a due passi a piedi dall'alloggio.",
           map: "https://www.google.com/maps/search/?api=1&query=Trattoria+del+Cavaliere+Catania"
         }
       },
@@ -677,32 +788,42 @@ html_content = '''<!DOCTYPE html>
         id: "day3",
         date: "Giovedì 10 Settembre",
         dateKey: "2026-09-10",
-        title: "Escursione Soft Etna Crateri Silvestri & Castello Ursino",
-        badge: "Giorno 3 • Natura & Relax",
+        title: "Crateri Silvestri Etna ➔ Zafferana ➔ ACIREALE BAROCCA",
+        badge: "Giorno 3 • Etna & Barocco delle Cento Campane",
         hotelCity: "Catania (Notte 3 di 3)",
-        hotelName: "Habitat Boutique Hotel (o B&B Crociferi)",
-        hotelMap: "https://www.google.com/maps/search/?api=1&query=Habitat+Hotel+Catania",
-        logisticsBadge: "🚗 Salita all'Etna (45 min) e sosta a Zafferana lungo la via del ritorno. Pomeriggio/sera a piedi.",
+        hotelName: "CentroCittà My House",
+        hotelMap: "https://www.google.com/maps/search/?api=1&query=Via+D+Amico+12+Catania",
+        logisticsBadge: "🚗 Catania ➔ Etna (45 min) ➔ Zafferana (20 min) ➔ Acireale (20 min). Gita ad anello ricca!",
+        sunsetInfo: "Tramonto ore 19:15 (Vista mare dalla Timpa 18:15 - 19:10)",
         morning: {
-          title: "Mattina: Salita Panoramica ai Crateri Silvestri (Etna)",
-          desc: "Salita in auto senza fatica fino al Rifugio Sapienza (1.900m). Brezza fresca e passeggiata facile e pianeggiante sui crateri spenti con panorama su tutta la costa.",
+          title: "Mattina: Passeggiata Panoramica ai Crateri Silvestri (1.900m)",
+          desc: "Salita in auto senza fatica fino al Rifugio Sapienza. Brezza fresca e passeggiata facile e pianeggiante sui crateri spenti con vista grandiosa su tutta la costa ionica.",
           tag: "Natura Soft (45 min auto)",
           icon: "fa-mountain-sun",
           map: "https://www.google.com/maps/search/?api=1&query=Crateri+Silvestri+Etna"
         },
         lunch: {
-          title: "Pranzo leggero sul percorso di discesa a Zafferana Etnea",
-          desc: "Lungo la strada di rientro (zero deviazioni extra): focaccia rustica calda con provola ragusana, miele dell'Etna e frutta fresca nel grazioso borgo di Zafferana.",
+          title: "Pranzo leggero a Zafferana Etnea (Lungo la discesa)",
+          desc: "Discesa di 20 min lungo la panoramica: focaccia rustica calda con provola ragusana, olive e degustazione del celebre miele dell'Etna.",
           map: "https://www.google.com/maps/search/?api=1&query=Zafferana+Etnea+centro"
         },
-        afternoon: {
-          title: "Rientro a Catania & Visita al Castello Ursino (A piedi)",
-          desc: "Rientro a Catania, sosta rinfrescante e visita al possente castello normanno federiciano a piedi nel centro storico.",
+        optionA: {
+          tag: "Tour A: Acireale Barocca (Senza Rientro)",
+          title: "Piazza Duomo di Acireale, Basilica San Sebastiano & Belvedere Timpa",
+          desc: "Ore 15:00: discesa diretta ad Acireale (città delle 100 campane). Grandioso barocco in Piazza Duomo, la Basilica di San Sebastiano con facciata scolpita e vista mozzafiato sul mare dalla riserva della Timpa.",
+          flow: "15:00 Arrivo ad Acireale ➔ 16:30 San Sebastiano ➔ 18:15 Tramonto Timpa ➔ 19:45 Rientro CT",
+          map: "https://www.google.com/maps/search/?api=1&query=Piazza+Duomo+Acireale"
+        },
+        optionB: {
+          tag: "Tour B: Doccia & Relax (Con Rientro)",
+          title: "Rientro a Catania per Doccia & Relax ➔ Castello Ursino a piedi",
+          desc: "Ore 14:30: rientro a Catania dopo il pranzo a Zafferana. Doccia e relax nelle ore più calde. Dalle 18:00 passeggiata a piedi per ammirare il possente Castello Ursino e i vicoletti di San Berillo.",
+          flow: "14:30 Rientro alloggio ➔ Doccia & Riposo ➔ 18:00 Castello Ursino ➔ 20:45 Cena San Berillo",
           map: "https://www.google.com/maps/search/?api=1&query=Castello+Ursino+Catania"
         },
         dinner: {
-          title: "Cena rilassante a piedi nel quartiere San Berillo",
-          desc: "Atmosfera suggestiva nei vicoletti storici con piatti autentici della tradizione catanese.",
+          title: "Rientro a Catania & Cena nei vicoletti di San Berillo",
+          desc: "Cena suggestiva a piedi nei vicoletti storici restaurati di San Berillo tra lucine e atmosfera autentica catanese.",
           map: "https://www.google.com/maps/search/?api=1&query=First+Lounge+Bar+San+Berillo+Catania"
         }
       },
@@ -710,32 +831,42 @@ html_content = '''<!DOCTYPE html>
         id: "day4",
         date: "Venerdì 11 Settembre",
         dateKey: "2026-09-11",
-        title: "Trasferimento a Siracusa: Parco Neapolis & Fascino di Ortigia",
-        badge: "Giorno 4 • Tappa Siracusa",
-        hotelCity: "Siracusa / Ortigia (Notte 1 di 3)",
-        hotelName: "Alla Giudecca / Domus Mariae (o B&B Ortigia Bedda)",
-        hotelMap: "https://www.google.com/maps/search/?api=1&query=Alla+Giudecca+Ortigia+Siracusa",
-        logisticsBadge: "🚗 Viaggio Catania ➔ Siracusa (50 min). Auto parcheggiata al Talete: poi TUTTO A PIEDI a Ortigia!",
+        title: "Parco Neapolis con ORECCHIO DI DIONISIO & Cuore di Ortigia",
+        badge: "Giorno 4 • Neapolis & Cuore di Ortigia",
+        hotelCity: "Siracusa (Notte 1 di 4)",
+        hotelName: "Punto Zero Apartments (303€ tot.)",
+        hotelMap: "https://www.google.com/maps/search/?api=1&query=Punto+Zero+Apartments+Siracusa",
+        logisticsBadge: "🚗 Catania ➔ Neapolis Siracusa (50 min). L'alloggio è a soli 400m dal parco! Poi TUTTO A PIEDI.",
+        sunsetInfo: "Tramonto ore 19:14 (Tramonto al Castello Maniace 18:30 - 19:14)",
         morning: {
-          title: "Partenza ore 09:30 & Parco Archeologico Neapolis",
-          desc: "50 min di autostrada comoda. Tappa all'ingresso di Siracusa per visitare il Teatro Greco scavato nella roccia e il celebre Orecchio di Dionisio.",
-          tag: "Cultura & Archeologia",
+          title: "Parco Archeologico Neapolis: Teatro Greco & ORECCHIO DI DIONISIO",
+          desc: "Visita imperdibile (10:00 - 12:30): il celeberrimo Orecchio di Dionisio (la grotta calcarea dall'acustica leggendaria), le Latomie del Paradiso, il grandioso Teatro Greco scavato nella roccia e l'Anfiteatro Romano.",
+          tag: "Cultura & Meraviglie",
           icon: "fa-landmark",
-          map: "https://www.google.com/maps/search/?api=1&query=Parco+Archeologico+della+Neapolis+Siracusa"
+          map: "https://www.google.com/maps/search/?api=1&query=Orecchio+di+Dionisio+Siracusa"
         },
         lunch: {
-          title: "Pranzo leggero leggendario al Mercato di Ortigia",
-          desc: "Dopo aver parcheggiato l'auto al Parcheggio Talete (inizio di Ortigia), pranzo a 3 minuti a piedi al celebre Caseificio Borderi (panino gourmet con formaggi caldi a km 0).",
+          title: "Check-in a Punto Zero Apartments & Pranzo al Mercato di Ortigia",
+          desc: "Punto Zero Apartments (Via Von Platen) è a soli 400 metri dal Parco Neapolis! Parcheggio gratuito sotto casa, passeggiata verso Ortigia e pranzo d'autore al Caseificio Borderi con formaggi caldi a km 0.",
           map: "https://www.google.com/maps/search/?api=1&query=Caseificio+Borderi+Ortigia+Siracusa"
         },
-        afternoon: {
-          title: "Check-in e Passeggiata a Ortigia (A piedi)",
-          desc: "Check-in in alloggio e pomeriggio lento senza auto: Piazza del Duomo (capolavoro barocco su tempio greco), Fonte Aretusa con i papiri e tramonto al Castello Maniace.",
+        optionA: {
+          tag: "Tour A: Ortigia Completa Continua",
+          title: "Piazza Duomo, Tempio di Atena, Fonte Aretusa & Castello Maniace al tramonto",
+          desc: "Pomeriggio continuo a Ortigia: la sontuosa Piazza Duomo sulle colonne del Tempio greco di Atena, i papiri della Fonte Aretusa e camminata fino alla punta del Castello Maniace per il tramonto sul mare (18:30-19:14).",
+          flow: "Dalle 15:30 Ortigia a piedi ➔ 17:00 Duomo ➔ 18:30 Tramonto Maniace ➔ 20:30 Cena",
           map: "https://www.google.com/maps/search/?api=1&query=Piazza+Duomo+Ortigia+Siracusa"
         },
+        optionB: {
+          tag: "Tour B: Doccia in Appartamento prima di Ortigia",
+          title: "Sosta in camera a Punto Zero (Doccia & Riposo) ➔ Uscita Ortigia alle 17:30",
+          desc: "Dopo pranzo rientro a Punto Zero Apartments per doccia e relax pomeridiano. Uscita per Ortigia alle 17:30 a piedi con il fresco della sera per il Duomo e la cena.",
+          flow: "14:45 Rientro Punto Zero ➔ Doccia & Riposo ➔ 17:30 Uscita Ortigia ➔ 20:30 Cena",
+          map: "https://www.google.com/maps/search/?api=1&query=Castello+Maniace+Siracusa"
+        },
         dinner: {
-          title: "Cena marinara nei vicoletti della Giudecca / Graziella",
-          desc: "Cucina casereccia siracusana a base di pescato del giorno a 5 minuti a piedi dal tuo alloggio da La Foglia o Mariano.",
+          title: "Cena marinara nei vicoli della Giudecca / Graziella",
+          desc: "Cucina casereccia siracusana a base di pescato del giorno nei vicoletti bianchi di Ortigia da Trattoria La Foglia o Osteria da Mariano.",
           map: "https://www.google.com/maps/search/?api=1&query=Trattoria+La+Foglia+Ortigia+Siracusa"
         }
       },
@@ -743,16 +874,17 @@ html_content = '''<!DOCTYPE html>
         id: "day5",
         date: "Sabato 12 Settembre",
         dateKey: "2026-09-12",
-        title: "Spiaggia dell'Arenella (Pranzo sul posto) & Tramonto a Noto",
+        title: "Spiaggia dell'Arenella ➔ NOTO COMPLETA (Palazzo Nicolaci & Caffè Sicilia)",
         badge: "Giorno 5 • Mare Basso 2 & Noto",
-        hotelCity: "Siracusa / Ortigia (Notte 2 di 3)",
-        hotelName: "Alla Giudecca / Domus Mariae (o B&B Ortigia Bedda)",
-        hotelMap: "https://www.google.com/maps/search/?api=1&query=Alla+Giudecca+Ortigia+Siracusa",
-        logisticsBadge: "🚗 Ortigia ➔ Arenella (15 min). Arenella ➔ Noto (20 min). Rientro a Ortigia (30 min). Zero deviazioni!",
+        hotelCity: "Siracusa (Notte 2 di 4)",
+        hotelName: "Punto Zero Apartments",
+        hotelMap: "https://www.google.com/maps/search/?api=1&query=Punto+Zero+Apartments+Siracusa",
+        logisticsBadge: "🚗 Arenella ➔ Noto (20 min d'auto). Scegli se proseguire subito o fare la doccia a Siracusa!",
+        sunsetInfo: "Tramonto ore 19:12 (Pietra dorata di Noto 18:10 - 19:12)",
         morning: {
           title: "Mattina al Mare: Spiaggia dell'Arenella",
-          desc: "Sabbia dorata e mare trasparente come una piscina. Fondale piatto e bassissimo per oltre 40-50 metri, ideale per passeggiare nell'acqua in totale sicurezza. Dista solo 15 minuti da Ortigia.",
-          tag: "Fondale Basso 2 (15 min auto)",
+          desc: "Sabbia dorata e mare trasparente come una piscina. Fondale piatto e bassissimo per oltre 40-50 metri: si cammina nell'acqua calda in totale serenità con i piedi sempre a terra.",
+          tag: "Fondale Basso 2 (15 min)",
           icon: "fa-umbrella-beach",
           map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+Arenella+Siracusa"
         },
@@ -761,14 +893,23 @@ html_content = '''<!DOCTYPE html>
           desc: "Zero spostamenti in auto: pranzo vista mare al bar/ristorantino della spiaggia dell'Arenella (insalata di mare, scaccia siracusana o piatto freddo).",
           map: "https://www.google.com/maps/search/?api=1&query=Bar+Spiaggia+Arenella+Siracusa"
         },
-        afternoon: {
-          title: "Rientro per doccia + Partenza ore 16:45 verso Noto (20 min)",
-          desc: "Doccia e relax, poi breve tragitto di 20 min verso Noto. Passeggiata su Corso Vittorio Emanuele con la Cattedrale barocca dorata dal sole del tramonto.",
+        optionA: {
+          tag: "Tour A: Noto Diretta Pomeriggio (Senza Rientro)",
+          title: "Noto Completa: Porta Reale, Cattedrale, Palazzo Nicolaci & Caffè Sicilia",
+          desc: "Ore 14:45: partenza diretta dall'Arenella per Noto (soli 20 min). Ben 3 ore piene di luce per la Cattedrale, Palazzo Ducezio e i famosi balconi di Palazzo Nicolaci. Tramonto dorato (18:10-19:12), granita al Caffè Sicilia e cena tipica a Noto!",
+          flow: "14:45 Partenza per Noto ➔ 15:15 Visita Palazzi ➔ 18:15 Golden Hour ➔ 20:00 Cena a Noto",
+          map: "https://www.google.com/maps/search/?api=1&query=Palazzo+Nicolaci+Noto"
+        },
+        optionB: {
+          tag: "Tour B: Doccia alloggio prima di Noto (Con Rientro)",
+          title: "Rientro a Siracusa per Doccia ➔ Partenza per Noto alle 16:45 al tramonto",
+          desc: "Ore 14:30: rientro a Punto Zero Apartments (15 min). Doccia rinfrescante e relax. Ore 16:45 partenza per Noto (20 min): arrivo alle 17:15 per la passeggiata del tramonto, il Caffè Sicilia e la cena a Noto.",
+          flow: "14:30 Rientro alloggio ➔ Doccia & Relax ➔ 16:45 Partenza Noto ➔ 20:00 Cena a Noto",
           map: "https://www.google.com/maps/search/?api=1&query=Cattedrale+di+Noto"
         },
         dinner: {
-          title: "Cena a Noto con la celebre granita di Caffè Sicilia",
-          desc: "Cavatelli alla siracusana o cucina tipica iblea in trattoria a Noto e sosta obbligata da Corrado Assenza al Caffè Sicilia prima di rientrare.",
+          title: "Aperitivo con Granita al Caffè Sicilia & Cena Tipica a Noto",
+          desc: "Tappa leggendaria al Caffè Sicilia di Corrado Assenza (granita di mandorla di Noto e cannolo espresso), poi cena tipica iblea in trattoria tra i vicoli illuminati prima del rientro a Siracusa.",
           map: "https://www.google.com/maps/search/?api=1&query=Caffe+Sicilia+Noto"
         }
       },
@@ -776,12 +917,13 @@ html_content = '''<!DOCTYPE html>
         id: "day6",
         date: "Domenica 13 Settembre",
         dateKey: "2026-09-13",
-        title: "Spiaggia di San Lorenzo (Vendicari) & Pranzo al Borgo di Marzamemi",
-        badge: "Giorno 6 • Mare Basso 3 & Borgo",
-        hotelCity: "Siracusa / Ortigia (Notte 3 di 3)",
-        hotelName: "Alla Giudecca / Domus Mariae (o B&B Ortigia Bedda)",
-        hotelMap: "https://www.google.com/maps/search/?api=1&query=Alla+Giudecca+Ortigia+Siracusa",
-        logisticsBadge: "🚗 Ortigia ➔ San Lorenzo (35 min). San Lorenzo ➔ Marzamemi (SOLO 4 MINUTI d'auto!). Rientro e serata a piedi.",
+        title: "Spiaggia San Lorenzo (Vendicari) ➔ Borgo di Marzamemi & Tonnara",
+        badge: "Giorno 6 • Mare Caraibico & Borgo Marinaro",
+        hotelCity: "Siracusa (Notte 3 di 4)",
+        hotelName: "Punto Zero Apartments",
+        hotelMap: "https://www.google.com/maps/search/?api=1&query=Punto+Zero+Apartments+Siracusa",
+        logisticsBadge: "🚗 Siracusa ➔ San Lorenzo (35 min). San Lorenzo ➔ Marzamemi (SOLI 4 MINUTI!).",
+        sunsetInfo: "Tramonto ore 19:11 (Colori caldi sul mare di Marzamemi)",
         morning: {
           title: "Mattina al Mare: Spiaggia di San Lorenzo (Vendicari)",
           desc: "Sabbia chiarissima caraibica con fondale bassissimo privo di dislivelli, mare calmo e limpido. Si passeggia nell'acqua calda con i piedi sempre a terra in totale serenità.",
@@ -790,18 +932,27 @@ html_content = '''<!DOCTYPE html>
           map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+San+Lorenzo+Noto"
         },
         lunch: {
-          title: "Pranzo leggero a Marzamemi (a soli 4 minuti dalla spiaggia!)",
+          title: "Pranzo a Marzamemi in Piazza (a soli 4 minuti dalla spiaggia!)",
           desc: "A soli 2 km dalla spiaggia: arrivo nel suggestivo borgo marinaro di Marzamemi. Pranzo leggero in Piazza Regina Margherita con tonno di tonnara e pomodorini Pachino IGP.",
           map: "https://www.google.com/maps/search/?api=1&query=Piazza+Regina+Margherita+Marzamemi"
         },
-        afternoon: {
-          title: "Rientro rilassante a Ortigia & Relax lungomare (A piedi)",
-          desc: "Rientro tranquillo nel primo pomeriggio a Ortigia, doccia, relax e passeggiata con gelato artigianale sul Lungomare Alfeo.",
+        optionA: {
+          tag: "Tour A: Marzamemi & Oasi Vendicari Continua",
+          title: "Antica Tonnara di Marzamemi, botteghe marinare & Riserva di Vendicari",
+          desc: "Pomeriggio lento nel borgo marinaro: le pittoresche casette dei pescatori in pietra calcarea, l'antica Tonnara, le botteghe del tonno e sosta panoramica alla riserva di Vendicari.",
+          flow: "Dalle 14:30 Borgo Marzamemi ➔ 16:30 Tonnara & Botteghe ➔ 18:30 Tramonto mare ➔ Rientro",
+          map: "https://www.google.com/maps/search/?api=1&query=Tonnara+di+Marzamemi"
+        },
+        optionB: {
+          tag: "Tour B: Rientro Pomeriggio & Relax a Ortigia",
+          title: "Rientro a Siracusa dopo pranzo ➔ Doccia & Relax ➔ Passeggiata a Ortigia",
+          desc: "Ore 14:45: rientro a Punto Zero Apartments (35 min). Doccia e riposino pomeridiano. Dalle 18:00 uscita a piedi per godersi il Lungomare Alfeo di Ortigia con gelato artigianale.",
+          flow: "14:45 Rientro alloggio ➔ Doccia & Riposo ➔ 18:00 Lungomare Ortigia ➔ 20:30 Cena",
           map: "https://www.google.com/maps/search/?api=1&query=Lungomare+Alfeo+Ortigia+Siracusa"
         },
         dinner: {
-          title: "Cena di pesce di arrivederci a Ortigia (A piedi)",
-          desc: "Frittura di paranza e caponata di mare in un'osteria informale e genuina tra le viuzze bianche.",
+          title: "Rientro serale a Siracusa & Cena di Pesce sul Lungomare",
+          desc: "Rientro all'alloggio, doccia e cena a base di pescato freschissimo lungo le mura spagnole di Ortigia.",
           map: "https://www.google.com/maps/search/?api=1&query=Osteria+da+Mariano+Siracusa"
         }
       },
@@ -809,93 +960,109 @@ html_content = '''<!DOCTYPE html>
         id: "day7",
         date: "Lunedì 14 Settembre",
         dateKey: "2026-09-14",
-        title: "Verso Taormina: Mare a Giardini Naxos & Teatro Antico",
-        badge: "Giorno 7 • Mare Basso 4 & Taormina",
-        hotelCity: "Taormina (Notte 1 di 1)",
-        hotelName: "Hotel Continental (o B&B Taormina Bedda)",
-        hotelMap: "https://www.google.com/maps/search/?api=1&query=Hotel+Continental+Taormina",
-        logisticsBadge: "🚗 Siracusa ➔ Giardini Naxos (1h15). Pranzo sul lungomare di Naxos. Salita a Taormina (10 min): sera a piedi.",
+        title: "Fontane Bianche ➔ MODICA (Duomo di San Giorgio & Cioccolato Bonajuto)",
+        badge: "Giorno 7 • Mare Basso 4 & Val di Noto",
+        hotelCity: "Siracusa (Notte 4 di 4)",
+        hotelName: "Punto Zero Apartments",
+        hotelMap: "https://www.google.com/maps/search/?api=1&query=Punto+Zero+Apartments+Siracusa",
+        logisticsBadge: "🚗 Fontane Bianche ➔ Modica (35 min statale). Scegli se fare la gita a Modica o relax!",
+        sunsetInfo: "Tramonto ore 19:10 (Luce calda sulle case arroccate 18:10 - 19:10)",
         morning: {
-          title: "Partenza ore 09:30 & Mare alla Baia di Giardini Naxos",
-          desc: "Arrivo a Giardini Naxos (prima di salire a Taormina). Spiaggia di sabbia dorata con fondale basso e mare protetto dal golfo (molto più sicuro dei ciottoli ripidi di Isola Bella).",
-          tag: "Fondale Basso 4",
+          title: "Mattina al Mare 4: Spiaggia di Fontane Bianche",
+          desc: "Sabbia bianca finissima e mare turchese trasparente con fondale bassissimo per oltre 40 metri. Una piscina naturale perfetta per chi non sa nuotare.",
+          tag: "Fondale Basso 4 (15 min)",
           icon: "fa-umbrella-beach",
-          map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+Giardini+Naxos+Schiso"
+          map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+Fontane+Bianche+Siracusa"
         },
         lunch: {
-          title: "Pranzo leggero DIRETTAMENTE SUL LUNGOMARE DI NAXOS",
-          desc: "A 20 metri dalla sabbia: panino con pesce spada fresco, insalata o arancino vista mare senza alcuno spostamento in auto.",
-          map: "https://www.google.com/maps/search/?api=1&query=Lungomare+Giardini+Naxos"
+          title: "Pranzo leggero DIRETTAMENTE A FONTANE BIANCHE",
+          desc: "Zero spostamenti in auto: panino fresco, piadina o macedonia al chiosco/bar del litorale di Fontane Bianche con vista sul mare calmo.",
+          map: "https://www.google.com/maps/search/?api=1&query=Bar+Spiaggia+Fontane+Bianche"
         },
-        afternoon: {
-          title: "Salita a Taormina (10 min), Check-in & Teatro Antico (A piedi)",
-          desc: "Salita comoda in hotel a Taormina, doccia e visita a piedi del grandioso Teatro Antico con vista sull'Etna e passeggiata panoramica su Piazza IX Aprile.",
-          map: "https://www.google.com/maps/search/?api=1&query=Teatro+Antico+di+Taormina"
+        optionA: {
+          tag: "Tour A: Gita a Modica (Senza Rientro)",
+          title: "MODICA: Duomo di San Giorgio & Antica Dolceria Bonajuto (Cioccolato 1880)",
+          desc: "Ore 14:45: proseguimento diretto per Modica (35 min). Visita allo spettacolare Duomo di San Giorgio arroccato sulla scalinata monumentale e degustazione del cioccolato modicano all'Antica Dolceria Bonajuto!",
+          flow: "14:45 Partenza Modica ➔ 15:20 Duomo San Giorgio ➔ 17:00 Cioccolato Bonajuto ➔ 19:30 Rientro SR",
+          map: "https://www.google.com/maps/search/?api=1&query=Duomo+di+San+Giorgio+Modica"
+        },
+        optionB: {
+          tag: "Tour B: Rientro Siracusa & Shopping Botteghe a Ortigia",
+          title: "Rientro a Siracusa dopo spiaggia ➔ Doccia & Shopping artigianale a Ortigia",
+          desc: "Ore 14:30: rientro a Punto Zero Apartments (15 min). Doccia e riposino. Dalle 17:30 passeggiata lenta per le botteghe artigianali di Ortigia (ceramiche, dolci di mandorla, vino e souvenir).",
+          flow: "14:30 Rientro alloggio ➔ Doccia & Riposo ➔ 17:30 Botteghe Ortigia ➔ 20:30 Gran Cena",
+          map: "https://www.google.com/maps/search/?api=1&query=Via+Cavour+Ortigia+Siracusa"
         },
         dinner: {
-          title: "Cena nei vicoli tipici di Taormina (A piedi)",
-          desc: "Trattoria nascosta lontana dalla folla turistica: ottima pasta con le sarde, involtini di pesce spada e vini dell'Etna.",
-          map: "https://www.google.com/maps/search/?api=1&query=Osteria+RossoDiVino+Taormina"
+          title: "Rientro a Siracusa & Gran Cena di Arrivederci a Ortigia",
+          desc: "Ultima splendida serata nei vicoli illuminati di Ortigia per celebrare la vacanza con piatti tipici e calice di vino siciliano.",
+          map: "https://www.google.com/maps/search/?api=1&query=Trattoria+La+Foglia+Ortigia+Siracusa"
         }
       },
       {
         id: "day8",
         date: "Martedì 15 Settembre",
         dateKey: "2026-09-15",
-        title: "Granita da Bam Bar & Partenza per il Rientro con Calma",
-        badge: "Giorno 8 • Rientro Sereno",
-        hotelCity: "Rientro a Casa",
+        title: "Check-out Siracusa ➔ TAORMINA (Teatro Antico & Bam Bar) ➔ Rientro",
+        badge: "Giorno 8 • Taormina & Rientro Sereno",
+        hotelCity: "Rientro ad Alife (Campania)",
         hotelName: "Casa dolce casa",
         hotelMap: "#",
-        logisticsBadge: "🚗 Taormina ➔ Messina Traghetto (45 min) ➔ Autostrada A2 ➔ Alife (Campania).",
+        logisticsBadge: "🚗 Siracusa ➔ Taormina Lumbi (1h15) ➔ Messina Traghetto (40 min) ➔ Autostrada A2 ➔ Alife.",
+        sunsetInfo: "Tramonto ore 19:08 (In viaggio su autostrada A2 verso Alife)",
         morning: {
-          title: "Colazione Mitica al Bam Bar di Taormina (A piedi)",
-          desc: "La colazione siciliana per eccellenza a 3 minuti dal tuo alloggio: granita al pistacchio, mandorla o fico con panna e brioche fragrante.",
-          tag: "Colazione Regina",
-          icon: "fa-mug-hot",
-          map: "https://www.google.com/maps/search/?api=1&query=Bam+Bar+Taormina"
+          title: "Check-out Punto Zero (ore 09:00) & Sosta Panoramica a Taormina",
+          desc: "Partenza comoda verso nord. A metà strada sosta a Taormina: auto al Parcheggio Lumbi con navetta, passeggiata panoramica su Corso Umberto, balconata di Piazza IX Aprile con vista sull'Etna e Teatro Antico.",
+          tag: "Sosta a Taormina (Lungo la via)",
+          icon: "fa-mountain",
+          map: "https://www.google.com/maps/search/?api=1&query=Teatro+Antico+di+Taormina"
         },
         lunch: {
-          title: "Partenza ore 10:00 & Pranzo sereno durante il viaggio",
-          desc: "Traghetto Messina ➔ Villa San Giovanni (ore 11:00). Rientro tranquillo su A2 con soste ristoro.",
+          title: "Granita Mitica al Bam Bar di Taormina",
+          desc: "La sosta più celebre di Sicilia: granita vellutata con panna e brioche calda al mitico Bam Bar prima di rimettersi al volante verso Messina.",
+          map: "https://www.google.com/maps/search/?api=1&query=Bam+Bar+Taormina"
+        },
+        optionA: {
+          tag: "Rientro Diretto",
+          title: "Partenza ore 12:45 per Messina Traghetto ➔ Risalita su A2",
+          desc: "Traghetto ore 13:40 per Villa San Giovanni e viaggio tranquillo con soste autogrill per arrivare ad Alife alle 19:30-20:00 prima del buio.",
+          flow: "12:45 Verso Messina ➔ 13:40 Traghetto ➔ A2 del Mediterraneo ➔ 19:30 Alife",
           map: "https://www.google.com/maps/search/?api=1&query=Traghetto+Messina+Villa+San+Giovanni"
         },
-        afternoon: {
-          title: "Arrivo ad Alife (Campania) nel tardo pomeriggio",
-          desc: "Viaggio completato senza fretta, rientro a casa con ricordi splendidi della Sicilia!",
-          tag: "Arrivo a Casa",
-          icon: "fa-house",
-          map: "https://www.google.com/maps/search/?api=1&query=Alife+Caserta"
+        optionB: {
+          tag: "Rientro con Sosta Extra",
+          title: "Partenza ore 14:00 con sosta pranzo rilassata a Taormina",
+          desc: "Se preferisci trattenerti un'ora in più per un pranzo seduto a Taormina prima di imbarcarti verso le 15:00, arrivo ad Alife verso le 21:00.",
+          flow: "14:00 Verso Messina ➔ 15:00 Traghetto ➔ A2 del Mediterraneo ➔ 21:00 Alife",
+          map: "https://www.google.com/maps/search/?api=1&query=Traghetto+Messina+Villa+San+Giovanni"
         },
         dinner: {
-          title: "Cena a casa con i dolci siciliani portati dal viaggio",
-          desc: "Cannoli freschi e pasta di mandorle per concludere in bellezza.",
+          title: "Arrivo ad Alife (Campania) in serata",
+          desc: "Rientro a casa con ricordi indimenticabili della Sicilia e dolci di mandorla e cioccolato di Modica portati dal viaggio!",
           map: "#"
         }
       }
     ];
 
+
     const DEFAULT_EXPENSES = [
       { id: "exp_1", date: "2026-09-08", category: "Trasporti", name: "Carburante A2 (Alife ➔ Villa San Giovanni)", estimated: 90, actual: 0 },
       { id: "exp_2", date: "2026-09-08", category: "Trasporti", name: "Traghetto Caronte & Tourist A/R (Auto + passeggeri)", estimated: 85, actual: 0 },
-      { id: "exp_3", date: "2026-09-08", category: "Alloggi", name: "Alloggio Catania (3 Notti - Habitat / Crociferi)", estimated: 300, actual: 0 },
+      { id: "exp_3", date: "2026-09-08", category: "Alloggi", name: "Alloggio Catania: CentroCittà My House (Via D'Amico 12 - 3 Notti)", estimated: 226, actual: 226 },
       { id: "exp_4", date: "2026-09-08", category: "Cibo", name: "Pranzo Savia & Cena Catania centro (Giorno 1)", estimated: 65, actual: 0 },
       { id: "exp_5", date: "2026-09-09", category: "Cibo", name: "Pranzo chiosco Playa & Cena Pescheria (Giorno 2)", estimated: 75, actual: 0 },
-      { id: "exp_6", date: "2026-09-09", category: "Attrazioni", name: "Ingresso Monastero dei Benedettini Catania", estimated: 20, actual: 0 },
+      { id: "exp_6", date: "2026-09-09", category: "Attrazioni", name: "Castello Normanno Aci Castello & granita Ciclopi", estimated: 15, actual: 0 },
       { id: "exp_7", date: "2026-09-10", category: "Cibo", name: "Degustazione Zafferana & Cena San Berillo (Giorno 3)", estimated: 70, actual: 0 },
-      { id: "exp_8", date: "2026-09-11", category: "Attrazioni", name: "Biglietti Parco Neapolis Siracusa (Teatro Greco)", estimated: 30, actual: 0 },
-      { id: "exp_9", date: "2026-09-11", category: "Alloggi", name: "Alloggio Siracusa/Ortigia (3 Notti - Alla Giudecca / Ortigia Bedda)", estimated: 330, actual: 0 },
-      { id: "exp_10", date: "2026-09-11", category: "Altro", name: "Parcheggio Talete Ortigia (3 giorni)", estimated: 45, actual: 0 },
-      { id: "exp_11", date: "2026-09-11", category: "Cibo", name: "Pranzo Borderi Mercato & Cena Ortigia (Giorno 4)", estimated: 80, actual: 0 },
-      { id: "exp_12", date: "2026-09-12", category: "Cibo", name: "Pranzo Arenella + Caffè Sicilia & Cena a Noto (Giorno 5)", estimated: 85, actual: 0 },
-      { id: "exp_13", date: "2026-09-13", category: "Cibo", name: "Pranzo Marzamemi Piazza & Cena Ortigia (Giorno 6)", estimated: 80, actual: 0 },
-      { id: "exp_14", date: "2026-09-14", category: "Alloggi", name: "Alloggio Taormina (1 Notte - Continental / Taormina Bedda)", estimated: 140, actual: 0 },
-      { id: "exp_15", date: "2026-09-14", category: "Attrazioni", name: "Biglietti Teatro Antico di Taormina", estimated: 27, actual: 0 },
-      { id: "exp_16", date: "2026-09-14", category: "Altro", name: "Parcheggio Lumbi Taormina", estimated: 20, actual: 0 },
-      { id: "exp_17", date: "2026-09-14", category: "Cibo", name: "Pranzo Giardini Naxos & Cena Taormina (Giorno 7)", estimated: 90, actual: 0 },
-      { id: "exp_18", date: "2026-09-15", category: "Cibo", name: "Colazione Bam Bar & Pranzo rientro (Giorno 8)", estimated: 45, actual: 0 },
-      { id: "exp_19", date: "2026-09-15", category: "Trasporti", name: "Carburante rientro autostrada A2", estimated: 110, actual: 0 },
-      { id: "exp_20", date: "2026-09-15", category: "Altro", name: "Fondo souvenir, dolci e prodotti tipici da portare a casa", estimated: 113, actual: 0 }
+      { id: "exp_8", date: "2026-09-11", category: "Attrazioni", name: "Biglietti Parco Neapolis Siracusa (Orecchio di Dionisio & Teatro Greco)", estimated: 30, actual: 0 },
+      { id: "exp_9", date: "2026-09-11", category: "Alloggi", name: "Alloggio Siracusa: Punto Zero Apartments (4 Notti: 11-15 Set)", estimated: 303, actual: 303 },
+      { id: "exp_10", date: "2026-09-11", category: "Cibo", name: "Pranzo Borderi Mercato & Cena Ortigia (Giorno 4)", estimated: 80, actual: 0 },
+      { id: "exp_11", date: "2026-09-12", category: "Cibo", name: "Pranzo Arenella + Caffè Sicilia & Cena a Noto (Giorno 5)", estimated: 85, actual: 0 },
+      { id: "exp_12", date: "2026-09-13", category: "Cibo", name: "Pranzo Marzamemi Piazza & Cena Ortigia (Giorno 6)", estimated: 80, actual: 0 },
+      { id: "exp_13", date: "2026-09-14", category: "Cibo", name: "Pranzo Fontane Bianche & Cioccolato Modica & Cena (Giorno 7)", estimated: 85, actual: 0 },
+      { id: "exp_14", date: "2026-09-15", category: "Cibo", name: "Colazione Bam Bar Taormina & Pranzo rientro (Giorno 8)", estimated: 50, actual: 0 },
+      { id: "exp_15", date: "2026-09-15", category: "Trasporti", name: "Carburante rientro autostrada A2", estimated: 110, actual: 0 },
+      { id: "exp_16", date: "2026-09-15", category: "Altro", name: "Parcheggio Lumbi Taormina (sosta mezza giornata)", estimated: 10, actual: 0 },
+      { id: "exp_17", date: "2026-09-15", category: "Altro", name: "Fondo souvenir, cioccolato di Modica, dolci di mandorla", estimated: 100, actual: 0 }
     ];
 
     const DEFAULT_BEACHES = [
@@ -904,11 +1071,11 @@ html_content = '''<!DOCTYPE html>
         type: "Sabbia dorata finissima & Fondale bassissimo",
         crowd: "Basso a settembre (tranquillità totale)",
         depthInfo: "Si tocca per oltre 40 metri dalla riva",
-        distInfo: "8 minuti d'auto dal centro di Catania (Viale Kennedy)",
+        distInfo: "10 minuti d'auto da Via D'Amico 12 (Viale Kennedy)",
         lunchSpot: "Chiosco/Bar della spiaggia direttamente sul litorale",
         desc: "Chilometri di litorale sabbioso dorato. Il fondale degrada in modo dolcissimo: cammini nell'acqua calda con l'acqua alle caviglie e poi alle ginocchia. Zero scogli o ciottoli, sicurezza e comodità assolute.",
         map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+Libera+Playa+Catania",
-        tips: "Ideale per passeggiate a piedi scalzi sulla battigia. Parcheggio agevole nelle vicinanze.",
+        tips: "Ideale per passeggiate a piedi scalzi. Da qui nel pomeriggio si prosegue direttamente per Aci Castello e Aci Trezza!",
         dayRef: "Mercoledì 9 Settembre"
       },
       {
@@ -916,11 +1083,11 @@ html_content = '''<!DOCTYPE html>
         type: "Sabbia dorata & Acqua trasparente tipo piscina",
         crowd: "Basso/Moderato a settembre",
         depthInfo: "Fondale sabbioso che degrada pianissimo per 30-50 metri",
-        distInfo: "15 minuti d'auto da Ortigia",
+        distInfo: "14-15 minuti d'auto da Punto Zero Apartments",
         lunchSpot: "Bar/Ristorantino Arenella a 10 metri dalla sabbia",
-        desc: "Splendida baia riparata a 15 minuti da Ortigia. Ampia porzione di spiaggia libera, sabbia morbida e fondale piatto e bassissimo con acqua limpidissima dove vedi chiaramente i tuoi piedi.",
+        desc: "Splendida baia riparata a 15 minuti dal tuo alloggio. Ampia porzione di spiaggia libera, sabbia morbida e fondale piatto e bassissimo con acqua limpidissima dove vedi chiaramente i tuoi piedi.",
         map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+Arenella+Siracusa",
-        tips: "Porta l'ombrellone. A settembre è un vero paradiso di quiete e mare piatto.",
+        tips: "Porta l'ombrellone. Dopo il pranzo leggero sul mare, si prosegue direttamente verso Noto (soli 20 min d'auto!).",
         dayRef: "Sabato 12 Settembre"
       },
       {
@@ -928,147 +1095,30 @@ html_content = '''<!DOCTYPE html>
         type: "Sabbia bianca finissima caraibica & Fondale basso",
         crowd: "Basso a settembre",
         depthInfo: "Acqua alle ginocchia per decine di metri",
-        distInfo: "35 minuti da Ortigia (e soli 4 minuti dal borgo di Marzamemi)",
+        distInfo: "35 minuti da Punto Zero Apartments (e soli 4 minuti dal borgo di Marzamemi)",
         lunchSpot: "Piazza di Marzamemi a soli 4 minuti d'auto",
         desc: "Considerata una delle spiagge più belle d'Italia, appena a sud della Riserva di Vendicari. Ampie zone libere, sabbia chiara e mare turchese con fondale che digrada in modo dolcissimo senza dislivelli.",
         map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+San+Lorenzo+Noto",
-        tips: "Acqua calda e trasparente. Ideale prima di andare a Marzamemi (4 min d'auto) per il pranzo leggero.",
+        tips: "Acqua calda e trasparente. Ideale prima di andare a Marzamemi (4 min d'auto) per il pranzo e il pomeriggio nel borgo.",
         dayRef: "Domenica 13 Settembre"
       },
       {
-        name: "Spiaggia di Giardini Naxos (Baia di Schisò)",
-        type: "Sabbia dorata riparata & Fondale dolce e graduale",
+        name: "Spiaggia di Fontane Bianche (Siracusa)",
+        type: "Sabbia bianca finissima caraibica & Fondale bassissimo",
         crowd: "Basso a settembre",
-        depthInfo: "Fondale regolare e poco profondo, protetto dal golfo",
-        distInfo: "Ai piedi di Taormina (10 min prima di salire in hotel)",
+        depthInfo: "Fondale regolare, piatto e poco profondo per oltre 40 metri",
+        distInfo: "15 minuti d'auto da Punto Zero Apartments",
         lunchSpot: "Bar e chioschi sul lungomare a 20 metri dalla sabbia",
-        desc: "La baia sabbiosa più comoda e sicura dell'area di Taormina. A differenza dei ciottoli e degli scogli di Isola Bella (che diventano profondi subito), qui cammini su sabbia morbida con fondale graduale e mare calmo.",
-        map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+Giardini+Naxos+Schiso",
-        tips: "Posizione comodissima a 10 minuti da Taormina centro, con bar e chioschi a portata di mano.",
+        desc: "Famosa per la sua sabbia chiara e l'acqua turchese limpidissima. Il fondale degrada in maniera dolcissima ed è ideale per chi non sa nuotare. Dopo la spiaggia si va direttamente a Modica per il pomeriggio!",
+        map: "https://www.google.com/maps/search/?api=1&query=Spiaggia+Fontane+Bianche+Siracusa",
+        tips: "Comodissima da raggiungere da Siracusa. Da qui Modica dista soli 35 minuti di statale.",
         dayRef: "Lunedì 14 Settembre"
-      }
-    ];
-
-    const DEFAULT_HOTELS = [
-      {
-        city: "Catania (3 Notti: 8, 9, 10 Set)",
-        options: [
-          {
-            id: "cat_opt1",
-            tier: "Smart / Budget",
-            name: "B&B Crociferi Catania Centro",
-            rating: "9.2 / 10 (Eccellente)",
-            estPrice: 70,
-            nights: 3,
-            totalEst: 210,
-            desc: "Nel cuore della via barocca più affascinante di Catania. Silenzioso, pulito, colazione tipica inclusa.",
-            map: "https://www.google.com/maps/search/?api=1&query=BB+Via+Crociferi+Catania"
-          },
-          {
-            id: "cat_opt2",
-            tier: "Best Value / Medio (Consigliato)",
-            name: "Habitat Boutique Hotel / Duomo Suites",
-            rating: "9.4 / 10 (Superlativo)",
-            estPrice: 100,
-            nights: 3,
-            totalEst: 300,
-            desc: "Design contemporaneo, cortile interno suggestivo, a pochi passi dal Teatro Massimo Bellini e Piazza Duomo.",
-            map: "https://www.google.com/maps/search/?api=1&query=Habitat+Hotel+Catania"
-          },
-          {
-            id: "cat_opt3",
-            tier: "Charme & Vista",
-            name: "Palazzo Marletta Luxury House",
-            rating: "9.6 / 10 (Eccezionale)",
-            estPrice: 160,
-            nights: 3,
-            totalEst: 480,
-            desc: "Dimora storica nobiliare con affaccio diretto su Piazza Duomo e fontana dell'Elefante.",
-            map: "https://www.google.com/maps/search/?api=1&query=Palazzo+Marletta+Catania"
-          }
-        ]
-      },
-      {
-        city: "Siracusa / Ortigia (3 Notti: 11, 12, 13 Set)",
-        options: [
-          {
-            id: "syr_opt1",
-            tier: "Smart / Budget",
-            name: "B&B Ortigia Bedda / Casa D'Amico",
-            rating: "9.1 / 10 (Eccellente)",
-            estPrice: 75,
-            nights: 3,
-            totalEst: 225,
-            desc: "Autentico B&B nei vicoli della Giudecca, accoglienza calorosa e comodo per girare a piedi.",
-            map: "https://www.google.com/maps/search/?api=1&query=BB+Ortigia+Siracusa"
-          },
-          {
-            id: "syr_opt2",
-            tier: "Best Value / Medio (Consigliato)",
-            name: "Alla Giudecca / Domus Mariae",
-            rating: "9.3 / 10 (Superlativo)",
-            estPrice: 110,
-            nights: 3,
-            totalEst: 330,
-            desc: "Palazzo storico affacciato sul mare di Ortigia con bagni ebraici sotterranei e terrazza magnifica.",
-            map: "https://www.google.com/maps/search/?api=1&query=Alla+Giudecca+Ortigia+Siracusa"
-          },
-          {
-            id: "syr_opt3",
-            tier: "Charme & Fronte Mare",
-            name: "Algilà Ortigia Charme Hotel",
-            rating: "9.5 / 10 (Eccezionale)",
-            estPrice: 180,
-            nights: 3,
-            totalEst: 540,
-            desc: "Hotel di charme fronte mare con arredi d'epoca siciliani e servizio a 4 stelle di altissimo livello.",
-            map: "https://www.google.com/maps/search/?api=1&query=Algila+Ortigia+Charme+Hotel+Siracusa"
-          }
-        ]
-      },
-      {
-        city: "Taormina (1 Notte: 14 Set)",
-        options: [
-          {
-            id: "tao_opt1",
-            tier: "Smart / Best Value",
-            name: "B&B Taormina Bedda / Villa Schuler dependance",
-            rating: "9.1 / 10 (Eccellente)",
-            estPrice: 95,
-            nights: 1,
-            totalEst: 95,
-            desc: "A 5 minuti a piedi dal centro storico di Taormina, comodo per l'accesso ai parcheggi Lumbi.",
-            map: "https://www.google.com/maps/search/?api=1&query=BB+Taormina+centro"
-          },
-          {
-            id: "tao_opt2",
-            tier: "Panoramico / Medio (Consigliato)",
-            name: "Hotel Continental Taormina / Villa Ducale",
-            rating: "9.2 / 10 (Superlativo)",
-            estPrice: 140,
-            nights: 1,
-            totalEst: 140,
-            desc: "Terrazza panoramica con vista spettacolare sulla baia di Naxos e sull'Etna.",
-            map: "https://www.google.com/maps/search/?api=1&query=Hotel+Continental+Taormina"
-          },
-          {
-            id: "tao_opt3",
-            tier: "Charme & Lusso Storico",
-            name: "Hotel Villa Schuler Taormina",
-            rating: "9.6 / 10 (Leggendario)",
-            estPrice: 240,
-            nights: 1,
-            totalEst: 240,
-            desc: "Boutique hotel storico fondato nel 1905 con giardini botanici esotici e terrazza mozzafiato.",
-            map: "https://www.google.com/maps/search/?api=1&query=Hotel+Villa+Schuler+Taormina"
-          }
-        ]
       }
     ];
 
     const DEFAULT_FOOD = [
       {
-        city: "Catania",
+        city: "Catania & Riviera dei Ciclopi",
         lunch: [
           {
             name: "Chiosco & Bar Litorale Playa (Giorno di Mare)",
@@ -1079,9 +1129,9 @@ html_content = '''<!DOCTYPE html>
           },
           {
             name: "Pasticceria Savia (Giorno in Centro)",
-            type: "Tempio dell'arancino e tavola calda a piedi dal centro",
+            type: "Tempio dell'arancino e tavola calda a piedi dall'alloggio",
             priceEst: "5 - 9 € a persona",
-            desc: "L'arancino al ragù e alla catanese più famoso della città, comodamente a piedi vicino all'alloggio.",
+            desc: "L'arancino al ragù e alla catanese più famoso della città, comodamente a piedi da Via D'Amico.",
             map: "https://www.google.com/maps/search/?api=1&query=Pasticceria+Savia+Catania"
           }
         ],
@@ -1122,14 +1172,14 @@ html_content = '''<!DOCTYPE html>
         ],
         dinner: [
           {
-            name: "Trattoria La Foglia (Ortigia - A piedi)",
+            name: "Trattoria La Foglia (Ortigia)",
             type: "Trattoria poetica & ricette tradizionali",
             priceEst: "28 - 35 € a persona",
             desc: "Cucina ricca di erbe spontanee, caponata bianca, spaghetti alla siracusana e pesce fresco.",
             map: "https://www.google.com/maps/search/?api=1&query=Trattoria+La+Foglia+Ortigia+Siracusa"
           },
           {
-            name: "Osteria da Mariano (Ortigia - A piedi)",
+            name: "Osteria da Mariano (Ortigia)",
             type: "Cucina schietta casalinga",
             priceEst: "25 - 32 € a persona",
             desc: "Trattoria accogliente no-trap. Pasta coi broccoli arriminati, parmigiana e frittura di paranza dorata.",
@@ -1138,7 +1188,7 @@ html_content = '''<!DOCTYPE html>
         ]
       },
       {
-        city: "Noto & Marzamemi",
+        city: "Noto, Marzamemi & Modica",
         lunch: [
           {
             name: "Liccamùciula / Piazza Marzamemi",
@@ -1160,45 +1210,30 @@ html_content = '''<!DOCTYPE html>
             name: "Trattoria del Crocifisso (Noto)",
             type: "Trattoria tipica nel centro storico di Noto",
             priceEst: "28 - 36 € a persona",
-            desc: "Cavatelli alla siracusana, carni iblee e sapori tradizionali dopo la passeggiata al tramonto.",
+            desc: "Cavatelli alla siracusana, carni iblee e sapori tradizionali durante la serata a Noto.",
             map: "https://www.google.com/maps/search/?api=1&query=Trattoria+del+Crocifisso+Noto"
+          },
+          {
+            name: "Antica Dolceria Bonajuto (Modica)",
+            type: "La più antica fabbrica di cioccolato di Sicilia (fondata nel 1880)",
+            priceEst: "4 - 8 € a persona",
+            desc: "Degustazione del celebre cioccolato artigianale modicano lavorato a freddo secondo la ricetta azteca.",
+            map: "https://www.google.com/maps/search/?api=1&query=Antica+Dolceria+Bonajuto+Modica"
           }
         ]
       },
       {
-        city: "Taormina & Giardini Naxos",
+        city: "Taormina (Sosta Rientro Mar 15)",
         lunch: [
           {
-            name: "Ristoro / Bar Lungomare Giardini Naxos",
-            type: "Pranzo direttamente alla baia prima di salire a Taormina",
-            priceEst: "7 - 12 € a persona",
-            desc: "Panino con pesce spada o insalata fresca a 20 metri dalla sabbia senza spostamenti.",
-            map: "https://www.google.com/maps/search/?api=1&query=Lungomare+Giardini+Naxos"
-          },
-          {
-            name: "Bam Bar (Taormina - A piedi)",
+            name: "Bam Bar (Taormina)",
             type: "La granita più celebre di Sicilia",
             priceEst: "6 - 10 € a persona",
-            desc: "Granita artigianale soffice come velluto servita con panna e brioche calda.",
+            desc: "Granita artigianale soffice come velluto servita con panna e brioche calda durante la sosta a Taormina.",
             map: "https://www.google.com/maps/search/?api=1&query=Bam+Bar+Taormina"
           }
         ],
-        dinner: [
-          {
-            name: "Osteria RossoDiVino (Taormina - A piedi)",
-            type: "Osteria genuina nei vicoli storici",
-            priceEst: "35 - 45 € a persona",
-            desc: "Fuori dai circuiti turistici di massa, ottimi crudi di mare, pasta fresca e vini dell'Etna.",
-            map: "https://www.google.com/maps/search/?api=1&query=Osteria+RossoDiVino+Taormina"
-          },
-          {
-            name: "Trattoria Tiramisù (Taormina - A piedi)",
-            type: "Cucina marinara siciliana sincera",
-            priceEst: "32 - 40 € a persona",
-            desc: "Locale curato e autentico, pasta con le sarde, grigliata di calamari e prezzi onesti.",
-            map: "https://www.google.com/maps/search/?api=1&query=Trattoria+Tiramisu+Taormina"
-          }
-        ]
+        dinner: []
       }
     ];
 
@@ -1209,11 +1244,12 @@ html_content = '''<!DOCTYPE html>
       budget: 2000,
       days: DEFAULT_DAYS,
       expenses: DEFAULT_EXPENSES,
-      dayNotes: {}
+      dayNotes: {},
+      daySelectedOption: {}
     };
 
     function loadState() {
-      const saved = localStorage.getItem('sicily_planner_v3_state');
+      const saved = localStorage.getItem('sicily_planner_fluid_v5');
       if (saved) {
         try {
           appState = JSON.parse(saved);
@@ -1224,13 +1260,13 @@ html_content = '''<!DOCTYPE html>
     }
 
     function saveState() {
-      localStorage.setItem('sicily_planner_v3_state', JSON.stringify(appState));
+      localStorage.setItem('sicily_planner_fluid_v5', JSON.stringify(appState));
       updateBudgetCalculations();
     }
 
     function resetToDefaults() {
-      if (confirm("Sei sicuro di voler ripristinare tutti i dati e le spese iniziali?")) {
-        localStorage.removeItem('sicily_planner_v3_state');
+      if (confirm("Ripristinare l'itinerario fluido ottimizzato con tutte le attrazioni (Orecchio di Dionisio, Noto, Ciclopi, Modica)?")) {
+        localStorage.removeItem('sicily_planner_fluid_v5');
         appState = {
           budget: 2000,
           days: DEFAULT_DAYS,
@@ -1264,6 +1300,14 @@ html_content = '''<!DOCTYPE html>
     // ==========================================
     // RENDERING FUNCTIONS
     // ==========================================
+    
+    function setDayOption(dayId, optKey) {
+      if (!appState.daySelectedOption) appState.daySelectedOption = {};
+      appState.daySelectedOption[dayId] = optKey;
+      saveState();
+      renderDays();
+    }
+
     function renderDays() {
       const container = document.getElementById('daysListContainer');
       container.innerHTML = '';
@@ -1283,21 +1327,86 @@ html_content = '''<!DOCTYPE html>
             </div>
             
             <div class="flex flex-wrap items-center gap-2 self-start sm:self-center">
-              <button onclick="openEditHotelModal('${d.id}')" class="no-print text-xs font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition" title="Cambia Alloggio">
-                <i class="fa-solid fa-hotel"></i> <span>${d.hotelName || d.hotelCity}</span> <i class="fa-solid fa-pen text-[10px]"></i>
-              </button>
+              <a href="${d.hotelMap}" target="_blank" class="text-xs font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition" title="Vedi Alloggio su Mappa">
+                <i class="fa-solid fa-hotel"></i> <span>${d.hotelName || d.hotelCity}</span> <i class="fa-solid fa-location-dot text-[10px]"></i>
+              </a>
 
               <button onclick="printSingleDay('${d.id}')" class="btn-keep-print text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition shadow-sm" title="Stampa solo la scheda di questa giornata">
-                <i class="fa-solid fa-print text-sicily-sea"></i> <span>Stampa Questo Giorno</span>
+                <i class="fa-solid fa-print text-sicily-sea"></i> <span>Stampa Giorno</span>
               </button>
             </div>
           </div>
 
           <!-- Logistica badge del giorno -->
           <div class="mt-3 bg-slate-50 px-3.5 py-2 rounded-xl border border-slate-200/80 text-xs font-medium text-slate-700 flex items-center gap-2">
-            <i class="fa-solid fa-compass text-sicily-sea"></i>
+            <i class="fa-solid fa-route text-sicily-sea"></i>
             <span><strong>Logistica Giornaliera:</strong> ${d.logisticsBadge}</span>
           </div>
+
+          <!-- Orari & Flusso Continuo della Giornata -->
+          ${d.schedule ? `
+          <div class="mt-2.5 bg-gradient-to-r from-amber-50/90 via-sky-50/70 to-indigo-50/90 p-3 rounded-xl border border-amber-200/70 text-xs text-slate-800">
+            <div class="flex items-center gap-1.5 font-bold text-slate-900 mb-2">
+              <i class="fa-solid fa-clock text-amber-600"></i>
+              <span>Orari & Spostamenti Consigliati (Nessun tempo sprecato):</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div class="bg-white/85 p-2 rounded-lg border border-slate-200/60 shadow-xs">
+                <span class="block text-[10px] uppercase font-bold text-amber-800"><i class="fa-solid fa-sun text-amber-500 mr-1"></i> Partenza Mattina</span>
+                <span class="font-extrabold text-slate-900 text-xs">${d.schedule.departure}</span>
+                <span class="block text-[10px] text-slate-500 mt-0.5">Tragitto: <strong>${d.schedule.travelTime}</strong></span>
+              </div>
+              <div class="bg-white/85 p-2 rounded-lg border border-slate-200/60 shadow-xs">
+                <span class="block text-[10px] uppercase font-bold text-emerald-800"><i class="fa-solid fa-utensils text-emerald-500 mr-1"></i> Pranzo Leggero</span>
+                <span class="font-extrabold text-slate-900 text-xs">${d.schedule.lunchTime}</span>
+                <span class="block text-[10px] text-slate-500 mt-0.5">${d.schedule.lunchLocation}</span>
+              </div>
+              <div class="bg-white/85 p-2 rounded-lg border border-slate-200/60 shadow-xs">
+                <span class="block text-[10px] uppercase font-bold text-sky-800"><i class="fa-solid fa-compass text-sky-500 mr-1"></i> Pomeriggio & Visite</span>
+                <span class="font-extrabold text-slate-900 text-xs">${d.schedule.afternoonFlow}</span>
+                <span class="block text-[10px] text-amber-700 font-semibold mt-0.5"><i class="fa-solid fa-sun text-amber-500"></i> ${d.schedule.sunsetInfo || 'Tramonto: ~19:12'}</span>
+              </div>
+              <div class="bg-white/85 p-2 rounded-lg border border-slate-200/60 shadow-xs">
+                <span class="block text-[10px] uppercase font-bold text-purple-800"><i class="fa-solid fa-moon text-purple-500 mr-1"></i> Cena & Serata</span>
+                <span class="font-extrabold text-slate-900 text-xs">${d.schedule.dinnerTime}</span>
+                <span class="block text-[10px] text-slate-500 mt-0.5">Atmosfera serale & relax</span>
+              </div>
+            </div>
+          </div>
+          ` : ''}
+
+          <!-- SELETTORE OPZIONI DEL POMERIGGIO: CON O SENZA RIENTRO -->
+          ${(d.optionA && d.optionB) ? `
+          <div class="mt-4 p-3.5 rounded-xl bg-slate-100/80 border border-slate-200">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+              <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                <i class="fa-solid fa-code-fork text-sicily-sea"></i> Scegli come proseguire il pomeriggio:
+              </span>
+              <div class="inline-flex rounded-lg p-0.5 bg-slate-200 border border-slate-300 text-xs font-semibold">
+                <button onclick="setDayOption('${d.id}', 'A')" class="px-3 py-1 rounded-md transition ${(!appState.daySelectedOption[d.id] || appState.daySelectedOption[d.id] === 'A') ? 'bg-sicily-seadeep text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'}">
+                  🚗 Opzione A: Tour Continuo (Senza Rientro)
+                </button>
+                <button onclick="setDayOption('${d.id}', 'B')" class="px-3 py-1 rounded-md transition ${(appState.daySelectedOption[d.id] === 'B') ? 'bg-amber-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'}">
+                  🏠 Opzione B: Rientro Doccia & Relax
+                </button>
+              </div>
+            </div>
+            
+            <div class="text-xs bg-white p-2.5 rounded-lg border border-slate-200/70 text-slate-700 leading-relaxed">
+              ${(!appState.daySelectedOption[d.id] || appState.daySelectedOption[d.id] === 'A') ? `
+                <div class="flex items-start gap-2">
+                  <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[11px] whitespace-nowrap">Opzione A Attiva</span>
+                  <span><strong>${d.optionA.title}:</strong> ${d.optionA.desc} <br><span class="text-slate-500 font-medium">Flusso: ${d.optionA.flow}</span></span>
+                </div>
+              ` : `
+                <div class="flex items-start gap-2">
+                  <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold text-[11px] whitespace-nowrap">Opzione B Attiva</span>
+                  <span><strong>${d.optionB.title}:</strong> ${d.optionB.desc} <br><span class="text-slate-500 font-medium">Flusso: ${d.optionB.flow}</span></span>
+                </div>
+              `}
+            </div>
+          </div>
+          ` : ''}
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
             <!-- MATTINA -->
@@ -1346,30 +1455,36 @@ html_content = '''<!DOCTYPE html>
               </div>
             </div>
 
-            <!-- POMERIGGIO -->
-            <div class="bg-sky-50/60 p-4 rounded-xl border border-sky-200/60 flex flex-col justify-between">
-              <div>
-                <div class="flex justify-between items-start">
-                  <span class="text-xs font-bold uppercase tracking-wider text-sky-800 flex items-center gap-1">
-                    <i class="fa-solid fa-landmark"></i> Pomeriggio & Cultura
-                  </span>
-                  <button onclick="openEditSlotModal('${d.id}', 'afternoon', 'Attività del Pomeriggio')" class="no-print text-xs text-sky-900 bg-sky-200/70 hover:bg-sky-300 px-2 py-0.5 rounded flex items-center gap-1 font-semibold">
-                    <i class="fa-solid fa-pen text-[10px]"></i> Modifica
-                  </button>
+            <!-- POMERIGGIO DINAMICO (OPZIONE A O B) -->
+            ${(() => {
+              const isB = (appState.daySelectedOption && appState.daySelectedOption[d.id] === 'B');
+              const actOpt = isB && d.optionB ? d.optionB : (d.optionA || d.afternoon);
+              return `
+              <div class="${isB ? 'bg-amber-50/70 border-amber-200/70' : 'bg-sky-50/60 border-sky-200/60'} p-4 rounded-xl border flex flex-col justify-between">
+                <div>
+                  <div class="flex justify-between items-start">
+                    <span class="text-xs font-bold uppercase tracking-wider ${isB ? 'text-amber-800' : 'text-sky-800'} flex items-center gap-1">
+                      <i class="fa-solid ${isB ? 'fa-house-chimney' : 'fa-landmark'}"></i> Pomeriggio • ${actOpt.tag || 'Visita'}
+                    </span>
+                    <button onclick="openEditSlotModal('${d.id}', 'afternoon', 'Attività del Pomeriggio')" class="no-print text-xs ${isB ? 'text-amber-900 bg-amber-200/70 hover:bg-amber-300' : 'text-sky-900 bg-sky-200/70 hover:bg-sky-300'} px-2 py-0.5 rounded flex items-center gap-1 font-semibold">
+                      <i class="fa-solid fa-pen text-[10px]"></i> Modifica
+                    </button>
+                  </div>
+                  <h4 class="font-bold text-slate-900 text-sm mt-1.5">${actOpt.title}</h4>
+                  <p class="text-xs text-slate-600 mt-1 leading-relaxed">${actOpt.desc}</p>
                 </div>
-                <h4 class="font-bold text-slate-900 text-sm mt-1.5">${d.afternoon.title}</h4>
-                <p class="text-xs text-slate-600 mt-1 leading-relaxed">${d.afternoon.desc}</p>
+                <div class="mt-3 pt-2 border-t ${isB ? 'border-amber-200/50' : 'border-sky-200/50'}">
+                  ${actOpt.map && actOpt.map !== '#' ? `
+                    <a href="${actOpt.map}" target="_blank" class="inline-flex items-center gap-1 text-xs font-semibold text-sicily-sea hover:underline">
+                      <i class="fa-solid fa-map-location-dot"></i> Vedi su Google Maps
+                    </a>
+                  ` : '<span class="text-xs text-slate-400">Nessun link mappa</span>'}
+                </div>
               </div>
-              <div class="mt-3 pt-2 border-t border-sky-200/50">
-                ${d.afternoon.map && d.afternoon.map !== '#' ? `
-                  <a href="${d.afternoon.map}" target="_blank" class="inline-flex items-center gap-1 text-xs font-semibold text-sicily-sea hover:underline">
-                    <i class="fa-solid fa-map-location-dot"></i> Vedi su Google Maps
-                  </a>
-                ` : '<span class="text-xs text-slate-400">Nessun link mappa</span>'}
-              </div>
-            </div>
+              `;
+            })()}
 
-            <!-- CENA A PIEDI -->
+            <!-- CENA -->
             <div class="bg-rose-50/60 p-4 rounded-xl border border-rose-200/60 flex flex-col justify-between">
               <div>
                 <div class="flex justify-between items-start">
@@ -1397,10 +1512,10 @@ html_content = '''<!DOCTYPE html>
           <div class="mt-4 pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div class="flex-grow w-full flex items-center gap-2">
               <label class="text-xs font-semibold text-slate-500 whitespace-nowrap"><i class="fa-regular fa-pen-to-square"></i> Note Giorno:</label>
-              <input type="text" value="${note}" placeholder="Aggiungi note personali su orari o preferenze..." class="w-full text-xs px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:ring-1 focus:ring-sicily-sea focus:outline-none" onchange="updateDayNote('${d.id}', this.value)">
+              <input type="text" value="${note}" placeholder="Aggiungi note personali..." class="w-full text-xs px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:ring-1 focus:ring-sicily-sea focus:outline-none" onchange="updateDayNote('${d.id}', this.value)">
             </div>
             <button onclick="quickAddExpenseForDay('${d.dateKey}', '${d.title}')" class="no-print text-xs font-bold text-emerald-700 bg-emerald-100 hover:bg-emerald-200 px-3 py-1.5 rounded-lg flex items-center gap-1 whitespace-nowrap transition">
-              <i class="fa-solid fa-plus-circle"></i> + Spesa per questo giorno
+              <i class="fa-solid fa-plus-circle"></i> + Spesa giorno
             </button>
           </div>
         `;
@@ -1409,7 +1524,6 @@ html_content = '''<!DOCTYPE html>
     }
 
     function renderBudgetDashboard() {
-      // 1. Calculations
       const budgetInput = document.getElementById('totalBudgetInput');
       appState.budget = parseFloat(budgetInput.value) || 2000;
 
@@ -1465,7 +1579,7 @@ html_content = '''<!DOCTYPE html>
         ? "bg-rose-500 h-4 rounded-full transition-all duration-500" 
         : "bg-gradient-to-r from-emerald-500 to-sicily-sea h-4 rounded-full transition-all duration-500";
 
-      // 2. Render Category Breakdown Bars
+      // Render Category Bars
       const catContainer = document.getElementById('categoryBarsContainer');
       catContainer.innerHTML = '';
       Object.keys(catTotals).forEach(catKey => {
@@ -1478,7 +1592,7 @@ html_content = '''<!DOCTYPE html>
               <span class="text-slate-700 flex items-center gap-1.5">
                 <i class="fa-solid ${item.icon} text-${item.color}-600"></i> ${catKey}
               </span>
-              <span class="text-slate-900 font-bold">${item.act.toFixed(2)} € <span class="text-slate-400 text-[11px]">(${catPct}% del totale)</span></span>
+              <span class="text-slate-900 font-bold">${item.act.toFixed(2)} € <span class="text-slate-400 text-[11px]">(${catPct}%)</span></span>
             </div>
             <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200">
               <div class="${item.bg} h-2.5 rounded-full" style="width: ${Math.min(100, catPct)}%"></div>
@@ -1488,7 +1602,7 @@ html_content = '''<!DOCTYPE html>
         catContainer.appendChild(barEl);
       });
 
-      // 3. Render Daily Breakdown List
+      // Render Daily Breakdown List
       const dailyContainer = document.getElementById('dailyExpensesBreakdown');
       dailyContainer.innerHTML = '';
       Object.keys(dailyTotals).forEach(dateKey => {
@@ -1607,64 +1721,6 @@ html_content = '''<!DOCTYPE html>
       });
     }
 
-    function renderHotels() {
-      const container = document.getElementById('hotelsContainer');
-      container.innerHTML = '';
-
-      DEFAULT_HOTELS.forEach(cityGroup => {
-        const groupEl = document.createElement('div');
-        groupEl.className = "bg-white p-6 rounded-2xl shadow-sm border border-slate-200 card-print";
-        
-        let optionsHtml = '';
-        cityGroup.options.forEach(opt => {
-          optionsHtml += `
-            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 flex flex-col justify-between transition hover:border-sicily-gold">
-              <div>
-                <div class="flex justify-between items-start gap-2">
-                  <span class="px-2 py-0.5 rounded-md text-xs font-bold ${opt.tier.includes('Best') ? 'bg-amber-100 text-amber-800' : opt.tier.includes('Charme') ? 'bg-purple-100 text-purple-800' : 'bg-slate-200 text-slate-700'}">
-                    ${opt.tier}
-                  </span>
-                  <span class="text-xs font-bold text-emerald-700 flex items-center gap-1">
-                    <i class="fa-solid fa-star text-amber-400"></i> ${opt.rating}
-                  </span>
-                </div>
-                <h4 class="font-serif font-bold text-base text-slate-900 mt-2">${opt.name}</h4>
-                <p class="text-xs text-slate-600 mt-1 leading-relaxed">${opt.desc}</p>
-              </div>
-
-              <div class="mt-4 pt-3 border-t border-slate-200 flex flex-col gap-2">
-                <div class="flex justify-between items-baseline">
-                  <span class="text-xs text-slate-500">Stima (${opt.nights} ${opt.nights > 1 ? 'notti' : 'notte'}):</span>
-                  <span class="text-sm font-bold text-slate-800">~${opt.totalEst} € <span class="text-xs font-normal text-slate-500">(${opt.estPrice}€/nt)</span></span>
-                </div>
-                <div class="flex items-center justify-between gap-2 mt-1">
-                  <a href="${opt.map}" target="_blank" class="text-xs font-semibold text-sicily-sea hover:underline flex items-center gap-1">
-                    <i class="fa-solid fa-map-location-dot"></i> Valuta su Mappa
-                  </a>
-                  <button onclick="applyHotelToDays('${cityGroup.city.split(' ')[0]}', '${opt.name}', '${opt.map}')" class="no-print px-3 py-1 text-xs font-semibold rounded-lg bg-sicily-seadeep text-white hover:bg-sicily-sea transition flex items-center gap-1">
-                    <i class="fa-solid fa-check"></i> Scegli per l'itinerario
-                  </button>
-                </div>
-              </div>
-            </div>
-          `;
-        });
-
-        groupEl.innerHTML = `
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-2 mb-4">
-            <h3 class="font-serif font-bold text-xl text-slate-900 flex items-center gap-2">
-              <i class="fa-solid fa-location-dot text-sicily-terra"></i> ${cityGroup.city}
-            </h3>
-            <span class="text-xs text-slate-500 font-medium">Clicca per applicare all'itinerario o modificare</span>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            ${optionsHtml}
-          </div>
-        `;
-        container.appendChild(groupEl);
-      });
-    }
-
     function renderFood() {
       const container = document.getElementById('foodContainer');
       container.innerHTML = '';
@@ -1692,11 +1748,11 @@ html_content = '''<!DOCTYPE html>
           </div>
         `).join('');
 
-        let dinnerHtml = f.dinner.map(d => `
+        let dinnerHtml = f.dinner ? f.dinner.map(d => `
           <div class="bg-rose-50/50 p-4 rounded-xl border border-rose-200/60 flex flex-col justify-between">
             <div>
               <div class="flex justify-between items-start">
-                <span class="text-xs font-bold text-rose-800 uppercase tracking-wider">Cena Tipica (A piedi)</span>
+                <span class="text-xs font-bold text-rose-800 uppercase tracking-wider">Cena Tipica</span>
                 <span class="text-xs font-bold text-slate-600">${d.priceEst}</span>
               </div>
               <h4 class="font-bold text-slate-900 text-sm mt-1">${d.name}</h4>
@@ -1709,7 +1765,7 @@ html_content = '''<!DOCTYPE html>
               </a>
             </div>
           </div>
-        `).join('');
+        `).join('') : '';
 
         groupEl.innerHTML = `
           <h3 class="font-serif font-bold text-xl text-slate-900 pb-3 border-b border-slate-100 flex items-center gap-2 mb-4">
@@ -1720,10 +1776,12 @@ html_content = '''<!DOCTYPE html>
               <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Opzioni Pranzo Leggero (Sul Posto)</h4>
               ${lunchHtml}
             </div>
-            <div class="space-y-3">
-              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Opzioni Cena Autentica (A Piedi)</h4>
-              ${dinnerHtml}
-            </div>
+            ${dinnerHtml ? `
+              <div class="space-y-3">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Opzioni Cena Tipica</h4>
+                ${dinnerHtml}
+              </div>
+            ` : ''}
           </div>
         `;
         container.appendChild(groupEl);
@@ -1774,31 +1832,6 @@ html_content = '''<!DOCTYPE html>
       }
 
       closeEditSlotModal();
-    }
-
-    function openEditHotelModal(dayId) {
-      const dayObj = appState.days.find(d => d.id === dayId);
-      if (!dayObj) return;
-
-      const newHotel = prompt(`Modifica alloggio per ${dayObj.date}:`, dayObj.hotelName || dayObj.hotelCity);
-      if (newHotel !== null && newHotel.trim() !== '') {
-        dayObj.hotelName = newHotel.trim();
-        dayObj.hotelMap = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(newHotel.trim())}`;
-        saveState();
-        renderDays();
-      }
-    }
-
-    function applyHotelToDays(cityKey, hotelName, hotelMap) {
-      appState.days.forEach(d => {
-        if (d.hotelCity.includes(cityKey)) {
-          d.hotelName = hotelName;
-          d.hotelMap = hotelMap;
-        }
-      });
-      saveState();
-      renderDays();
-      alert(`Alloggio "${hotelName}" applicato con successo per le notti a ${cityKey}!`);
     }
 
     function openNewExpenseModal() {
@@ -1894,7 +1927,6 @@ html_content = '''<!DOCTYPE html>
     function renderAll() {
       renderDays();
       renderBeaches();
-      renderHotels();
       renderFood();
       renderBudgetDashboard();
     }
@@ -1912,4 +1944,4 @@ html_content = '''<!DOCTYPE html>
 with open('c:/Users/Utente/Desktop/ricircolo/sicily/index.html', 'w', encoding='utf-8') as f:
     f.write(html_content)
 
-print("index.html successfully updated with dynamic edits, full expense reporting, and single-day printing!")
+print("index.html successfully updated with fluid, non-stop sightseeing itinerary!")
