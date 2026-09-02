@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cicerone Gemini | La tua Guida Vocale Intelligente in Sicilia</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+          },
+          colors: {
+            sicily: {
+              gold: '#E5A93C',
+              terra: '#C85A32',
+              sea: '#1E6F8C',
+              seadeep: '#0F3C4C',
+              sand: '#F7F4EA',
+              card: '#FFFFFF',
+              dark: '#111827'
+            }
+          },
+          animation: {
+            'pulse-fast': 'pulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'wave-bar': 'waveBar 1s ease-in-out infinite alternate',
+          },
+          keyframes: {
+            waveBar: {
+              '0%': { height: '6px' },
+              '100%': { height: '28px' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #C85A32; border-radius: 4px; }
+
+    /* Audio wave styling */
+    .wave-container {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 32px;
+    }
+    .wave-bar {
+      width: 4px;
+      background: linear-gradient(to top, #E5A93C, #C85A32);
+      border-radius: 9999px;
+      transition: height 0.2s ease;
+    }
+
+    /* Floating microphone glow */
+    .mic-glow {
+      box-shadow: 0 0 25px rgba(200, 90, 50, 0.55);
+    }
+    .speaking-glow {
+      box-shadow: 0 0 30px rgba(30, 111, 140, 0.6);
+    }
+  </style>
+</head>
+<body class="bg-[#F7F4EA] text-gray-800 font-sans min-h-screen flex flex-col selection:bg-sicily-gold selection:text-white pb-24 md:pb-8">
+
+  <!-- TOP NAVBAR -->
+  <nav class="bg-sicily-seadeep text-white sticky top-0 z-40 shadow-lg border-b border-white/10">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-sicily-gold to-sicily-terra flex items-center justify-center text-white shadow">
+          <i class="fa-solid fa-headset text-lg"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-serif font-bold text-lg leading-tight tracking-wide text-white">Cicerone Gemini</h1>
+            <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-sicily-gold/30 text-sicily-gold border border-sicily-gold/40">Sicilia AI</span>
+          </div>
+          <p class="text-xs text-gray-300">La tua guida turistica e narratore dal vivo</p>
+        </div>
+      </div>
+
+      <!-- Action buttons in header -->
+      <div class="flex items-center space-x-2">
+        <button id="btn-open-settings" onclick="openSettingsModal()" class="flex items-center space-x-1.5 bg-white/10 hover:bg-white/20 active:scale-95 text-xs font-semibold px-3 py-1.5 rounded-xl transition border border-white/10">
+          <i class="fa-solid fa-key text-sicily-gold" id="key-icon-status"></i>
+          <span id="key-label-status">API Key</span>
+        </button>
+        <a href="index.html" class="flex items-center space-x-1 bg-white/5 hover:bg-white/15 text-xs text-gray-300 hover:text-white px-2.5 py-1.5 rounded-xl transition border border-white/5" title="Torna all'Itinerario">
+          <i class="fa-solid fa-map"></i>
+          <span class="hidden sm:inline">Itinerario</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-4xl mx-auto px-4 pt-4 pb-8 flex-1 w-full space-y-4">
+
+    <!-- GPS & RADAR SECTION -->
+    <div class="bg-white rounded-2xl shadow-sm border border-orange-100/70 p-4 relative overflow-hidden">
+      <div class="absolute -right-10 -bottom-10 opacity-5 pointer-events-none text-9xl text-sicily-terra">
+        <i class="fa-solid fa-compass"></i>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <div class="flex items-center space-x-2">
+          <span class="relative flex h-3 w-3">
+            <span id="gps-pulse" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span id="gps-dot" class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+          </span>
+          <span class="text-xs font-bold uppercase tracking-wider text-gray-500" id="gps-status-text">GPS: Pronto</span>
+        </div>
+
+        <!-- Quick location simulator dropdown -->
+        <div class="flex items-center space-x-2 text-xs">
+          <span class="text-gray-500 hidden sm:inline"><i class="fa-solid fa-location-crosshairs mr-1"></i>Posizione:</span>
+          <select id="location-select" onchange="onLocationSelectChange(this.value)" class="bg-sicily-sand border border-orange-200 text-gray-700 text-xs rounded-lg px-2.5 py-1.5 font-medium focus:ring-2 focus:ring-sicily-gold focus:outline-none">
+            <option value="gps">📍 Usa GPS Reale Dispositivo</option>
+            <optgroup label="Simula Tappa Itinerario:">
+              <option value="duomo_siracusa" selected>Ortigia - Piazza Duomo (Siracusa)</option>
+              <option value="fonte_aretusa">Ortigia - Fonte Aretusa</option>
+              <option value="neapolis">Siracusa - Teatro Greco & Orecchio di Dionisio</option>
+              <option value="noto_cattedrale">Noto - Cattedrale di San Nicolò</option>
+              <option value="vendicari">Riserva di Vendicari & Tonnara</option>
+              <option value="marzamemi">Marzamemi - Borgo Marinaro</option>
+              <option value="ragusa_ibla">Ragusa Ibla - Duomo di San Giorgio</option>
+              <option value="modica">Modica - Duomo & Cioccolato</option>
+              <option value="taormina_teatro">Taormina - Teatro Antico</option>
+              <option value="isola_bella">Taormina - Isola Bella</option>
+              <option value="etna_sapienza">Etna Sud - Crateri Silvestri / Rifugio Sapienza</option>
+              <option value="alcantara">Gole dell'Alcantara</option>
+              <option value="catania_duomo">Catania - Piazza Duomo & Liotru</option>
+              <option value="agrigento_templi">Valle dei Templi - Agrigento</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+
+      <!-- Current Location Info Card -->
+      <div class="bg-gradient-to-r from-orange-50/80 to-amber-50/50 rounded-xl p-3.5 border border-orange-100 flex items-center justify-between">
+        <div class="flex items-start space-x-3">
+          <div class="w-12 h-12 rounded-xl bg-sicily-terra text-white flex items-center justify-center text-xl shadow-md shrink-0">
+            <i class="fa-solid fa-landmark" id="poi-icon"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 class="text-base font-bold text-gray-900 leading-tight" id="poi-name">Ortigia - Piazza Duomo</h2>
+              <span id="poi-badge" class="bg-orange-200/60 text-sicily-terra text-[10px] font-bold px-2 py-0.5 rounded-full">Siracusa</span>
+            </div>
+            <p class="text-xs text-gray-600 mt-0.5 line-clamp-1" id="poi-desc">Tempio di Athena convertito in cattedrale barocca dorata</p>
+            <div class="flex items-center gap-3 text-[11px] text-gray-500 mt-1">
+              <span><i class="fa-solid fa-route text-sicily-terra mr-1"></i>Distanza: <strong id="poi-dist" class="text-gray-800">15 m</strong></span>
+              <span id="gps-coords-display" class="font-mono text-[10px] text-gray-400">37.0598, 15.2934</span>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="refreshLocation()" class="p-2 text-gray-400 hover:text-sicily-terra active:scale-95 transition" title="Rileva posizione attuale">
+          <i class="fa-solid fa-rotate text-sm"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- CICERONE LIVE PLAYER & AUDIO DISPLAY -->
+    <div class="bg-white rounded-2xl shadow-md border border-orange-100 p-5 relative overflow-hidden" id="cicerone-box">
+      <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+        <div class="flex items-center space-x-2.5">
+          <div id="cicerone-status-circle" class="w-3.5 h-3.5 rounded-full bg-emerald-500 ring-4 ring-emerald-100 transition-all"></div>
+          <div>
+            <h3 class="text-sm font-bold text-gray-800" id="cicerone-status-title">Il tuo Cicerone è pronto</h3>
+            <p class="text-[11px] text-gray-500" id="cicerone-status-sub">Tocca "Raccontami questo posto" o fai una domanda a voce</p>
+          </div>
+        </div>
+
+        <!-- Audio wave animation container (shows while speaking) -->
+        <div class="wave-container" id="audio-wave" style="opacity: 0.25;">
+          <div class="wave-bar h-2"></div>
+          <div class="wave-bar h-4"></div>
+          <div class="wave-bar h-6"></div>
+          <div class="wave-bar h-3"></div>
+          <div class="wave-bar h-5"></div>
+          <div class="wave-bar h-2"></div>
+        </div>
+      </div>
+
+      <!-- Spoken Transcript / Story Text -->
+      <div class="mt-4 bg-[#FCFBF7] rounded-xl p-4 border border-amber-100/80 min-h-[140px] max-h-[260px] overflow-y-auto" id="transcript-container">
+        <div id="welcome-message" class="text-center py-6 text-gray-400">
+          <i class="fa-solid fa-microphone-lines text-3xl mb-2 text-sicily-gold/60"></i>
+          <p class="text-sm font-medium text-gray-600">"Benvenuto in Sicilia! Sono il tuo Cicerone virtuale."</p>
+          <p class="text-xs mt-1 text-gray-400 max-w-md mx-auto">Posso narrarti la storia dei monumenti, svelarti leggende greche e indicarti i piatti tipici da assaggiare proprio dove ti trovi.</p>
+        </div>
+        <div id="story-content" class="hidden text-sm leading-relaxed text-gray-800 space-y-3 prose prose-amber font-serif">
+          <!-- Text will be injected dynamically -->
+        </div>
+      </div>
+
+      <!-- Playback Controls -->
+      <div class="mt-4 flex flex-wrap items-center justify-between gap-3 pt-2">
+        <div class="flex items-center space-x-2">
+          <button id="btn-audio-play-pause" onclick="toggleAudioPlayback()" class="hidden items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-sicily-seadeep text-white text-xs font-semibold hover:bg-opacity-90 active:scale-95 transition shadow-sm">
+            <i class="fa-solid fa-pause" id="play-pause-icon"></i>
+            <span id="play-pause-text">Pausa</span>
+          </button>
+          <button id="btn-audio-stop" onclick="stopAudioPlayback()" class="hidden items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-medium active:scale-95 transition">
+            <i class="fa-solid fa-stop"></i>
+            <span>Ferma</span>
+          </button>
+          <!-- Speech speed selector -->
+          <button onclick="cycleSpeechRate()" id="btn-rate" class="px-2.5 py-1 rounded-lg bg-amber-50 text-sicily-terra border border-amber-200 text-xs font-bold hover:bg-amber-100 transition" title="Velocità voce">
+            1.0x
+          </button>
+        </div>
+
+        <!-- Tone selector -->
+        <div class="flex items-center space-x-1.5 text-xs text-gray-500">
+          <span>Stile:</span>
+          <select id="guide-tone" class="bg-gray-50 border border-gray-200 text-gray-700 text-xs rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-sicily-terra">
+            <option value="passionate">🎭 Appassionato & Narrativo</option>
+            <option value="historical">📜 Storico & Dettagliato</option>
+            <option value="brief">⚡ Pillola Veloce (1 min)</option>
+            <option value="culinary">🍷 Gastronomico & Segreti</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS / PROMPT BUTTONS -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+      <button onclick="askCiceroneAction('explain')" class="bg-white hover:bg-orange-50/70 active:scale-95 p-3.5 rounded-xl border border-orange-200/80 shadow-sm flex flex-col items-center text-center transition group">
+        <div class="w-10 h-10 rounded-full bg-orange-100 text-sicily-terra flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition">
+          <i class="fa-solid fa-bullhorn"></i>
+        </div>
+        <span class="text-xs font-bold text-gray-800">Raccontami</span>
+        <span class="text-[10px] text-gray-500">Storia & segreti</span>
+      </button>
+
+      <button onclick="askCiceroneAction('food')" class="bg-white hover:bg-orange-50/70 active:scale-95 p-3.5 rounded-xl border border-orange-200/80 shadow-sm flex flex-col items-center text-center transition group">
+        <div class="w-10 h-10 rounded-full bg-amber-100 text-sicily-gold flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition">
+          <i class="fa-solid fa-utensils"></i>
+        </div>
+        <span class="text-xs font-bold text-gray-800">Cosa Mangiare</span>
+        <span class="text-[10px] text-gray-500">Specialità del posto</span>
+      </button>
+
+      <button onclick="askCiceroneAction('legend')" class="bg-white hover:bg-orange-50/70 active:scale-95 p-3.5 rounded-xl border border-orange-200/80 shadow-sm flex flex-col items-center text-center transition group">
+        <div class="w-10 h-10 rounded-full bg-teal-100 text-sicily-sea flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition">
+          <i class="fa-solid fa-scroll"></i>
+        </div>
+        <span class="text-xs font-bold text-gray-800">Miti & Leggende</span>
+        <span class="text-[10px] text-gray-500">Curiosità popolari</span>
+      </button>
+
+      <button onclick="triggerCameraInput()" class="bg-white hover:bg-orange-50/70 active:scale-95 p-3.5 rounded-xl border border-orange-200/80 shadow-sm flex flex-col items-center text-center transition group">
+        <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition">
+          <i class="fa-solid fa-camera"></i>
+        </div>
+        <span class="text-xs font-bold text-gray-800">Guarda Questo!</span>
+        <span class="text-[10px] text-gray-500">Foto & Visione AI</span>
+      </button>
+    </div>
+
+    <!-- HIDDEN CAMERA INPUT -->
+    <input type="file" id="camera-file-input" accept="image/*" capture="environment" class="hidden" onchange="handleImageSelected(this)">
+
+    <!-- IMAGE PREVIEW BANNER (IF LOADED) -->
+    <div id="image-preview-card" class="hidden bg-white p-3 rounded-xl border border-purple-200 shadow-sm flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <img id="image-preview-thumb" src="" alt="Anteprima" class="w-14 h-14 object-cover rounded-lg border border-gray-200 shadow-xs">
+        <div>
+          <span class="text-xs font-bold text-purple-700 flex items-center"><i class="fa-solid fa-eye mr-1"></i> Immagine Pronta per Gemini Vision</span>
+          <p class="text-[11px] text-gray-500" id="image-file-name">foto.jpg</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button onclick="analyzeSelectedImage()" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg active:scale-95 transition shadow-sm">
+          Analizza Ora
+        </button>
+        <button onclick="clearSelectedImage()" class="text-gray-400 hover:text-red-500 p-1.5 transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- CONVERSATION / Q&A LOG -->
+    <div class="bg-white rounded-2xl shadow-sm border border-orange-100 p-4">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500 flex items-center">
+          <i class="fa-solid fa-comments text-sicily-terra mr-1.5"></i> Cronologia & Domande
+        </h3>
+        <button onclick="clearChatLog()" class="text-[11px] text-gray-400 hover:text-gray-600">
+          Cancella
+        </button>
+      </div>
+
+      <div id="chat-messages" class="space-y-3 max-h-[320px] overflow-y-auto pr-1 text-sm">
+        <div class="p-3 bg-gray-50 rounded-xl text-gray-500 text-xs text-center border border-dashed border-gray-200">
+          Le domande che farai a voce o digitando appariranno qui insieme alle risposte di Gemini.
+        </div>
+      </div>
+
+      <!-- Text input fallback -->
+      <form onsubmit="handleTextInputSubmit(event)" class="mt-3 flex items-center gap-2">
+        <input type="text" id="text-user-input" placeholder="Chiedi qualcosa a Gemini sul posto..." class="flex-1 bg-sicily-sand border border-orange-200 text-gray-800 text-xs sm:text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:ring-2 focus:ring-sicily-terra">
+        <button type="submit" class="bg-sicily-terra text-white px-4 py-2.5 rounded-xl font-medium text-xs sm:text-sm hover:bg-opacity-95 active:scale-95 transition shadow-sm shrink-0">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM FIXED CONTROL BAR (MOBILE FIRST MIC BAR) -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-orange-200/80 shadow-2xl py-3 px-4 z-40">
+    <div class="max-w-md mx-auto flex items-center justify-between">
+      
+      <!-- Button: Auto Narration Toggle -->
+      <button onclick="askCiceroneAction('explain')" class="flex flex-col items-center text-gray-600 hover:text-sicily-terra active:scale-95 transition">
+        <div class="w-10 h-10 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center text-sicily-terra text-base">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+        <span class="text-[10px] font-semibold mt-1">Guida</span>
+      </button>
+
+      <!-- BIG MAIN VOICE BUTTON -->
+      <div class="relative -top-4 flex flex-col items-center">
+        <button id="btn-main-mic" onclick="toggleVoiceRecording()" class="w-16 h-16 rounded-full bg-gradient-to-tr from-sicily-terra to-sicily-gold text-white flex items-center justify-center text-2xl shadow-xl transition-all active:scale-90 hover:brightness-105 mic-glow" title="Tieni premuto o tocca per parlare">
+          <i class="fa-solid fa-microphone" id="main-mic-icon"></i>
+        </button>
+        <span id="mic-status-label" class="text-[10px] font-bold text-gray-700 mt-1 uppercase tracking-wider">Tocca e Parla</span>
+      </div>
+
+      <!-- Button: Camera -->
+      <button onclick="triggerCameraInput()" class="flex flex-col items-center text-gray-600 hover:text-purple-600 active:scale-95 transition">
+        <div class="w-10 h-10 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-600 text-base">
+          <i class="fa-solid fa-camera"></i>
+        </div>
+        <span class="text-[10px] font-semibold mt-1">Fotocamera</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- API KEY & SETTINGS MODAL -->
+  <div id="settings-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 transform transition-all">
+      <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-key text-sicily-gold text-lg"></i>
+          <h3 class="font-bold text-gray-900 text-base">Impostazioni Gemini API</h3>
+        </div>
+        <button onclick="closeSettingsModal()" class="text-gray-400 hover:text-gray-600 p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="mt-4 space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1">Chiave API Google Gemini (AI Studio):</label>
+          <input type="password" id="input-api-key" placeholder="AIzaSy..." class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2.5 font-mono text-xs focus:ring-2 focus:ring-sicily-gold focus:outline-none">
+          <p class="text-[11px] text-gray-500 mt-1.5">
+            Non hai ancora una chiave? È <strong>gratuita</strong>: puoi ottenerla in 30 secondi su 
+            <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-sicily-terra font-semibold underline">Google AI Studio</a>.
+          </p>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1">Modello Gemini:</label>
+          <select id="select-model" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-sicily-gold focus:outline-none">
+            <option value="gemini-2.5-flash">gemini-2.5-flash (Consigliato: rapido & aggiornato)</option>
+            <option value="gemini-2.0-flash">gemini-2.0-flash (Ultra veloce)</option>
+          </select>
+        </div>
+
+        <div class="bg-amber-50 rounded-xl p-3 border border-amber-200/80 text-amber-900">
+          <div class="flex items-start space-x-2">
+            <i class="fa-solid fa-shield-halved text-sicily-terra text-sm mt-0.5"></i>
+            <div>
+              <p class="font-bold">Privacy e Sicurezza Totale</p>
+              <p class="text-[11px] mt-0.5 text-amber-800">
+                La chiave viene salvata esclusivamente nel tuo browser (`localStorage`) sul tuo telefono. Non passa mai attraverso server intermedi.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2 flex items-center justify-end space-x-2">
+          <button onclick="clearApiKey()" class="px-3 py-2 rounded-xl text-gray-500 hover:text-red-500 font-medium transition">
+            Rimuovi
+          </button>
+          <button onclick="saveApiKeySettings()" class="bg-sicily-terra hover:bg-opacity-95 text-white font-bold px-5 py-2 rounded-xl active:scale-95 transition shadow-sm">
+            Salva & Attiva
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    /* =========================================================================
+       1. DATABASE DEI PUNTI D'INTERESSE SICILIANI (POI)
+       ========================================================================= */
+    const SICILY_POIS = [
+      {
+        id: 'duomo_siracusa',
+        name: 'Ortigia - Piazza Duomo',
+        city: 'Siracusa',
+        lat: 37.0598,
+        lng: 15.2934,
+        icon: 'fa-church',
+        desc: 'Antico Tempio greco dorico di Athena inglobato nel Duomo barocco.',
+        demoExplanation: `Piazza Duomo a Ortigia è una delle piazze ellittiche barocche più luminose e scenografiche del Mediterraneo. 
+Guardando la facciata del Duomo, osserva con attenzione il fianco sinistro: vedrai incastonate le enormi colonne doriche del Tempio greco di Athena del V secolo a.C. 
+Durante il terremoto del 1693 la facciata crollò ma le colonne greche ressero, permettendo di reinventare la cattedrale in stile barocco con la splendida pietra bianca e dorata dei Monti Iblei. 
+Poco più avanti si trova la Chiesa di Santa Lucia alla Badia, protettrice amatissima della città.`,
+        foodTip: 'Assaggia qui la celebre granita di mandorla d\'Avola con brioche col tuppo, oppure gli arancini al pistacchio nei vicoli circostanti.',
+        legendTip: 'Si dice che il tempio di Athena fosse visibile dai marinai fin dal mare aperto grazie allo scudo dorato della dea che rifletteva la luce del sole come un faro sacro.'
+      },
+      {
+        id: 'fonte_aretusa',
+        name: 'Ortigia - Fonte Aretusa',
+        city: 'Siracusa',
+        lat: 37.0573,
+        lng: 15.2929,
+        icon: 'fa-water',
+        desc: 'Sorgente d\'acqua dolce a due passi dal mare dove cresce il papiro spontaneo.',
+        demoExplanation: `La Fonte Aretusa è uno dei luoghi più leggendari d'Europa: uno specchio d'acqua dolce cristallina che sgorga a pochi metri dal mare salato. 
+È uno dei rarissimi luoghi europei dove cresce spontaneamente la pianta del papiro egizio, oltre alle foci del vicino fiume Ciane. 
+Al tramonto, il sole che scende sul Porto Grande crea un gioco di colori indimenticabile.`,
+        foodTip: 'Fermati per un aperitivo al tramonto con vista sul Porto Grande bevendo un calice di Nero d\'Avola o Moscato di Siracusa.',
+        legendTip: 'Secondo la mitologia, la ninfa Aretusa per sfuggire al dio fluviale Alfeo pregò Artemide che la trasformò in sorgente. Alfeo, disperato, attraversò il mar Ionio per mescolare le proprie acque a quelle dell\'amata.'
+      },
+      {
+        id: 'neapolis',
+        name: 'Parco Archeologico Neapolis & Orecchio di Dionisio',
+        city: 'Siracusa',
+        lat: 37.0755,
+        lng: 15.2789,
+        icon: 'fa-landmark',
+        desc: 'Teatro Greco intagliato nella roccia e la grotta acustica di Caravaggio.',
+        demoExplanation: `Benvenuto alla Neapolis di Siracusa, cuore della potenza greca che rivaleggiò con Atene e Cartagine. 
+Il Teatro Greco è interamente scavato nella roccia calcarea del Colle Temenite. Poco distante si apre l'Orecchio di Dionisio, una grotta a forma di padiglione auricolare celebre per la sua incredibile eco.`,
+        foodTip: 'Nelle botteghe all\'uscita prova la scaccia siracusana ripiena di pomodoro, melanzane e caciocavallo.',
+        legendTip: 'Fu il pittore Caravaggio nel 1608 a ribattezzare la grotta "Orecchio di Dionisio": la leggenda narra che il tiranno Dionisio vi rinchiudesse i prigionieri per ascoltare dall\'alto i loro sussurri grazie all\'eco acustica.'
+      },
+      {
+        id: 'noto_cattedrale',
+        name: 'Noto - Cattedrale di San Nicolò',
+        city: 'Noto',
+        lat: 36.8913,
+        lng: 15.0709,
+        icon: 'fa-crown',
+        desc: 'Capitale mondiale del Barocco patrimonio UNESCO in pietra calcarea miele.',
+        demoExplanation: `Ti trovi a Noto, la capitale del Barocco siciliano. La Cattedrale di San Nicolò domina la piazza dall'alto della sua maestosa scalinata a tre rampe. 
+Nel 1996 la cupola e la navata centrale crollarono rovinosamente: dopo anni di restauri titanici condotti da mastri scalpellini locali, è risorta esattamente come prima. 
+La pietra calcarea tenera ha la straordinaria proprietà di assorbire i raggi solari e cambiare colore: all\'alba è rosata, a mezzogiorno candida e al tramonto di un oro dorato caldissimo.`,
+        foodTip: 'Tappa obbligatoria allo storico Caffè Sicilia lungo il Corso Vittorio Emanuele per la granita ai gelsi o la cassata tradizionale.',
+        legendTip: 'I balconi di via Nicolaci, proprio a lato, sono sostenuti da figure grottesche, chimere e leoni alati scolpiti nella pietra per allontanare il malocchio e gli spiriti maligni.'
+      },
+      {
+        id: 'vendicari',
+        name: 'Riserva Naturale di Vendicari & Tonnara',
+        city: 'Noto / Pachino',
+        lat: 36.7972,
+        lng: 15.0935,
+        icon: 'fa-feather',
+        desc: 'Pantani dei fenicotteri rosa, calette incontaminate e antica tonnara sveva.',
+        demoExplanation: `Vendicari è un'oasi naturale preziosissima dove mare, storia e fauna convivono intatti. 
+Passeggiando lungo i camminamenti di legno tra macchia mediterranea e profumo di timo selvatico, si scorgono i pantani frequentati da fenicotteri rosa e aironi durante le rotte migratorie tra Europa e Africa. 
+Sulla riva si ergono i pilastri suggestivi dell'antica Tonnara del Settecento e la Torre Sveva medievale.`,
+        foodTip: 'Porta nello zaino una focaccia casereccia con pomodoro secco di Pachino, olive nere e primosale.',
+        legendTip: 'La Tonnara ha funzionato fino alla seconda guerra mondiale: i canti cadenzati dei tonnaroti (le "cialome") erano preghiere arabe e cristiane intrecciate per propiziare la pesca.'
+      },
+      {
+        id: 'marzamemi',
+        name: 'Marzamemi - Borgo Marinaro',
+        city: 'Pachino',
+        lat: 36.7431,
+        lng: 15.1182,
+        icon: 'fa-anchor',
+        desc: 'Piazza Regina Margherita, casette di pescatori e la Tonnara araba.',
+        demoExplanation: `Marzamemi nasce dalla parola araba "Marsa al-hamama" (porto delle tortore). 
+Piazza Regina Margherita sembra un set cinematografico a cielo aperto: case basse in arenaria di tufo, piante grasse nei vasi blu, il palazzo del Principe di Villadorata e due chiesette dedicate a San Francesco di Paola. 
+È uno dei borghi marittimi più affascinanti d'Italia.`,
+        foodTip: 'Gusta la bottarga di tonno rosso di tonnara, il pomodoro costoluto di Pachino e la granita alla mandorla tostata.',
+        legendTip: 'Gli arabi introdussero qui le prime tecniche ingegnose di pesca del tonno rosso con le reti a camera già nel X secolo.'
+      },
+      {
+        id: 'ragusa_ibla',
+        name: 'Ragusa Ibla - Duomo di San Giorgio',
+        city: 'Ragusa',
+        lat: 36.9262,
+        lng: 14.7438,
+        icon: 'fa-mountain-city',
+        desc: 'Gemma arroccata sul colle, 18 monumenti UNESCO e capolavoro di Rosario Gagliardi.',
+        demoExplanation: `Ragusa Ibla è un dedalo di vicoli, scalinate e palazzi nobiliare aggrappati a uno sperone di roccia. 
+Il Duomo di San Giorgio, capolavoro dell'architetto Rosario Gagliardi, si staglia obliquamente al termine di una ripida salita: la sua cupola neoclassica alta 43 metri è ispirata a quella del Pantheon di Parigi. 
+Di notte, illuminata da luci calde, Ibla sembra un presepe vivente sospeso nel tempo.`,
+        foodTip: 'Da non perdere il formaggio Caciocavallo Ragusano DOP stagionato e i "pastieri" di carne tritata.',
+        legendTip: 'La rivalità tra i residenti di Ragusa Superiore e quelli di Ibla fu così accesa dopo il terremoto del 1693 che la città ebbe per decenni due sindaci, due cattedrali e due santi patroni rivali (San Giovanni e San Giorgio).'
+      },
+      {
+        id: 'modica',
+        name: 'Modica - Capitale del Cioccolato',
+        city: 'Modica',
+        lat: 36.8637,
+        lng: 14.7619,
+        icon: 'fa-cookie-bite',
+        desc: 'Città delle cento chiese e del celebre cioccolato a lavorazione a freddo azteca.',
+        demoExplanation: `Modica si sviluppa nella confluenza di due torrenti tra ripide gole calcaree. 
+Il Duomo di San Giorgio è un trionfo scenografico con una scalinata monumentale di 250 gradini. 
+La città è rinomata nel mondo per il suo cioccolato unico, lavorato a freddo a non più di 40 gradi secondo la tradizione tramandata dai conquistadores spagnoli nel Cinquecento, che ne conserva i cristalli di zucchero croccanti.`,
+        foodTip: 'Assaggia le barrette di cioccolato modicano all\'arancia o al peperoncino e i biscotti tradizionali "'mplatigghie" (fagottini con carne e cioccolato).',
+        legendTip: 'La lavorazione a freddo del cacao modicano è l\'unica al mondo che replica fedelmente l\'antica ricetta cerimoniale azteca portata in Sicilia dagli spagnoli.'
+      },
+      {
+        id: 'taormina_teatro',
+        name: 'Taormina - Teatro Antico',
+        city: 'Taormina',
+        lat: 37.8524,
+        lng: 15.2922,
+        icon: 'fa-masks-theater',
+        desc: 'Teatro greco-romano con la vista più celebre al mondo sull\'Etna e la baia di Naxos.',
+        demoExplanation: `Sospeso tra cielo e mare a oltre 200 metri d'altitudine, il Teatro Antico di Taormina offre il panorama più celebre di tutta la Sicilia: la scena con le colonne corinzie apre la visuale direttamente sulla maestosità dell'Etna fumante e sul Golfo di Schisò. 
+Costruito dai Greci nel III secolo a.C. per le rappresentazioni drammatiche, fu poi ampliato dai Romani per i combattimenti gladiatori.`,
+        foodTip: 'Passeggiando lungo Corso Umberto ordina un cannolo siciliano farcito al momento con ricotta fresca di pecora e gocce di cioccolato.',
+        legendTip: 'Goethe nel suo "Viaggio in Italia" scrisse che sedersi in questo teatro è trovarsi di fronte al più grande spettacolo che la natura e l\'arte abbiano mai offerto agli occhi umani.'
+      },
+      {
+        id: 'isola_bella',
+        name: 'Taormina - Isola Bella',
+        city: 'Taormina',
+        lat: 37.8504,
+        lng: 15.3007,
+        icon: 'fa-umbrella-beach',
+        desc: 'La "Perla del Mediterraneo" collegata alla terraferma da una lingua di ciottoli.',
+        demoExplanation: `Isola Bella è un isolotto smeraldino unito alla spiaggia di ghiaia da una sottile striscia di terra che affiora e scompare a seconda delle maree. 
+Fu acquistata a fine Ottocento da Lady Florence Trevelyan, nobildonna inglese appassionata di botanica, che vi costruì una villa fiabesca e vi piantò specie esotiche e tropicali rare. 
+Oggi è un'area marina protetta ricca di fondali trasparenti perfetti per lo snorkeling.`,
+        foodTip: 'Un piatto di pasta con le sarde fresche, finocchietto selvatico, pinoli e mollica tostata in uno dei ristorantini sulla spiaggia.',
+        legendTip: 'Lady Florence Trevelyan fu mandata in esilio d\'onore in Sicilia dalla corte britannica dopo una scandalosa simpatia con il futuro re Edoardo VII.'
+      },
+      {
+        id: 'etna_sapienza',
+        name: 'Etna Sud - Crateri Silvestri / Rifugio Sapienza',
+        city: 'Nicolosi (Etna)',
+        lat: 37.7001,
+        lng: 14.9984,
+        icon: 'fa-volcano',
+        desc: 'Il vulcano attivo più alto d\'Europa a quota 1900m tra colate laviche e lapilli neri.',
+        demoExplanation: `Sei sulle pendici dell'Etna ("'A Muntagna" per i siciliani), il vulcano attivo più alto d'Europa e patrimonio UNESCO. 
+A 1900 metri presso il Rifugio Sapienza il paesaggio diventa lunare: rocce basaltiche nere, crateri spenti camminabili sull'orlo (i Crateri Silvestri formatisi nel 1892) e una vista che spazia fino al Golfo di Catania. 
+L'aria qui è fresca e permeata dall'odore di zolfo e ginestre selvatiche.`,
+        foodTip: 'Degusta il liquore "Fuoco dell\'Etna" a 70 gradi, il miele di zagara di Zafferana Etnea e i funghi porcini dell\'Etna.',
+        legendTip: 'I Greci credevano che sotto l\'Etna fosse intrappolato Tifone, mostro ribelle contro Zeus, e che nelle viscere del vulcano si trovasse la fucina divina di Efesto e dei Ciclopi.'
+      },
+      {
+        id: 'alcantara',
+        name: 'Gole dell\'Alcantara',
+        city: 'Motta Camastra',
+        lat: 37.8798,
+        lng: 15.1764,
+        icon: 'fa-water',
+        desc: 'Canyon di prismi basaltici scavati dalle acque ghiacciate del fiume.',
+        demoExplanation: `Le Gole dell'Alcantara sono un canyon naturale mozzafiato con pareti alte fino a 25 metri. 
+Le pareti sono composte da colonne laviche dalle curiose forme geometriche (a canne d'organo e a ventaglio), originate dal repentino raffreddamento di antichissime colate laviche a contatto con l'acqua fredda del fiume. 
+Camminare nell'acqua cristallina con i piedi immersi è un'esperienza rinfrescante e selvaggia.`,
+        foodTip: 'Gusta formaggi freschi di capra e salumi dei Monti Peloritani accompagnati da pane casereccio di grano duro.',
+        legendTip: 'Si narra che il dio Vulcano riscaldasse le acque del fiume per amore della dea Venere. Quando lei lo respinse, Vulcano per vendetta le rese gelide per l\'eternità.'
+      },
+      {
+        id: 'catania_duomo',
+        name: 'Catania - Piazza Duomo & Liotru',
+        city: 'Catania',
+        lat: 37.5025,
+        lng: 15.0872,
+        icon: 'fa-monument',
+        desc: 'L\'elefante di pietra lavica nera simbolo della città e la cattedrale di Sant\'Agata.',
+        demoExplanation: `Piazza Duomo è il cuore pulsante di Catania, capolavoro del barocco nero in pietra lavica e pietra bianca disegnato da Giovanni Battista Vaccarini dopo il terremoto del 1693. 
+Al centro troneggia "U Liotru", la fontana con l'antico elefante scolpito in basalto lavico che sostiene un obelisco egizio. 
+A fianco sorge la maestosa Cattedrale dedicata a Sant'Agata, la patrona amata visceralmente dai catanesi.`,
+        foodTip: 'Prendi un seltz limone e sale al chiosco storico di piazza Duomo, oppure prova la Pasta alla Norma con melanzane fritte e ricotta salata.',
+        legendTip: 'Il nome "Liotru" deriva dal mago bizantino Eliodoro dell\'VIII secolo, che secondo il popolo cavalcava l\'elefante magico di pietra per farsi beffe delle guardie della città.'
+      },
+      {
+        id: 'agrigento_templi',
+        name: 'Valle dei Templi - Agrigento',
+        city: 'Agrigento',
+        lat: 37.2899,
+        lng: 13.5901,
+        icon: 'fa-landmark-dome',
+        desc: 'Il parco archeologico più vasto del mondo con il Tempio della Concordia.',
+        demoExplanation: `La Valle dei Templi di Akragas è una delle testimonianze più straordinarie della civiltà greca classica. 
+Il Tempio della Concordia, conservato in modo miracoloso dal 430 a.C., si erge con le sue 34 colonne doriche dorate su un crinale affacciato sul mare. 
+Il poeta Pindaro definì Akragas "la più bella città dei mortali". Camminare qui tra ulivi secolari e mandorli è un salto nel mito.`,
+        foodTip: 'Gusta la "cavatelli all\'agrigentina" con melanzane, pomodoro e ricotta, e i dolci di pasta di mandorla preparati nei conventi.',
+        legendTip: 'La straordinaria conservazione del Tempio della Concordia si deve al vescovo Gregorio nel VI secolo d.C., che lo consacrò a basilica cristiana cacciandone, secondo la leggenda, i demoni pagani Eber e Raps.'
+      }
+    ];
+
+    /* =========================================================================
+       2. STATE & CONFIGURATION
+       ========================================================================= */
+    let currentCoords = { lat: 37.0598, lng: 15.2934 }; // Default Ortigia
+    let currentPOI = SICILY_POIS[0];
+    let isRealGPS = false;
+    let watchId = null;
+
+    // Speech & Audio state
+    let speechSynth = window.speechSynthesis || null;
+    let currentUtterance = null;
+    let isSpeaking = false;
+    let isPaused = false;
+    let speechRate = 1.0;
+    let italianVoice = null;
+
+    // Speech recognition state
+    let recognition = null;
+    let isListening = false;
+
+    // Gemini API State
+    let apiKey = localStorage.getItem('cicerone_gemini_api_key') || '';
+    let selectedModel = localStorage.getItem('cicerone_gemini_model') || 'gemini-2.5-flash';
+    let selectedImageData = null; // base64 string
+
+    /* =========================================================================
+       3. INITIALIZATION
+       ========================================================================= */
+    window.addEventListener('DOMContentLoaded', () => {
+      initSpeech();
+      updateApiKeyStatusBadge();
+      updatePoiDisplay(currentPOI, 15);
+
+      // Check if user already saved key
+      const savedKeyInput = document.getElementById('input-api-key');
+      if (savedKeyInput && apiKey) {
+        savedKeyInput.value = apiKey;
+      }
+      const modelSelect = document.getElementById('select-model');
+      if (modelSelect && selectedModel) {
+        modelSelect.value = selectedModel;
+      }
+    });
+
+    /* =========================================================================
+       4. SPEECH SYNTHESIS & RECOGNITION SETUP
+       ========================================================================= */
+    function initSpeech() {
+      if (!speechSynth) {
+        console.warn('SpeechSynthesis not supported on this browser.');
+        return;
+      }
+
+      function loadVoices() {
+        const voices = speechSynth.getVoices();
+        // Look for native Italian voices
+        italianVoice = voices.find(v => v.lang === 'it-IT' || v.lang.startsWith('it')) || null;
+      }
+
+      loadVoices();
+      if (speechSynth.onvoiceschanged !== undefined) {
+        speechSynth.onvoiceschanged = loadVoices;
+      }
+
+      // Initialize Speech Recognition if supported
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.lang = 'it-IT';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        recognition.onstart = () => {
+          isListening = true;
+          updateMicUI(true);
+        };
+
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          console.log('Voice recognized:', transcript);
+          handleUserVoiceQuery(transcript);
+        };
+
+        recognition.onerror = (event) => {
+          console.error('Speech recognition error:', event.error);
+          isListening = false;
+          updateMicUI(false);
+          if (event.error === 'not-allowed') {
+            alert('Permesso microfono non concesso. Puoi comunque digitare la tua domanda nella casella in basso!');
+          }
+        };
+
+        recognition.onend = () => {
+          isListening = false;
+          updateMicUI(false);
+        };
+      } else {
+        console.log('Web SpeechRecognition not supported in this browser.');
+      }
+    }
+
+    function updateMicUI(listening) {
+      const micBtn = document.getElementById('btn-main-mic');
+      const micIcon = document.getElementById('main-mic-icon');
+      const micLabel = document.getElementById('mic-status-label');
+
+      if (listening) {
+        micBtn.classList.add('bg-red-500', 'animate-pulse-fast', 'speaking-glow');
+        micBtn.classList.remove('bg-gradient-to-tr', 'from-sicily-terra', 'to-sicily-gold', 'mic-glow');
+        micIcon.className = 'fa-solid fa-ear-listen';
+        micLabel.textContent = 'Ti ascolto... Parla ora!';
+        micLabel.className = 'text-[10px] font-bold text-red-600 mt-1 uppercase tracking-wider animate-pulse';
+      } else {
+        micBtn.classList.remove('bg-red-500', 'animate-pulse-fast', 'speaking-glow');
+        micBtn.classList.add('bg-gradient-to-tr', 'from-sicily-terra', 'to-sicily-gold', 'mic-glow');
+        micIcon.className = 'fa-solid fa-microphone';
+        micLabel.textContent = 'Tocca e Parla';
+        micLabel.className = 'text-[10px] font-bold text-gray-700 mt-1 uppercase tracking-wider';
+      }
+    }
+
+    function toggleVoiceRecording() {
+      if (!recognition) {
+        alert('Il riconoscimento vocale non è supportato su questo browser. Usa il campo di testo in basso per fare domande a Gemini!');
+        return;
+      }
+      if (isSpeaking) {
+        stopAudioPlayback();
+      }
+      if (isListening) {
+        recognition.stop();
+      } else {
+        try {
+          recognition.start();
+        } catch (e) {
+          console.error('Speech recognition start failed:', e);
+        }
+      }
+    }
+
+    function speakText(text) {
+      if (!speechSynth) return;
+
+      // Stop any current utterance
+      stopAudioPlayback();
+
+      // Clean markdown tags for natural speech
+      const plainText = text
+        .replace(/[*_#`~]/g, '')
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+        .replace(/\n+/g, '. ');
+
+      currentUtterance = new SpeechSynthesisUtterance(plainText);
+      currentUtterance.lang = 'it-IT';
+      if (italianVoice) currentUtterance.voice = italianVoice;
+      currentUtterance.rate = speechRate;
+      currentUtterance.pitch = 1.0;
+
+      currentUtterance.onstart = () => {
+        isSpeaking = true;
+        isPaused = false;
+        updatePlaybackUI(true);
+      };
+
+      currentUtterance.onend = () => {
+        isSpeaking = false;
+        isPaused = false;
+        updatePlaybackUI(false);
+      };
+
+      currentUtterance.onerror = () => {
+        isSpeaking = false;
+        isPaused = false;
+        updatePlaybackUI(false);
+      };
+
+      speechSynth.speak(currentUtterance);
+    }
+
+    function toggleAudioPlayback() {
+      if (!speechSynth || !isSpeaking) return;
+      if (isPaused) {
+        speechSynth.resume();
+        isPaused = false;
+        document.getElementById('play-pause-icon').className = 'fa-solid fa-pause';
+        document.getElementById('play-pause-text').textContent = 'Pausa';
+        setWaveActive(true);
+      } else {
+        speechSynth.pause();
+        isPaused = true;
+        document.getElementById('play-pause-icon').className = 'fa-solid fa-play';
+        document.getElementById('play-pause-text').textContent = 'Riprendi';
+        setWaveActive(false);
+      }
+    }
+
+    function stopAudioPlayback() {
+      if (speechSynth) {
+        speechSynth.cancel();
+      }
+      isSpeaking = false;
+      isPaused = false;
+      updatePlaybackUI(false);
+    }
+
+    function cycleSpeechRate() {
+      const rates = [1.0, 1.2, 1.4, 0.85];
+      const nextIdx = (rates.indexOf(speechRate) + 1) % rates.length;
+      speechRate = rates[nextIdx];
+      document.getElementById('btn-rate').textContent = speechRate.toFixed(1) + 'x';
+      if (isSpeaking && currentUtterance) {
+        // restart with new speed
+        speakText(currentUtterance.text);
+      }
+    }
+
+    function updatePlaybackUI(speaking) {
+      const playBtn = document.getElementById('btn-audio-play-pause');
+      const stopBtn = document.getElementById('btn-audio-stop');
+      const statusCircle = document.getElementById('cicerone-status-circle');
+
+      if (speaking) {
+        playBtn.classList.remove('hidden');
+        playBtn.classList.add('flex');
+        stopBtn.classList.remove('hidden');
+        stopBtn.classList.add('flex');
+        document.getElementById('play-pause-icon').className = 'fa-solid fa-pause';
+        document.getElementById('play-pause-text').textContent = 'Pausa';
+        statusCircle.className = 'w-3.5 h-3.5 rounded-full bg-sicily-terra ring-4 ring-orange-200 animate-pulse transition-all';
+        setWaveActive(true);
+      } else {
+        playBtn.classList.add('hidden');
+        playBtn.classList.remove('flex');
+        stopBtn.classList.add('hidden');
+        stopBtn.classList.remove('flex');
+        statusCircle.className = 'w-3.5 h-3.5 rounded-full bg-emerald-500 ring-4 ring-emerald-100 transition-all';
+        setWaveActive(false);
+      }
+    }
+
+    function setWaveActive(active) {
+      const wave = document.getElementById('audio-wave');
+      const bars = wave.querySelectorAll('.wave-bar');
+      if (active) {
+        wave.style.opacity = '1';
+        bars.forEach((b, i) => {
+          b.style.animation = `waveBar ${0.6 + (i * 0.12)}s ease-in-out infinite alternate`;
+        });
+      } else {
+        wave.style.opacity = '0.25';
+        bars.forEach(b => {
+          b.style.animation = 'none';
+          b.style.height = '6px';
+        });
+      }
+    }
+
+    /* =========================================================================
+       5. GEOLOCATION & RADAR CALCULATOR
+       ========================================================================= */
+    function haversineDistanceKm(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Earth radius in km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+
+    function findNearestPoi(lat, lng) {
+      let nearest = SICILY_POIS[0];
+      let minDistance = Infinity;
+
+      SICILY_POIS.forEach(poi => {
+        const dist = haversineDistanceKm(lat, lng, poi.lat, poi.lng);
+        if (dist < minDistance) {
+          minDistance = dist;
+          nearest = poi;
+        }
+      });
+
+      return { poi: nearest, distanceKm: minDistance };
+    }
+
+    function updatePoiDisplay(poi, distanceMetersOrKm) {
+      currentPOI = poi;
+      document.getElementById('poi-name').textContent = poi.name;
+      document.getElementById('poi-badge').textContent = poi.city;
+      document.getElementById('poi-desc').textContent = poi.desc;
+      document.getElementById('poi-icon').className = `fa-solid ${poi.icon}`;
+
+      const distStr = distanceMetersOrKm < 1 
+        ? `${Math.round(distanceMetersOrKm * 1000)} m` 
+        : `${distanceMetersOrKm.toFixed(1)} km`;
+      document.getElementById('poi-dist').textContent = distStr;
+      document.getElementById('gps-coords-display').textContent = `${currentCoords.lat.toFixed(4)}, ${currentCoords.lng.toFixed(4)}`;
+    }
+
+    function onLocationSelectChange(val) {
+      if (val === 'gps') {
+        enableRealGps();
+      } else {
+        if (watchId !== null) {
+          navigator.geolocation.clearWatch(watchId);
+          watchId = null;
+        }
+        isRealGPS = false;
+        const selected = SICILY_POIS.find(p => p.id === val);
+        if (selected) {
+          currentCoords = { lat: selected.lat, lng: selected.lng };
+          updatePoiDisplay(selected, 0.015); // simulated 15 meters
+          document.getElementById('gps-status-text').textContent = 'Posizione: Simulata';
+          document.getElementById('gps-dot').className = 'relative inline-flex rounded-full h-3 w-3 bg-amber-500';
+          document.getElementById('gps-pulse').className = 'animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75';
+        }
+      }
+    }
+
+    function refreshLocation() {
+      if (isRealGPS) {
+        enableRealGps();
+      } else {
+        const sel = document.getElementById('location-select').value;
+        onLocationSelectChange(sel);
+      }
+    }
+
+    function enableRealGps() {
+      if (!navigator.geolocation) {
+        alert('La geolocalizzazione GPS non è supportata da questo browser.');
+        return;
+      }
+
+      document.getElementById('gps-status-text').textContent = 'GPS: Ricerca satelliti...';
+      
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          isRealGPS = true;
+          currentCoords = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+          };
+          const { poi, distanceKm } = findNearestPoi(currentCoords.lat, currentCoords.lng);
+          updatePoiDisplay(poi, distanceKm);
+          
+          document.getElementById('gps-status-text').textContent = 'GPS: Segnale Attivo';
+          document.getElementById('gps-dot').className = 'relative inline-flex rounded-full h-3 w-3 bg-emerald-500';
+          document.getElementById('gps-pulse').className = 'animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75';
+        },
+        (err) => {
+          console.warn('GPS error:', err);
+          alert('Impossibile accedere al GPS reale. Verifica che i permessi di geolocalizzazione siano abilitati.');
+          document.getElementById('location-select').value = 'duomo_siracusa';
+          onLocationSelectChange('duomo_siracusa');
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+
+    /* =========================================================================
+       6. GEMINI API CLIENT & CICERONE ACTIONS
+       ========================================================================= */
+    async function callGeminiApi(prompt, imageBase64 = null) {
+      if (!apiKey) {
+        // Fallback to local smart knowledge base if no API Key provided
+        return null;
+      }
+
+      const tone = document.getElementById('guide-tone').value;
+      let tonePrompt = '';
+      if (tone === 'passionate') {
+        tonePrompt = 'Usa un tono caloroso, appassionato, empatico ed evocativo, come un colto cicerone siciliano innamorato della sua terra.';
+      } else if (tone === 'historical') {
+        tonePrompt = 'Usa un tono rigoroso, approfondito e storicamente dettagliato, citando periodi, architetti e dominazioni.';
+      } else if (tone === 'brief') {
+        tonePrompt = 'Fornisci una pillola concisa e incisiva, da ascoltare in meno di 60 secondi (massimo 100-130 parole).';
+      } else if (tone === 'culinary') {
+        tonePrompt = 'Concentrati sui sapori, le ricette tradizionali, gli ingredienti tipici e i segreti gastronomici popolari del luogo.';
+      }
+
+      const systemInstruction = `Sei "Cicerone Gemini", un'esperta, colta e appassionatissima guida turistica personale per la Sicilia.
+Posizione attuale dell'utente: ${currentPOI.name} (${currentPOI.city}), coordinate: [${currentCoords.lat}, ${currentCoords.lng}].
+${tonePrompt}
+Parla sempre in italiano fluido. Sii coinvolgente, parla direttamente all'ascoltatore ("Guarda qui davanti a te...", "Sapevi che..."). 
+Non usare elenchi noiosi; crea una narrazione naturale ideale per essere ascoltata in cuffia o vivavoce.`;
+
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
+
+      const contents = [];
+      const parts = [];
+
+      if (imageBase64) {
+        parts.push({
+          inlineData: {
+            mimeType: 'image/jpeg',
+            data: imageBase64.replace(/^data:image\/[a-z]+;base64,/, '')
+          }
+        });
+      }
+
+      parts.push({ text: `${systemInstruction}\n\nRichiesta dell'utente: ${prompt}` });
+      contents.push({ parts });
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error?.message || `Errore HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+      const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!generatedText) throw new Error('Nessuna risposta generata da Gemini.');
+      return generatedText;
+    }
+
+    async function askCiceroneAction(actionType) {
+      let prompt = '';
+      let defaultFallbackText = '';
+      const poi = currentPOI;
+
+      if (actionType === 'explain') {
+        prompt = `Raccontami la storia, l'atmosfera e i segreti più affascinanti di questo luogo: ${poi.name} a ${poi.city}.`;
+        defaultFallbackText = poi.demoExplanation;
+      } else if (actionType === 'food') {
+        prompt = `Quali sono le specialità culinarie, dolci o street food tradizionali imperdibili da assaggiare qui a ${poi.city} (${poi.name}) e perché?`;
+        defaultFallbackText = poi.foodTip;
+      } else if (actionType === 'legend') {
+        prompt = `Raccontami un mito greco, una leggenda popolare o un aneddoto curioso legato a ${poi.name} a ${poi.city}.`;
+        defaultFallbackText = poi.legendTip;
+      }
+
+      displayThinkingState(true, `Interrogo il Cicerone su ${poi.name}...`);
+
+      try {
+        let resultText = null;
+        if (apiKey) {
+          resultText = await callGeminiApi(prompt);
+        } else {
+          // Local fallback simulator
+          await new Promise(r => setTimeout(r, 600)); // realistic feel
+          resultText = defaultFallbackText + (apiKey ? '' : '\n\n*(Modalità demo attiva: inserisci la tua API Key Gemini nelle impostazioni in alto per generare spiegazioni illimitate in tempo reale!)*');
+        }
+
+        displayThinkingState(false);
+        renderStory(resultText, `${poi.name}`);
+        addChatMessage('ai', resultText);
+        speakText(resultText);
+
+      } catch (err) {
+        console.error(err);
+        displayThinkingState(false);
+        renderStory(`Si è verificato un errore nella chiamata a Gemini: ${err.message}. Uso la guida locale precaricata:\n\n${defaultFallbackText}`, poi.name);
+        speakText(defaultFallbackText);
+      }
+    }
+
+    async function handleUserVoiceQuery(userQuestion) {
+      addChatMessage('user', userQuestion);
+      displayThinkingState(true, 'Gemini sta formulando la risposta vocale...');
+
+      const prompt = `L'utente si trova a ${currentPOI.name} (${currentPOI.city}) e ti chiede a voce: "${userQuestion}". Rispondi in modo diretto, cordiale e affascinante.`;
+
+      try {
+        let answer = '';
+        if (apiKey) {
+          answer = await callGeminiApi(prompt);
+        } else {
+          await new Promise(r => setTimeout(r, 800));
+          answer = `Ti trovi vicino a ${currentPOI.name}. Per la tua domanda ("${userQuestion}"), ${currentPOI.demoExplanation.substring(0, 180)}... \n\n(Inserisci la tua API Key per risposte personalizzate su qualsiasi domanda!)`;
+        }
+
+        displayThinkingState(false);
+        renderStory(answer, `Risposta: "${userQuestion}"`);
+        addChatMessage('ai', answer);
+        speakText(answer);
+
+      } catch (err) {
+        displayThinkingState(false);
+        const errMsg = `Non sono riuscito a completare la richiesta: ${err.message}`;
+        renderStory(errMsg, 'Errore');
+        addChatMessage('ai', errMsg);
+      }
+    }
+
+    function handleTextInputSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('text-user-input');
+      const q = input.value.trim();
+      if (!q) return;
+      input.value = '';
+      handleUserVoiceQuery(q);
+    }
+
+    /* =========================================================================
+       7. VISION / CAMERA INTEGRATION
+       ========================================================================= */
+    function triggerCameraInput() {
+      document.getElementById('camera-file-input').click();
+    }
+
+    function handleImageSelected(input) {
+      const file = input.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        selectedImageData = e.target.result;
+        document.getElementById('image-preview-thumb').src = selectedImageData;
+        document.getElementById('image-file-name').textContent = file.name || 'Foto inquadrata';
+        document.getElementById('image-preview-card').classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearSelectedImage() {
+      selectedImageData = null;
+      document.getElementById('camera-file-input').value = '';
+      document.getElementById('image-preview-card').classList.add('hidden');
+    }
+
+    async function analyzeSelectedImage() {
+      if (!selectedImageData) return;
+      if (!apiKey) {
+        alert('Per l\'analisi visiva con la fotocamera è necessaria una chiave API di Gemini. Clicca su "API Key" in alto per inserirla gratuitamente!');
+        openSettingsModal();
+        return;
+      }
+
+      displayThinkingState(true, 'Gemini Vision sta osservando e analizzando la tua foto...');
+
+      const prompt = `Guarda questa foto scattata dall'utente mentre si trova nei pressi di ${currentPOI.name} (${currentPOI.city}, Sicilia).
+Riconosci cosa c'è nell'immagine (monumento, dettaglio scultoreo, facciata, panorama o piatto tipico), spiega cosa rappresenta, il suo significato storico/artistico e svelami un aneddoto curioso!`;
+
+      try {
+        const answer = await callGeminiApi(prompt, selectedImageData);
+        displayThinkingState(false);
+        clearSelectedImage();
+        renderStory(answer, `Analisi Visiva: ${currentPOI.name}`);
+        addChatMessage('ai', `[Foto Inviata] ${answer}`);
+        speakText(answer);
+      } catch (err) {
+        displayThinkingState(false);
+        alert(`Errore analisi visiva: ${err.message}`);
+      }
+    }
+
+    /* =========================================================================
+       8. UI HELPERS & STORY RENDERING
+       ========================================================================= */
+    function displayThinkingState(isThinking, customMsg = '') {
+      const title = document.getElementById('cicerone-status-title');
+      const sub = document.getElementById('cicerone-status-sub');
+      const circle = document.getElementById('cicerone-status-circle');
+
+      if (isThinking) {
+        title.textContent = 'Gemini sta elaborando...';
+        sub.textContent = customMsg || 'Consulto la conoscenza storica della Sicilia';
+        circle.className = 'w-3.5 h-3.5 rounded-full bg-sicily-gold ring-4 ring-amber-200 animate-spin transition-all';
+      } else {
+        title.textContent = 'Cicerone pronto';
+        sub.textContent = `Posizione: ${currentPOI.name}`;
+        circle.className = 'w-3.5 h-3.5 rounded-full bg-emerald-500 ring-4 ring-emerald-100 transition-all';
+      }
+    }
+
+    function renderStory(text, title) {
+      document.getElementById('welcome-message').classList.add('hidden');
+      const storyBox = document.getElementById('story-content');
+      storyBox.classList.remove('hidden');
+
+      // Simple markdown format converter
+      const formatted = text
+        .split('\n\n')
+        .map(p => `<p class="mb-2.5">${p.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>')}</p>`)
+        .join('');
+
+      storyBox.innerHTML = `
+        <div class="mb-2 pb-1.5 border-b border-amber-200/50 flex items-center justify-between">
+          <span class="font-sans font-bold text-xs uppercase tracking-wider text-sicily-terra">
+            <i class="fa-solid fa-feather mr-1"></i> ${title}
+          </span>
+          <button onclick="speakText(document.getElementById('story-content').innerText)" class="text-xs text-sicily-terra hover:underline flex items-center font-sans font-medium">
+            <i class="fa-solid fa-volume-high mr-1"></i> Riascolta
+          </button>
+        </div>
+        ${formatted}
+      `;
+
+      // Auto scroll transcript to top
+      document.getElementById('transcript-container').scrollTop = 0;
+    }
+
+    function addChatMessage(role, text) {
+      const container = document.getElementById('chat-messages');
+      const div = document.createElement('div');
+      
+      if (role === 'user') {
+        div.className = 'flex justify-end';
+        div.innerHTML = `
+          <div class="bg-sicily-terra text-white rounded-2xl rounded-br-xs px-3.5 py-2 max-w-[85%] text-xs shadow-xs">
+            <p class="font-medium">${text}</p>
+          </div>
+        `;
+      } else {
+        div.className = 'flex justify-start';
+        div.innerHTML = `
+          <div class="bg-gray-100 text-gray-800 rounded-2xl rounded-bl-xs px-3.5 py-2 max-w-[90%] text-xs border border-gray-200/70 shadow-xs">
+            <div class="flex items-center space-x-1 text-[10px] text-sicily-terra font-bold mb-1">
+              <i class="fa-solid fa-headset"></i>
+              <span>Cicerone Gemini</span>
+            </div>
+            <p class="leading-relaxed whitespace-pre-line">${text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
+          </div>
+        `;
+      }
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function clearChatLog() {
+      document.getElementById('chat-messages').innerHTML = `
+        <div class="p-3 bg-gray-50 rounded-xl text-gray-500 text-xs text-center border border-dashed border-gray-200">
+          Cronologia cancellata. Fai una nuova domanda a voce o seleziona un'azione rapida!
+        </div>
+      `;
+    }
+
+    /* =========================================================================
+       9. SETTINGS & API KEY MANAGEMENT
+       ========================================================================= */
+    function openSettingsModal() {
+      document.getElementById('settings-modal').classList.remove('hidden');
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settings-modal').classList.add('hidden');
+    }
+
+    function saveApiKeySettings() {
+      const keyVal = document.getElementById('input-api-key').value.trim();
+      const modelVal = document.getElementById('select-model').value;
+
+      apiKey = keyVal;
+      selectedModel = modelVal;
+
+      if (apiKey) {
+        localStorage.setItem('cicerone_gemini_api_key', apiKey);
+      } else {
+        localStorage.removeItem('cicerone_gemini_api_key');
+      }
+      localStorage.setItem('cicerone_gemini_model', selectedModel);
+
+      updateApiKeyStatusBadge();
+      closeSettingsModal();
+
+      if (apiKey) {
+        alert('API Key salvata con successo sul tuo dispositivo! Il Cicerone Gemini è ora in modalità Live completa.');
+      }
+    }
+
+    function clearApiKey() {
+      apiKey = '';
+      localStorage.removeItem('cicerone_gemini_api_key');
+      document.getElementById('input-api-key').value = '';
+      updateApiKeyStatusBadge();
+      alert('API Key rimossa. L\'app continuerà in modalità demo con le guide precaricate.');
+    }
+
+    function updateApiKeyStatusBadge() {
+      const icon = document.getElementById('key-icon-status');
+      const label = document.getElementById('key-label-status');
+
+      if (apiKey) {
+        icon.className = 'fa-solid fa-circle-check text-emerald-400';
+        label.textContent = 'API Attiva';
+      } else {
+        icon.className = 'fa-solid fa-key text-sicily-gold';
+        label.textContent = 'Configura API';
+      }
+    }
+  </script>
+</body>
+</html>
