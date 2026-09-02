@@ -342,17 +342,20 @@
       </div>
 
       <div class="flex flex-col sm:flex-row gap-2 pt-1">
-        <input type="password" id="inline-api-input" placeholder="Incolla qui la chiave (inizia con AIzaSy...)" class="flex-1 bg-white border border-orange-300 rounded-xl px-3 py-2.5 font-mono text-xs text-gray-800 focus:ring-2 focus:ring-sicily-gold focus:outline-none shadow-inner">
+        <input type="text" id="inline-api-input" oninput="syncApiInputs(this.value)" placeholder="Incolla qui la chiave (inizia con AIzaSy...)" autocomplete="off" autocapitalize="none" spellcheck="false" class="flex-1 bg-white border border-orange-300 rounded-xl px-3 py-2.5 font-mono text-xs text-gray-800 focus:ring-2 focus:ring-sicily-gold focus:outline-none shadow-inner">
         <div class="flex gap-2">
-          <button type="button" onclick="saveApiKeyFromInline()" class="flex-1 sm:flex-none bg-sicily-terra hover:bg-opacity-90 active:scale-95 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-check"></i>
-            <span>Salva Chiave</span>
+          <button type="button" id="btn-save-inline" onclick="saveApiKeyFromInline()" class="flex-1 sm:flex-none bg-sicily-terra hover:bg-opacity-90 active:scale-95 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-check" id="icon-save-inline"></i>
+            <span id="text-save-inline">Salva & Verifica</span>
           </button>
           <button type="button" onclick="clearApiKey()" class="bg-white border border-gray-300 hover:bg-gray-100 text-gray-600 font-medium text-xs px-3 py-2.5 rounded-xl transition cursor-pointer" title="Rimuovi chiave">
             <i class="fa-solid fa-trash-can"></i>
           </button>
         </div>
       </div>
+
+      <!-- Live status notification box -->
+      <div id="api-test-status" class="hidden p-2.5 rounded-xl text-xs font-semibold"></div>
 
       <div class="flex flex-wrap items-center justify-between gap-2 pt-1 text-[11px] text-gray-500 border-t border-amber-200/60">
         <span>Gratuita e immediata in 30 secondi su:</span>
@@ -411,7 +414,7 @@
       <div class="mt-4 space-y-4 text-xs">
         <div>
           <label class="block font-semibold text-gray-700 mb-1">Chiave API Google Gemini (AI Studio):</label>
-          <input type="password" id="input-api-key" placeholder="AIzaSy..." class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2.5 font-mono text-xs text-gray-900 focus:ring-2 focus:ring-sicily-gold focus:outline-none">
+          <input type="text" id="input-api-key" oninput="syncApiInputs(this.value)" placeholder="AIzaSy..." autocomplete="off" autocapitalize="none" spellcheck="false" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2.5 font-mono text-xs text-gray-900 focus:ring-2 focus:ring-sicily-gold focus:outline-none">
           <p class="text-[11px] text-gray-500 mt-1.5">
             Non hai ancora una chiave? È <strong>gratuita</strong>: puoi ottenerla in 30 secondi su 
             <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-sicily-terra font-semibold underline">Google AI Studio</a>.
@@ -421,8 +424,8 @@
         <div>
           <label class="block font-semibold text-gray-700 mb-1">Modello Gemini:</label>
           <select id="select-model" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-sicily-gold focus:outline-none">
-            <option value="gemini-2.5-flash">gemini-2.5-flash (Consigliato: rapido & aggiornato)</option>
-            <option value="gemini-2.0-flash">gemini-2.0-flash (Ultra veloce)</option>
+            <option value="gemini-2.0-flash" selected>gemini-2.0-flash (Consigliato: rapido & multimodale)</option>
+            <option value="gemini-1.5-flash">gemini-1.5-flash (Standard stabile)</option>
           </select>
         </div>
 
@@ -442,8 +445,9 @@
           <button type="button" onclick="clearApiKey()" class="px-3 py-2 rounded-xl text-gray-500 hover:text-red-500 font-medium transition cursor-pointer">
             Rimuovi
           </button>
-          <button type="button" onclick="saveApiKeySettings()" class="bg-sicily-terra hover:bg-opacity-95 text-white font-bold px-5 py-2 rounded-xl active:scale-95 transition shadow-sm cursor-pointer">
-            Salva & Attiva
+          <button type="button" id="btn-save-modal" onclick="saveApiKeySettings()" class="bg-sicily-terra hover:bg-opacity-95 text-white font-bold px-5 py-2 rounded-xl active:scale-95 transition shadow-sm cursor-pointer flex items-center gap-1.5">
+            <i class="fa-solid fa-check"></i>
+            <span>Salva & Verifica</span>
           </button>
         </div>
       </div>
@@ -713,7 +717,8 @@ Il poeta Pindaro definì Akragas "la più bella città dei mortali". Camminare q
 
     // Gemini API State
     let apiKey = safeGet('cicerone_gemini_api_key');
-    let selectedModel = safeGet('cicerone_gemini_model') || 'gemini-2.5-flash';
+    let storedModel = safeGet('cicerone_gemini_model');
+    let selectedModel = (storedModel && storedModel !== 'gemini-2.5-flash') ? storedModel : 'gemini-2.0-flash';
     let selectedImageData = null; // base64 string
 
     /* =========================================================================
@@ -1092,7 +1097,12 @@ ${tonePrompt}
 Parla sempre in italiano fluido. Sii coinvolgente, parla direttamente all'ascoltatore ("Guarda qui davanti a te...", "Sapevi che..."). 
 Non usare elenchi noiosi; crea una narrazione naturale ideale per essere ascoltata in cuffia o vivavoce.`;
 
-      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
+      let model = selectedModel;
+      if (!model || model === 'gemini-2.5-flash') {
+        model = 'gemini-2.0-flash';
+      }
+
+      let endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
       const contents = [];
       const parts = [];
@@ -1109,11 +1119,21 @@ Non usare elenchi noiosi; crea una narrazione naturale ideale per essere ascolta
       parts.push({ text: `${systemInstruction}\n\nRichiesta dell'utente: ${prompt}` });
       contents.push({ parts });
 
-      const response = await fetch(endpoint, {
+      let response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contents })
       });
+
+      if (!response.ok && response.status === 404 && model !== 'gemini-1.5-flash') {
+        model = 'gemini-1.5-flash';
+        endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+        response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contents })
+        });
+      }
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -1339,47 +1359,105 @@ Riconosci cosa c'è nell'immagine (monumento, dettaglio scultoreo, facciata, pan
     }
 
     /* =========================================================================
-       9. SETTINGS & API KEY MANAGEMENT
+       9. SETTINGS & API KEY MANAGEMENT (WITH LIVE GOOGLE VERIFICATION)
        ========================================================================= */
-    function applyNewApiKey(keyVal, modelVal) {
-      apiKey = keyVal;
-      if (modelVal) selectedModel = modelVal;
+    function syncApiInputs(val) {
+      const clean = (val || '').replace(/["';\s]/g, '');
+      const input1 = document.getElementById('input-api-key');
+      const input2 = document.getElementById('inline-api-input');
+      if (input1 && input1.value !== clean) input1.value = clean;
+      if (input2 && input2.value !== clean) input2.value = clean;
+    }
+    window.syncApiInputs = syncApiInputs;
 
-      if (apiKey) {
-        safeSet('cicerone_gemini_api_key', apiKey);
+    function showApiStatus(type, msg) {
+      const el = document.getElementById('api-test-status');
+      if (!el) return;
+      el.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'border-emerald-200', 'bg-red-50', 'text-red-800', 'border-red-200', 'bg-amber-50', 'text-amber-800', 'border-amber-200');
+      
+      if (type === 'success') {
+        el.className = 'p-2.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-300 block';
+      } else if (type === 'error') {
+        el.className = 'p-2.5 rounded-xl text-xs font-semibold bg-red-50 text-red-800 border border-red-300 block';
+      } else if (type === 'loading') {
+        el.className = 'p-2.5 rounded-xl text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-300 animate-pulse block';
       } else {
-        safeRemove('cicerone_gemini_api_key');
+        el.className = 'p-2.5 rounded-xl text-xs font-semibold bg-gray-50 text-gray-700 border border-gray-200 block';
       }
-      safeSet('cicerone_gemini_model', selectedModel);
+      el.innerHTML = msg;
+    }
 
-      updateApiKeyStatusBadge();
+    async function applyNewApiKey(rawKeyVal, modelVal) {
+      const keyVal = (rawKeyVal || '').replace(/["';\s]/g, '').trim();
+      const targetModel = (modelVal && modelVal !== 'gemini-2.5-flash') ? modelVal : 'gemini-2.0-flash';
 
-      if (apiKey) {
-        alert('API Key salvata con successo sul tuo dispositivo! Il Cicerone Gemini è ora in modalità Live completa con risposte e visione intelligenti.');
-      } else {
-        alert('API Key rimossa. L\'app continuerà in modalità demo con le guide precaricate.');
+      if (!keyVal) {
+        apiKey = '';
+        safeRemove('cicerone_gemini_api_key');
+        updateApiKeyStatusBadge();
+        showApiStatus('info', 'Chiave rimossa. Modalità demo attiva.');
+        alert('Chiave rimossa. L\'app continuerà in modalità demo con le guide precaricate.');
+        return;
+      }
+
+      showApiStatus('loading', '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Connessione e verifica della chiave con Google in corso...');
+
+      // Test key live against Google API
+      try {
+        const testEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${keyVal}`;
+        const testRes = await fetch(testEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contents: [{ parts: [{ text: 'test' }] }] })
+        });
+
+        if (testRes.ok) {
+          apiKey = keyVal;
+          selectedModel = targetModel;
+          safeSet('cicerone_gemini_api_key', apiKey);
+          safeSet('cicerone_gemini_model', selectedModel);
+          updateApiKeyStatusBadge();
+          showApiStatus('success', '✅ Chiave Google Gemini VERIFICATA! Modalità Live Attiva.');
+          alert('Fantastico! La chiave API è valida ed è stata verificata con Google. Ora il tuo Cicerone è connesso al 100% in modalità Live!');
+        } else {
+          const errBody = await testRes.json().catch(() => ({}));
+          const errDetail = errBody.error?.message || `Errore HTTP ${testRes.status}`;
+          showApiStatus('error', `❌ Errore Google (${testRes.status}): ${errDetail}`);
+          alert(`Attenzione: Google ha rifiutato la chiave.\n\nRisposta di Google: "${errDetail}"\n\nVerifica di aver copiato l'intera chiave da Google AI Studio (inizia con AIzaSy...).`);
+        }
+      } catch (netErr) {
+        // Fallback in case of temporary offline/network glitch
+        console.warn('Network test error:', netErr);
+        apiKey = keyVal;
+        selectedModel = targetModel;
+        safeSet('cicerone_gemini_api_key', apiKey);
+        safeSet('cicerone_gemini_model', selectedModel);
+        updateApiKeyStatusBadge();
+        showApiStatus('warning', '⚠️ Chiave salvata (impossibile verificare la connessione di rete in questo istante).');
       }
     }
 
-    function saveApiKeySettings() {
+    async function saveApiKeySettings() {
       const keyInput = document.getElementById('input-api-key');
+      const inlineInput = document.getElementById('inline-api-input');
       const modelInput = document.getElementById('select-model');
-      const keyVal = keyInput ? keyInput.value.trim() : '';
-      const modelVal = modelInput ? modelInput.value : 'gemini-2.5-flash';
-      applyNewApiKey(keyVal, modelVal);
+      const val = (keyInput && keyInput.value) ? keyInput.value : (inlineInput ? inlineInput.value : '');
+      const modelVal = modelInput ? modelInput.value : 'gemini-2.0-flash';
+      await applyNewApiKey(val, modelVal);
       closeSettingsModal();
     }
 
-    function saveApiKeyFromInline() {
+    async function saveApiKeyFromInline() {
       const inlineInput = document.getElementById('inline-api-input');
+      const keyInput = document.getElementById('input-api-key');
       const modelInput = document.getElementById('select-model');
-      const keyVal = inlineInput ? inlineInput.value.trim() : '';
-      const modelVal = modelInput ? modelInput.value : 'gemini-2.5-flash';
-      if (!keyVal) {
+      const val = (inlineInput && inlineInput.value) ? inlineInput.value : (keyInput ? keyInput.value : '');
+      const modelVal = modelInput ? modelInput.value : 'gemini-2.0-flash';
+      if (!val) {
         alert('Inserisci o incolla prima la chiave API nel campo di testo!');
         return;
       }
-      applyNewApiKey(keyVal, modelVal);
+      await applyNewApiKey(val, modelVal);
     }
 
     function clearApiKey() {
@@ -1390,6 +1468,7 @@ Riconosci cosa c'è nell'immagine (monumento, dettaglio scultoreo, facciata, pan
       if (keyInput) keyInput.value = '';
       if (inlineInput) inlineInput.value = '';
       updateApiKeyStatusBadge();
+      showApiStatus('info', 'Chiave rimossa. Modalità demo attiva.');
       alert('API Key rimossa. L\'app continuerà in modalità demo con le guide precaricate.');
     }
 
@@ -1400,8 +1479,8 @@ Riconosci cosa c'è nell'immagine (monumento, dettaglio scultoreo, facciata, pan
       const keyInput = document.getElementById('input-api-key');
       const inlineInput = document.getElementById('inline-api-input');
 
-      if (keyInput) keyInput.value = apiKey;
-      if (inlineInput) inlineInput.value = apiKey;
+      if (keyInput && keyInput.value !== apiKey) keyInput.value = apiKey;
+      if (inlineInput && inlineInput.value !== apiKey) inlineInput.value = apiKey;
 
       if (apiKey) {
         if (icon) icon.className = 'fa-solid fa-circle-check text-emerald-400';
